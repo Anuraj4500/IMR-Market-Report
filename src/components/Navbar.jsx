@@ -1,9 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NavMenu = () => {
-  // Define the openSearch function as a placeholder
   const openSearch = () => {
-    // Add your search functionality here
     console.log('Search button clicked');
   };
 
@@ -31,38 +30,35 @@ const NavMenu = () => {
 
           <nav className="nav-menu d-none d-lg-block">
             <ul>
-              <li><a href="https://www.imrmarketreports.com">Home</a></li>
-              <li><a href="https://www.imrmarketreports.com/reports-store/">Reports Store</a></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/reports-store">Reports Store</Link></li>
 
-              <li className="drop-down"><a href="">Industries</a>
+              <li className="drop-down"><Link to="/industries">Industries</Link>
                 <ul>
-                  <li><a href="https://www.imrmarketreports.com/aerospace-defense/">Aerospace &amp; Defense</a></li>
-                  <li><a href="https://www.imrmarketreports.com/agriculture/">Agriculture</a></li>
-                  <li><a href="https://www.imrmarketreports.com/automotive-transport/">Automotive &amp; Transport</a></li>
-                  <li><a href="https://www.imrmarketreports.com/chemicals-materials/">Chemicals &amp; Materials</a></li>
-                  <li><a href="https://www.imrmarketreports.com/consumer-goods/">Consumer Goods</a></li>
-                  <li><a href="https://www.imrmarketreports.com/electronics-semiconductors/">Electronics &amp;
-                      Semiconductors</a></li>
-                  <li><a href="https://www.imrmarketreports.com/energy-natural-resources/">Energy &amp; Natural Resources</a>
-                  </li>
-                  <li><a href="https://www.imrmarketreports.com/food-beverages/">Food &amp; Beverages</a></li>
-                  <li><a href="https://www.imrmarketreports.com/healthcare/">Healthcare</a></li>
-                  <li><a href="https://www.imrmarketreports.com/it-telecom/">IT &amp; Telecom</a></li>
-                  <li><a href="https://www.imrmarketreports.com/manufacturing-construction/">Manufacturing &amp;
-                      Construction</a></li>
-                  <li><a href="https://www.imrmarketreports.com/service-industry/">Service Industry</a></li>
+                  <li><Link to="/industries/aerospace-defense">Aerospace &amp; Defense</Link></li>
+                  <li><Link to="/industries/agriculture">Agriculture</Link></li>
+                  <li><Link to="/industries/automotive-transport">Automotive &amp; Transport</Link></li>
+                  <li><Link to="/industries/chemicals-materials">Chemicals &amp; Materials</Link></li>
+                  <li><Link to="/industries/consumer-goods">Consumer Goods</Link></li>
+                  <li><Link to="/industries/electronics-semiconductors">Electronics &amp; Semiconductors</Link></li>
+                  <li><Link to="/industries/energy-natural-resources">Energy &amp; Natural Resources</Link></li>
+                  <li><Link to="/industries/food-beverages">Food &amp; Beverages</Link></li>
+                  <li><Link to="/industries/healthcare">Healthcare</Link></li>
+                  <li><Link to="/industries/it-telecom">IT &amp; Telecom</Link></li>
+                  <li><Link to="/industries/manufacturing-construction">Manufacturing &amp; Construction</Link></li>
+                  <li><Link to="/industries/service-industry">Service Industry</Link></li>
                 </ul>
               </li>
-              <li><a href="https://www.imrmarketreports.com/publishers/">Publishers</a></li>
-              <li className="drop-down"><a href="">About Us</a>
+              <li><Link to="/publishers">Publishers</Link></li>
+              <li className="drop-down"><Link to="/about-us">About Us</Link>
                 <ul>
-                  <li><a href="https://www.imrmarketreports.com/our-company/">Our Company</a></li>
-                  <li><a href="https://www.imrmarketreports.com/clients/">Our Clients</a></li>
-                  <li><a href="https://www.imrmarketreports.com/faq/">FAQ's</a></li>
-                  <li><a href="https://www.imrmarketreports.com/privacy-policy/">Privacy Policy</a></li>
+                  <li><Link to="/about-us/our-company">Our Company</Link></li>
+                  <li><Link to="/about-us/our-clients">Our Clients</Link></li>
+                  <li><Link to="/about-us/faqs">FAQ's</Link></li>
+                  <li><Link to="/about-us/privacy-policy">Privacy Policy</Link></li>
                 </ul>
               </li>
-              <li><a href="https://www.imrmarketreports.com/contact-us/">Contact</a></li>
+              <li><Link to="/contact">Contact</Link></li>
               <li><button className="openBtn" onClick={openSearch}><i className="bx bx-search"></i></button></li>
 
             </ul>
@@ -77,7 +73,6 @@ const NavMenu = () => {
         <span className="closebtn" onClick={() => document.getElementById('myOverlay').style.display = 'none'} title="Close Overlay">×</span>
 
         <div className="overlay-content">
-          {/* <h3>Search For Market Research Reports</h3> */}
           <form action="https://www.imrmarketreports.com/search/" method="get">
             <input type="text" className="overlay-form" placeholder="Search For Market Reports / Keywords" name="q" />
             <button type="submit"><i className="bx bx-search"></i></button><br />

@@ -21,10 +21,10 @@ function ClientCarousel() {
         <div className="container">
           <div className="row">
             <div className="col-lg-12 text-center p-4 pt-0">
-              <div className="ot-heading v3 mb-0">
-                <span>Our Clients </span>
-                <h2 className="main-heading text-dark">Trusted by Clients across world</h2>
-              </div>
+              <div className="section-title">
+              <h2>Our <span>Clients</span></h2>
+              <p>Trusted by Clients across world</p>
+            </div>
             </div>
           </div>
           <div className="row justify-content-center align-items-center">
