@@ -19,7 +19,7 @@ function ReportCard() {
                             <li>IMR ID :  327067 | </li>
                             <li>Pages : 300 | </li>
                             <li>Date : October 2024</li>
-                            <li style={{ float: 'right' }}><a className="btn categories-btn" href='#'>Request Free Sample</a></li>
+                            <li style={{ float: 'right' }}><Link to="/SampleRequest" className="btn categories-btn">Request Free Sample</Link></li>
                         </ul>
                     </div>
                 </div>

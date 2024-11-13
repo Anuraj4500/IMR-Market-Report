@@ -48,9 +48,8 @@ const Reports = () => {
                                             aria-controls="profile" aria-selected="false">Table of Contents</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" id="contact-tab"
-                                            href="#" role="tab"
-                                            aria-controls="contact" aria-selected="false">Free Sample</a>
+                                        <Link className="nav-link" id="contact-tab" to="/SampleRequest"  role="tab"
+                                            aria-controls="contact" aria-selected="false">Free Sample</Link>
                                     </li>
                                 </ul>
                                 <div className="tab-content" id="myTabContent">
@@ -166,12 +165,11 @@ const Reports = () => {
 
                                         <input type="number" value="123" name="id" readOnly style={{ visibility: 'hidden' }} />
 
-                                        <button type="submit" className="custom_btn_buy"><i className="bx bx-cart"></i>&nbsp;BUY
-                                            NOW</button>
+                                        <Link to="/Checkout" className="custom_btn_buy"><i className="bx bx-cart"></i>&nbsp;BUY
+                                            NOW </Link>
                                         <br /><br />
-                                        <a className="btn custom_btn_request"
-                                            href="#"><i
-                                                className="bx bxs-download bx-fade-down-hover"></i>&nbsp;REQUEST SAMPLE</a>
+                                        <Link to="/SampleRequest" className="btn custom_btn_request" ><i
+                                                className="bx bxs-download bx-fade-down-hover"></i>&nbsp;REQUEST SAMPLE</Link>
                                         <br /><br />
                                         <a className="btn custom_btn_buy"
                                             href="#"><i

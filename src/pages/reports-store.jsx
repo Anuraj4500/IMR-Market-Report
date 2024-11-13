@@ -1,13 +1,16 @@
 import React from 'react';
-import IndustriesBreadcrumb from '../components/Industries-Breadcrumb';
+import Breadcrumb from '../components/Breadcrumb';
 import ReportCard from '../components/Report-Card';
 import IndustryCard from '../components/Industry-Card';
 import AssistanceCard from '../components/Assistance-Card';
 
 const ReportsStore = () => {
+    const breadcrumbItems = [
+        { label: 'Report Store' }
+      ];
     return (
         <div>
-            <IndustriesBreadcrumb />
+             <Breadcrumb items={breadcrumbItems} />
             <section class="inner-page">
                 <div class="container">
                     <div class="row">

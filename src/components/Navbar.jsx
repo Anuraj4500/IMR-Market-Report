@@ -1,10 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const NavMenu = () => {
   const openSearch = () => {
     console.log('Search button clicked');
   };
+
+  const location = useLocation();
+  useEffect(() => {
+    // Scroll to the top of the page on every route change
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
     <>
@@ -33,32 +39,32 @@ const NavMenu = () => {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/reports-store">Reports Store</Link></li>
 
-              <li className="drop-down"><Link to="/industries">Industries</Link>
+              <li className="drop-down"><Link to="/Industry-reports">Industries</Link>
                 <ul>
-                  <li><Link to="/industries/aerospace-defense">Aerospace &amp; Defense</Link></li>
-                  <li><Link to="/industries/agriculture">Agriculture</Link></li>
-                  <li><Link to="/industries/automotive-transport">Automotive &amp; Transport</Link></li>
-                  <li><Link to="/industries/chemicals-materials">Chemicals &amp; Materials</Link></li>
-                  <li><Link to="/industries/consumer-goods">Consumer Goods</Link></li>
-                  <li><Link to="/industries/electronics-semiconductors">Electronics &amp; Semiconductors</Link></li>
-                  <li><Link to="/industries/energy-natural-resources">Energy &amp; Natural Resources</Link></li>
-                  <li><Link to="/industries/food-beverages">Food &amp; Beverages</Link></li>
-                  <li><Link to="/industries/healthcare">Healthcare</Link></li>
-                  <li><Link to="/industries/it-telecom">IT &amp; Telecom</Link></li>
-                  <li><Link to="/industries/manufacturing-construction">Manufacturing &amp; Construction</Link></li>
-                  <li><Link to="/industries/service-industry">Service Industry</Link></li>
+                  <li><Link to="/Industry-reports/aerospace-defense">Aerospace &amp; Defense</Link></li>
+                  <li><Link to="/Industry-reports/agriculture">Agriculture</Link></li>
+                  <li><Link to="/Industry-reports/automotive-transport">Automotive &amp; Transport</Link></li>
+                  <li><Link to="/Industry-reports/chemicals-materials">Chemicals &amp; Materials</Link></li>
+                  <li><Link to="/Industry-reports/consumer-goods">Consumer Goods</Link></li>
+                  <li><Link to="/Industry-reports/electronics-semiconductors">Electronics &amp; Semiconductors</Link></li>
+                  <li><Link to="/Industry-reports/energy-natural-resources">Energy &amp; Natural Resources</Link></li>
+                  <li><Link to="/Industry-reports/food-beverages">Food &amp; Beverages</Link></li>
+                  <li><Link to="/Industry-reports/healthcare">Healthcare</Link></li>
+                  <li><Link to="/Industry-reports/it-telecom">IT &amp; Telecom</Link></li>
+                  <li><Link to="/Industry-reports/manufacturing-construction">Manufacturing &amp; Construction</Link></li>
+                  <li><Link to="/Industry-reports/service-industry">Service Industry</Link></li>
                 </ul>
               </li>
-              <li><Link to="/publishers">Publishers</Link></li>
-              <li className="drop-down"><Link to="/about-us">About Us</Link>
+              {/* <li><Link to="/publishers">Publishers</Link></li> */}
+              <li className="drop-down"><Link to="/About-us">About Us</Link>
                 <ul>
-                  <li><Link to="/about-us/our-company">Our Company</Link></li>
-                  <li><Link to="/about-us/our-clients">Our Clients</Link></li>
-                  <li><Link to="/about-us/faqs">FAQ's</Link></li>
-                  <li><Link to="/about-us/privacy-policy">Privacy Policy</Link></li>
+                  <li><Link to="/About-us">Our Company</Link></li>
+                  <li><Link to="/Our-Client">Our Clients</Link></li>
+                  <li><Link to="/Faq">FAQ's</Link></li>
+                  <li><Link to="/Privacy-Policy">Privacy Policy</Link></li>
                 </ul>
               </li>
-              <li><Link to="/contact">Contact</Link></li>
+              <li><Link to="/Contact-us">Contact</Link></li>
               <li><button className="openBtn" onClick={openSearch}><i className="bx bx-search"></i></button></li>
 
             </ul>

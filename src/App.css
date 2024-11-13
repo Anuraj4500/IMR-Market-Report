@@ -1903,7 +1903,7 @@ section {
     border-radius: 20px;
     /* height: calc(100% - 35px); */
     border: 1px solid #010d091a;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 3px 3px 10px rgba(48, 48, 48, 0.1);
     max-width: 85%;
     padding: 12px;
 
@@ -2011,3 +2011,415 @@ section {
   background-color: #fff;
   box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.3);
 }
+/* Footer css */
+.footers a {color:white;}
+.footers p {color:white; line-height: 27px;}
+.footers ul {line-height:30px;}
+#social-fb:hover {
+     color: #3B5998;
+     transition:all .001s;
+ }
+ #social-tw:hover {
+     color: #4099FF;
+     transition:all .001s;
+ }
+ #social-gp:hover {
+     color: #d34836;
+     transition:all .001s;
+ }
+ #social-em:hover {
+     color: #f39c12;
+     transition:all .001s;
+ }
+ .footers, .disclaimer{
+  background: #4f6a7d;
+ 
+ }
+.footers{
+     position: relative;
+}
+ .footers a {
+    text-decoration: none;
+ }
+ 
+ .footers-three{
+    padding: 13px 0px;
+ }
+ 
+ .footers-two h5, .footers-five h5{
+    font-size: 25px;
+ }
+.social-menu ul {
+  
+    padding: 0;
+    display: flex;
+}
+.social-menu ul li {
+    list-style: none;
+    margin: 0 10px;
+}
+.social-menu ul li .fa {
+    color: #000000;
+    font-size: 25px;
+    line-height: 50px;
+    transition: .5s;
+}
+.social-menu ul li .fa:hover {
+    color: #ffffff;
+}
+.social-menu ul li a {
+    position: relative;
+    display: block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: white;
+    text-align: center;
+    transition: 0.5s;
+    transform: translate(0,0px);
+    box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);
+}
+.social-menu ul li a:hover {
+    transform: rotate(0deg) skew(0deg) translate(0, -10px);
+}
+.social-menu ul li:nth-child(1) a:hover {
+    background-color: #3b5999;
+}
+.social-menu ul li:nth-child(2) a:hover {
+    background-color: #55acee;
+}
+.social-menu ul li:nth-child(3) a:hover {
+    background-color: #e4405f;
+}
+.social-menu ul li:nth-child(4) a:hover {
+    background-color: #cd201f;
+}
+.social-menu ul li:nth-child(5) a:hover {
+    background-color: #0077B5;
+}
+.social-menu span{
+    color:white;
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.social-menu i{
+    color: #000000cc;
+    font-size: 23px;
+    margin: 10px;
+}
+.social-menu i:hover {
+    color: white;
+    text-decoration: none; /* Optional: removes underline on hover */
+}
+.footer-widget{
+    text-align: left;
+  }
+  .footer-widget-heading h3 {
+  color: var(--lighter-color);
+  font-size: 20px;
+  font-weight: 600;
+  position: relative;
+  }
+  .footer-widget-heading h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -15px;
+  height: 2px;
+  width: 50px;
+  background: var(--primary-color);
+  }
+  .footer-widget ul li {
+  /* display: inline-block;
+  float: left; */
+  /* width: 50%; */
+  font-size: 14px;
+  color: var(--lighter-color);
+  margin-bottom: 0px;      
+     
+  }
+  .footer-widget ul li a:hover{
+  color: white;
+  }
+  .footer-widget ul li a {
+  color: var(--ayur-primary-light);
+  text-transform: capitalize;
+  }
+  .subscribe-form {
+  position: relative;
+  overflow: hidden;
+  }
+  .subscribe-form input {
+  width: 95%;
+  padding: 13px 10px;
+  
+  border: 1px solid var(--lighter-color);
+  color: var(--primary-color);
+  }
+  .subscribe-form button {
+    position: absolute;
+    right: 0;
+    background: var(--primary-color);
+    padding: 13px 46px;
+    border: 1px solid var(--primary-color);
+    top: 0;
+  }
+  .subscribe-form button i {
+  color: var(--lighter-color);
+  font-size: 22px;
+  transform: rotate(-6deg);
+  }
+ .form-container {
+    width: 300px;
+    background-color: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.form-header {
+    background-color: #0e85c0;
+    color: #fff;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+.form-body {
+    padding: 20px;
+}
+.form-body label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+.form-body input[type="text"],
+.form-body input[type="email"],
+.form-body input[type="tel"],
+.form-body input[type="file"],
+.form-body input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+.form-body .captcha {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+.form-body input[type="submit"] {
+    background-color: #0e85c0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+.form-body input[type="submit"]:hover {
+    background-color: #1b365d;
+}
+ 
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+ 
+.custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+ 
+.custom-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+ 
+.custom-table tr:hover {
+    background-color: #f1f1f1;
+}
+ 
+.custom-table td:first-child, .custom-table td:nth-child(3) {
+    font-weight: bold;
+    color: #0e85c0; /* Update color as per your theme */
+}
+ 
+.job-card {
+    width: 400px;
+    height: 200px;
+    margin: 50px auto;
+    border-radius: 10px;
+    border: none;
+  }
+ 
+  .badge-circle {
+    width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      margin: 19px 8px;
+  }
+ 
+  .card-title1 {
+    font-size: 22px;
+    font-weight: bold;
+  }
+ 
+  .card-text i {
+    margin-right: 5px;
+  }
+ 
+  .btn-link {
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+ 
+  .btn-link:hover {
+    text-decoration: underline;
+  }
+  .btn1{
+    background-color: var(--primary-color);
+      padding: 11px 20px;
+      border-radius: 10px;
+      color: white;
+  }
+  .animated-title {
+    display: inline-block;
+    transition: transform 0.3s ease-in-out;
+  }
+ 
+  .animated-title:hover {
+    transform: scale(1.2); /* Zoom in on hover */
+  }
+  .shadow-sm:hover {
+    transform: scale(1.05); /* Grows the card slightly */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+  }
+ 
+  .btn1:hover  {
+    color: white; /* Changes button text color on hover */
+    text-decoration: underline; /* Adds underline to the link */
+  }
+ 
+  .card-title1:hover {
+    color: #1b365d; /* Changes the title color on hover */
+  }
+ 
+/* Testimonial section css Start */
+.ayur-testimonial-sec {
+    /* background-image: url('../images/testimonialbanner.png'); */
+    max-width: 1820px;
+    margin: 0 auto;
+    padding: 100px 0 80px;
+}
+
+.ayur-test-head {
+    margin: 0 0 24px;
+}
+
+.swiper.ayur-testimonial-slider {
+    padding: 20px 0;
+}
+
+.ayur-test-box {
+    max-width: 850px;
+    padding: 5px;
+    box-shadow: 3px 4px 29.6px 0px #0000000F;
+    background-color: #fff;
+    border-radius: 10px;
+    transition: all .3s linear;
+    margin: 0 10px;
+}
+
+.ayur-test-text {
+    max-width: 840px;
+    padding: 20px 24px;
+    border-radius: 5px;
+    background-color: #00000014;
+}
+
+.ayur-test-namesec {
+    /* display: flex; */
+    align-items: center;
+    justify-content: space-between;
+    padding: 26px 25px 20px;
+}
+
+.ayur-testname {
+    /* display: flex; */
+    align-items: center;
+    gap: 14px;
+}
+
+.ayur-testname h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222222;
+}
+
+.ayur-testimonial-section .swiper-button-prev {
+    left: 16%;
+    top: 60%;
+}
+
+.ayur-testimonial-section .swiper-button-next {
+    right: 16%;
+    top: 60%;
+}
+
+.ayur-testimonial-section .swiper-button-prev svg path,
+.ayur-testimonial-section .swiper-button-next svg path {
+    fill: #797979;
+    transition: all .3s linear;
+}
+
+.ayur-testimonial-section .swiper-button-prev:hover svg path,
+.ayur-testimonial-section .swiper-button-next:hover svg path {
+    fill: #CD8973;
+}
+
+.ayur-test-box .ayur-test-namesec .ayur-testquote svg path {
+    transition: all .3s linear;
+}
+
+.ayur-test-box:hover .ayur-test-namesec .ayur-testquote svg path {
+    fill: #CD8973;
+    opacity: 1;
+}
+.ayur-bgcover{
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0px 0 80px;
+  }
+ 
+  .swiper-button-next:after, .swiper-button-prev:after{
+    display: none;
+  }
+ 
+  .ayur-testimonial-sec{
+    max-width: 1820px;
+    margin: 0 auto;
+    padding: 15px 0;
+  }
+  .ayur-test-head{
+    margin: 0 0 24px;
+  }
+  .swiper.ayur-testimonial-slider {
+    padding: 20px 0;
+  }
+  

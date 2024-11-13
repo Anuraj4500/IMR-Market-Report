@@ -1,4 +1,8 @@
 import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 import clientA from '../assets/Images/test/Clients/a.png';
 import clientB1 from '../assets/Images/test/Clients/b1.png';
 import clientC from '../assets/Images/test/Clients/c.png';
@@ -14,74 +18,56 @@ import clientL from '../assets/Images/test/Clients/l.png';
 import clientM from '../assets/Images/test/Clients/m.png';
 
 function ClientCarousel() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+    ],
+  };
+
   return (
-    <div>
-      {/* <!-- Client Logos Area Start --> */}
-      <section className="client-logo-area-two pt-90 rpt-70 pb-80 rpb-60 bgp-center services-section" style={{ backgroundImage: 'url(../assets/Images/test/Clients/circle.png)' }}>
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12 text-center p-4 pt-0">
-              <div className="section-title">
+    <section className="client-logo-area-two pt-2 rpt-70 pb-80 rpb-60 bgp-center services-section" style={{ backgroundImage: 'url(../assets/Images/test/Clients/circle.png)' }}>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12 text-center p-4 pt-0">
+            <div className="section-title">
               <h2>Our <span>Clients</span></h2>
-              <p>Trusted by Clients across world</p>
-            </div>
-            </div>
-          </div>
-          <div className="row justify-content-center align-items-center">
-            <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientA} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientB1} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1500" data-aos-offset="50">
-                <a href="#"><img src={clientC} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-            </div>
-            <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientD} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientE} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-            </div>
-            <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientF2} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientG} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1500" data-aos-offset="50">
-                <a href="#"><img src={clientH} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-            </div>
-            <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientI} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientJ} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-            </div>
-            <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientK} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientL} className="img-fluid" alt="Client Logo" /></a>
-              </div>
-              <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000" data-aos-offset="50">
-                <a href="#"><img src={clientM} className="img-fluid" alt="Client Logo" /></a>
-              </div>
+              <p>Trusted by Clients across the world</p>
             </div>
           </div>
         </div>
-      </section>
-      {/* <!-- Client Logos Area End --> */}
-    </div>
+        <Slider {...settings}>
+          {[clientA, clientB1, clientC, clientD, clientE, clientF2, clientG, clientH, clientI, clientJ, clientK, clientL, clientM].map((client, index) => (
+            <div key={index} className="client-logo-item style-three" data-aos="fade-up" data-aos-delay={`${200 * (index + 1)}`} data-aos-duration="1000" data-aos-offset="50">
+              <a href="#"><img src={client} className="img-fluid" alt="Client Logo" /></a>
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </section>
   );
 }
 
