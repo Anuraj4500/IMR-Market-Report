@@ -1,38 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ClientCarousel from '../components/Client-Carousel';
 import AssistanceCard from '../components/Assistance-Card';
-
+ 
 const Reports = () => {
+    const { url } = useParams();
+    const [reportData, setReportData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+ 
+    useEffect(() => {
+        const fetchReport = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/reports/slug/${url}`);
+                setReportData(response.data);
+                setError(null);
+            } catch (err) {
+                console.error("Error fetching report:", err);
+                setError(err.response?.data?.message || 'Unable to fetch report. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+ 
+        if (url) {
+            fetchReport();
+        } else {
+            setLoading(false);
+            setError('Report url is missing.');
+        }
+    }, [url]);
+ 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+ 
+    if (error) {
+        return <div className="alert alert-danger" role="alert">{error}</div>;
+    }
+ 
     return (
         <div>
-             <section class="breadcrumbs">
-            <div class="container">
-
-                <div class="d-flex justify-content-between align-items-center">
-
-                    <ol>
-                        <li><a href="https://www.imrmarketreports.com">Home</a></li>
-                        <li>Aerospace and Defense</li>
-                        <li>Europe Compressed Air Foam System (CAFS) Market</li>
-                    </ol>
+            <section className="breadcrumbs">
+                <div className="container">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <ol>
+                            <li><a href="https://www.imrmarketreports.com">Home</a></li>
+                            <li>Aerospace and Defense</li>
+                            <li>{reportData.mtitle}</li>
+                        </ol>
+                    </div>
                 </div>
-
-            </div>
-        </section>
+            </section>
             <section className="inner-page">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
                             <div className="report-header">
-                                <h1>Europe Compressed Air Foam System (CAFS) Market: Innovations, Strategic Insights, Segments, Insights into Competitive Landscape, Mergers in Industry and Forecast 2024 - 2032</h1>
+                                <h1>{reportData.mtitle}</h1>
                                 <hr />
                                 <table className="table table-borderless">
                                     <tbody>
                                         <tr>
-                                            <td><strong>Report Code</strong> : IMR-327067</td>
+                                            <td><strong>Report Code</strong> : IMR-{reportData.id}</td>
                                             <td><strong>Publisher</strong>: Introspective Market Research</td>
-                                            <td><strong>Published On</strong>: October 2024</td>
+                                            <td><strong>Published On</strong>: {new Date(reportData.date).toLocaleDateString()}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -48,67 +82,17 @@ const Reports = () => {
                                             aria-controls="profile" aria-selected="false">Table of Contents</a>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" id="contact-tab" to="/SampleRequest"  role="tab"
+                                        <Link className="nav-link" id="contact-tab" to="/SampleRequest" role="tab"
                                             aria-controls="contact" aria-selected="false">Free Sample</Link>
                                     </li>
                                 </ul>
                                 <div className="tab-content" id="myTabContent">
                                     <div className="tab-pane fade show active" id="home" role="tabpanel"
                                         aria-labelledby="home-tab" style={{ justifyContent: 'end' }}>
-                                        <h2>Europe Compressed Air Foam System (CAFS) Market Overview:</h2>
-                                        <p>Europe Compressed Air Foam System (CAFS) Market Report 2024 comes with the extensive industry analysis by Introspective Market Research with development components, patterns, flows and sizes. The report also calculates present and past market values to forecast potential market management through the forecast period between 2024-2032.This research study of Europe Compressed Air Foam System (CAFS) involved the extensive usage of both primary and secondary data sources. This includes the study of various parameters affecting the industry, including the government policy, market environment, competitive landscape, historical data, present trends in the market, technological innovation, upcoming technologies and the technical progress in related industry.</p>
-
-                                        <h2>Scope of the Europe Compressed Air Foam System (CAFS) Market</h2>
-                                        <p>The Europe Compressed Air Foam System (CAFS) Market Research report incorporate value chain analysis for each of the product type. Value chain analysis offers in depth information about value addition at each stage.The study includes drivers and restraints for Europe Compressed Air Foam System (CAFS) Market along with their impact on demand during the forecast period. The study also provides key market indicators affecting thegrowth of the market. Research report includes major key player analysis with shares of each player inside market, growth rate and market attractiveness in different endusers/regions. Our study Europe Compressed Air Foam System (CAFS) Market helps user to make precise decision in order to expand their market presence and increase market share.</p>
-
-                                        <h2>By Type, Europe Compressed Air Foam System (CAFS) market has been segmented into:</h2>
-                                        <ul>
-                                            <li>Low-Expansion Foam System</li>
-                                            <li>Medium-Expansion Foam System</li>
-                                        </ul>
-
-                                        <h2>By Application, Europe Compressed Air Foam System (CAFS) market has been segmented into:</h2>
-                                        <ul>
-                                            <li>Fire Department</li>
-                                            <li>Chemical</li>
-                                        </ul>
-
-                                        <h2>Regional Analysis:</h2>
-                                        <p>Europe contains following countries-</p>
-                                        <ul>
-                                            <li>*Germany</li>
-                                            <li>*U.K.</li>
-                                            <li>*France</li>
-                                            <li>*Italy</li>
-                                            <li>*Russia</li>
-                                            <li>*Spain</li>
-                                            <li>*Rest of Europe</li>
-                                        </ul>
-
-                                        <h2>Competitive Landscape:</h2>
-                                        <p>Competitive analysis is the study of strength and weakness, market investment, market share, market sales volume, market trends of major players in the market.The Europe Compressed Air Foam System (CAFS) market study focused on including all the primary level, secondary level and tertiary level competitors in the report. The data generated by conducting the primary and secondary research.The report covers detail analysis of driver, constraints and scope for new players entering the Europe Compressed Air Foam System (CAFS) market.</p>
-
-                                        <h2>Top Key Players Covered in Europe Compressed Air Foam System (CAFS) market are:</h2>
-                                        <ul>
-                                            <li>Godiva Limited</li>
-                                            <li>Bavaria Fire Fighting Solutions</li>
-                                            <li>FLN Neuruppin</li>
-                                            <li>Kingsway Industries Inc</li>
-                                            <li>ACAF Systems</li>
-                                            <li>Siron CAF</li>
-                                            <li>Rosenbauer International.</li>
-                                        </ul>
-
-                                        <h2>Research Methodology:</h2>
-                                        <p>Our report provides a detailed breakdown of the market, divided into segments like Type and Application, each with its own sub-categories. We also examine major competitors, looking at their market size, share, and recent activities such as mergers, acquisitions, and partnerships. This helps new and existing businesses in the Europe Compressed Air Foam System (CAFS) Market understand the competitive landscape and plan their strategies. We collect our data through two main methods:</p>
-                                        <ol>
-                                            <li>Primary Research: Direct interviews with industry experts and insights from top research analysts.</li>
-                                            <li>Secondary Research: Information from company annual reports and public records.</li>
-                                        </ol>
-                                        <p>We then analyze this data using proven methods like SWOT analysis, PORTER's Five Forces model, and PESTLE analysis to ensure accuracy and reliability.</p>
+                                        {reportData.summary_desc}
                                     </div>
                                     <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        <h2>Table Of Content</h2>
+                                        {reportData.toc}
                                     </div>
                                 </div>
                             </div>
@@ -130,55 +114,45 @@ const Reports = () => {
                                 <div className="card-header style-card-header">
                                     License Details
                                 </div>
-                                <div className="card-body text-center">
+                                <div className="card-body">
                                     <form method="GET" action="#" style={{ margin: 0 }}>
                                         <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
-
                                             <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
                                                 <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
                                                     id="_single" name="user" value="1" checked /><span
-                                                        className="checkmark"></span>&nbsp;<span style={{ float: 'left' }}>
-                                                        &nbsp;&nbsp;&nbsp;Single User </span> <span style={{ float: 'right' }}>
-
-                                                        &nbsp; &#36;3280</span></li>
+                                                    className="checkmark"></span>&nbsp;<span style={{ float: 'left' }}>
+                                                    &nbsp;&nbsp;&nbsp;Single User </span> <span style={{ float: 'right' }}>
+                                                    &nbsp; &#36;${reportData.sprice}</span></li>
                                             </label>
-
                                             <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
                                                 <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
                                                     id="_multi" name="user" value="2" /><span
-                                                        className="checkmark"></span>&nbsp;&nbsp;<span style={{ float: 'left' }}>
-                                                        &nbsp;&nbsp;&nbsp;Multi User </span> <span style={{ float: 'right' }}>
-                                                        &nbsp; &#36;4100</span></li>
+                                                    className="checkmark"></span>&nbsp;&nbsp;<span style={{ float: 'left' }}>
+                                                    &nbsp;&nbsp;&nbsp;Multi User </span> <span style={{ float: 'right' }}>
+                                                    &nbsp; &#36;${reportData.mprice}</span></li>
                                             </label>
-
                                             <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
                                                 <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
                                                     id="_enterp" name="user" value="3" /><span
-                                                        className="checkmark"></span>&nbsp; &nbsp;<span style={{ float: 'left' }}>
-                                                        &nbsp;&nbsp;&nbsp;Enterprise User </span> <span
-                                                            style={{ float: 'right' }}>
-
-                                                        &nbsp; &#36;5000</span></li>
+                                                    className="checkmark"></span>&nbsp; &nbsp;<span style={{ float: 'left' }}>
+                                                    &nbsp;&nbsp;&nbsp;Enterprise User </span> <span
+                                                    style={{ float: 'right' }}>
+                                                    &nbsp; &#36;${reportData.eprice}</span></li>
                                             </label>
-
                                         </ul>
-
-                                        <input type="number" value="123" name="id" readOnly style={{ visibility: 'hidden' }} />
-                                        <br/>
-                                        <Link to="/Checkout" className="custom_btn_buy p-2" style={{ borderRadius: '4px' }}><i className="bx bx-cart"></i>&nbsp;BUY NOW</Link>
+                                        <input type="number" value={reportData.id} name="id" readOnly style={{ visibility: 'hidden' }} />
+                                        <Link to="/Checkout" className="custom_btn_buy"><i className="bx bx-cart"></i>&nbsp;BUY
+                                            NOW </Link>
                                         <br /><br />
                                         <Link to="/SampleRequest" className="btn custom_btn_request" ><i
-                                                className="bx bxs-download bx-fade-down-hover"></i>&nbsp;REQUEST SAMPLE</Link>
+                                            className="bx bxs-download bx-fade-down-hover"></i>&nbsp;REQUEST SAMPLE</Link>
                                         <br /><br />
                                         <a className="btn custom_btn_buy"
                                             href="#"><i
                                                 className="bx bxs-purchase-tag"></i>&nbsp;ASK FOR DISCOUNT</a>
-
                                     </form>
-
                                 </div>
                             </div>
-
                             <div className="card related-reports">
                                 <div className="card-header style-card-header">
                                     Related Reports
@@ -191,16 +165,14 @@ const Reports = () => {
                                     </ul>
                                 </div>
                             </div>
-
-                            <AssistanceCard> </AssistanceCard>
-
+                            <AssistanceCard />
                         </div>
                     </div>
-                    <ClientCarousel> </ClientCarousel>
+                    <ClientCarousel />
                 </div>
             </section>
         </div>
     );
-}
-
+};
+ 
 export default Reports;

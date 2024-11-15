@@ -4,6 +4,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const reportRoutes = require('./routes/reportRoutes');
+const contactusRoutes = require('./routes/contactusRoutes');
+const categoryRoute = require('./routes/categoryRoutes');
+const faqRoutes = require('./routes/faqRoutes');
+const aboutUsRoutes = require('./routes/aboutus');
+const clientRoutes = require('./routes/clientroutes'); 
+
  
 const app = express();
  
@@ -27,7 +33,13 @@ mongoose.connect(process.env.MONGODB_URI, {
     process.exit(1);
 });
  
+// Routes
+app.use('/api/faqs', faqRoutes);
+app.use('/api/aboutus', aboutUsRoutes);
+app.use('/api/clients', clientRoutes);
 app.use('/api', reportRoutes);
+app.use('/api', contactusRoutes);
+app.use('/api', categoryRoute);
  
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -39,5 +51,5 @@ app.use((err, req, res, next) => {
  
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

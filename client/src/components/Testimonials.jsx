@@ -18,7 +18,7 @@ function Testimonials() {
     };
   
     return (
-      <div className="ayur-bgcover ayur-testimonial-sec services-section">
+      <div className="ayur-bgcover ayur-testimonial-sec services-section departments">
         <div className="container">
           <div className="row">
             <div className="col-lg-12 text-center p-4">

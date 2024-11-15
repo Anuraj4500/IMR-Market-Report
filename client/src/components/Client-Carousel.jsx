@@ -19,7 +19,7 @@ import clientM from '../assets/Images/test/Clients/m.png';
 
 function ClientCarousel() {
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 6,
@@ -49,7 +49,7 @@ function ClientCarousel() {
   };
 
   return (
-    <section className="client-logo-area-two pt-2 rpt-70 pb-80 rpb-60 bgp-center services-section" style={{ backgroundImage: 'url(../assets/Images/test/Clients/circle.png)' }}>
+    <section className="client-logo-area-two pt-2 pb-0  bgp-center services-section" style={{ backgroundImage: 'url(../assets/Images/test/Clients/circle.png)' }}>
       <div className="container">
         <div className="row">
           <div className="col-lg-12 text-center p-4 pt-0">

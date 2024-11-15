@@ -1,34 +1,47 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+ 
 function IndustryCard() {
+  const [category, setCategory] = useState([]);
+  const [error, setError] = useState(null); // State to hold error messages
+ 
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/category'); // Ensure this matches your route
+        console.log('Fetched categories:', response.data); // Log the fetched data
+        setCategory(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setError('Failed to fetch categories.'); // Set error message
+      }
+    };
+ 
+    fetchCategory();
+  }, []);
+ 
   return (
     <div>
-      
-                <div className="card categories-indutries">
+      <div className="card categories-indutries">
                     <div className="card-header style-card-header">
                         Industries
                     </div>
                     <div className="card-body">
                         <ul>
-                          <li><a href="#" style={{color:'#FA6742'}}>Aerospace &amp; Defense</a></li>
-                          <li><a href="https://www.imrmarketreports.com/agriculture/">Agriculture</a></li>
-                          <li><a href="https://www.imrmarketreports.com/automotive-transport/">Automotive &amp; Transport</a></li>
-                          <li><a href="https://www.imrmarketreports.com/chemicals-materials/">Chemicals &amp; Materials</a></li>
-                          <li><a href="https://www.imrmarketreports.com/consumer-goods/">Consumer Goods</a></li>
-                          <li><a href="https://www.imrmarketreports.com/electronics-semiconductors/">Electronics &amp; Semiconductors</a></li>
-                          <li><a href="https://www.imrmarketreports.com/energy-natural-resources/">Energy &amp; Natural Resources</a></li>
-                          <li><a href="https://www.imrmarketreports.com/food-beverages/">Food &amp; Beverages</a></li>
-                          <li><a href="https://www.imrmarketreports.com/healthcare/">Healthcare</a></li>
-                          <li><a href="https://www.imrmarketreports.com/it-telecom/">IT &amp; Telecom</a></li>
-                          <li><a href="https://www.imrmarketreports.com/manufacturing-construction/">Manufacturing &amp; Construction</a></li>
-                          <li><a href="https://www.imrmarketreports.com/service-industry/">Service Industry</a></li>
+                        {category.map(category => (
+              <li key={category._id}>
+                <Link to = {`/Industry-reports/${category.slug}/`}>
+                  {category.title}
+                </Link>
+              </li>
+            ))}
                         </ul>
                     </div>
                 </div>
-                <br /><br />
-              </div>
-   
-  )
+      <br /><br />
+    </div>
+  );
 }
-
-export default IndustryCard
+ 
+export default IndustryCard;

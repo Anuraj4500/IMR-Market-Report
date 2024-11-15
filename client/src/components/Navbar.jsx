@@ -1,7 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+ 
 import { Link, useLocation } from 'react-router-dom';
 
 const NavMenu = () => {
+  const [category, setCategory] = useState([]);
+  const [error, setError] = useState(null); // State to hold error messages
+ 
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/category'); // Ensure this matches your route
+        console.log('Fetched categories:', response.data); // Log the fetched data
+        setCategory(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setError('Failed to fetch categories.'); // Set error message
+      }
+    };
+ 
+    fetchCategory();
+  }, []);
+
   const openSearch = () => {
     console.log('Search button clicked');
   };
@@ -40,20 +60,16 @@ const NavMenu = () => {
               <li><Link to="/reports-store">Reports Store</Link></li>
 
               <li className="drop-down"><Link to="/Industry-reports">Industries</Link>
-                <ul>
-                  <li><Link to="/Industry-reports/aerospace-defense">Aerospace &amp; Defense</Link></li>
-                  <li><Link to="/Industry-reports/agriculture">Agriculture</Link></li>
-                  <li><Link to="/Industry-reports/automotive-transport">Automotive &amp; Transport</Link></li>
-                  <li><Link to="/Industry-reports/chemicals-materials">Chemicals &amp; Materials</Link></li>
-                  <li><Link to="/Industry-reports/consumer-goods">Consumer Goods</Link></li>
-                  <li><Link to="/Industry-reports/electronics-semiconductors">Electronics &amp; Semiconductors</Link></li>
-                  <li><Link to="/Industry-reports/energy-natural-resources">Energy &amp; Natural Resources</Link></li>
-                  <li><Link to="/Industry-reports/food-beverages">Food &amp; Beverages</Link></li>
-                  <li><Link to="/Industry-reports/healthcare">Healthcare</Link></li>
-                  <li><Link to="/Industry-reports/it-telecom">IT &amp; Telecom</Link></li>
-                  <li><Link to="/Industry-reports/manufacturing-construction">Manufacturing &amp; Construction</Link></li>
-                  <li><Link to="/Industry-reports/service-industry">Service Industry</Link></li>
-                </ul>
+              <ul>
+                        {category.map(category => (
+              <li key={category._id}>
+                <Link to = {`/Industry-reports/${category.slug}/`}>
+                  {category.title}
+                </Link>
+              </li>
+            ))}
+                        </ul>
+                
               </li>
               {/* <li><Link to="/publishers">Publishers</Link></li> */}
               <li className="drop-down"><Link to="/About-us">About Us</Link>

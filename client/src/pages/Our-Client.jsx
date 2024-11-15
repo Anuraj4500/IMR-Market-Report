@@ -1,91 +1,57 @@
-import React from 'react';
-import clientA from '../assets/Images/test/Clients/a.png';
-import clientB1 from '../assets/Images/test/Clients/b1.png';
-import clientC from '../assets/Images/test/Clients/c.png';
-import clientD from '../assets/Images/test/Clients/d.png';
-import clientE from '../assets/Images/test/Clients/e.png';
-import clientF2 from '../assets/Images/test/Clients/f2.png';
-import clientG from '../assets/Images/test/Clients/g.png';
-import clientH from '../assets/Images/test/Clients/h.png';
-import clientI from '../assets/Images/test/Clients/i.png';
-import clientJ from '../assets/Images/test/Clients/j.png';
-import clientK from '../assets/Images/test/Clients/k.png';
-import clientL from '../assets/Images/test/Clients/l.png';
-import clientM from '../assets/Images/test/Clients/m.png';
-import Breadcrumb from '../components/Breadcrumb';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const OurClient = () => {
-    const breadcrumbItems = [
-        { label: 'Our Clients' }
-    ];
+    const [clients, setClients] = useState([]);
+
+    useEffect(() => {
+        const fetchClients = async () => {
+            try {
+                console.log('Starting fetch request...');
+                const response = await axios.get('http://localhost:5000/api/clients');
+                console.log('Response:', response.data);
+                if (response.data.length === 0) {
+                    console.log('No clients data received');
+                }
+                setClients(response.data);
+            } catch (error) {
+                console.error('Error details:', {
+                    message: error.message,
+                    response: error.response?.data,
+                    status: error.response?.status
+                });
+            }
+        };
+        fetchClients();
+    }, []);
+
     return (
         <div className="container-fluid p-0">
-           <Breadcrumb items={breadcrumbItems} />
-            <section className="client-logo-area-two pt-0 rpt-70 pb-2 rpb-60 bgp-center services-section" style={{ backgroundImage: 'url(../assets/Images/test/Clients/circle.png)' }}>
+            <section className="client-logo-area-two pt-0 rpt-70 pb-2 rpb-60 bgp-center services-section">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 text-center p-4 pt-0">
                             <div className="section-title">
-                                <h2>Our <span>Clients</span></h2>
-                                <p> We have had the privilege of collaborating with esteemed clientele, encompassing a diverse array of prestigious organizations. This list includes, though is not limited to, the following prominent clients:</p>
+                                <div dangerouslySetInnerHTML={{ __html: clients[0]?.title || 'Our Clients' }} />
+                                <p>{clients[0]?.content}</p>
                             </div>
                         </div>
                     </div>
                     <div className="row justify-content-center align-items-center">
-                        <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientA} className="img-fluid" alt="Client Logo" /></a>
+                        {clients.map((client, index) => (
+                            <div key={index} className="col-xl-2 col-lg-3 col-md-4 col-6">
+                                <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay={200 * index} data-aos-duration="1000" data-aos-offset="50">
+                                    <a href="#">
+                                        <img src={`http://localhost:5000/uploads/${client.image}`} className="img-fluid" alt={client.title} />
+                                    </a>
+                                </div>
                             </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientB1} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1500" data-aos-offset="50">
-                                <a href="#"><img src={clientC} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                        </div>
-                        <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientD} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientE} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                        </div>
-                        <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientF2} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientG} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1500" data-aos-offset="50">
-                                <a href="#"><img src={clientH} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                        </div>
-                        <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientI} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientJ} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                        </div>
-                        <div className="col-xl-2 col-lg-3 col-md-4 col-6">
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientK} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientL} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                            <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000" data-aos-offset="50">
-                                <a href="#"><img src={clientM} className="img-fluid" alt="Client Logo" /></a>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
         </div>
     );
-}
+};
 
 export default OurClient;

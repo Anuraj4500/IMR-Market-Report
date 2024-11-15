@@ -14,6 +14,7 @@ import Careerdetails from './pages/Career-details';
 import Career from './pages/Career';
 import Checkout from './pages/Checkout';
 import SampleRequest from './pages/SampleRequest';
+import Industryreports from './pages/Industry-reports';
 import './App.css';
 import './App1.css';
 import './report-style.css';
@@ -27,7 +28,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/reports-store" element={<ReportStore />} />
-            <Route path="/reports" element={<Reports />} />
+            <Route path="/reports/:url" element={<Reports />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/our-client" element={<OurClient />} />
             <Route path="/faq" element={<Faq />} />
@@ -37,6 +38,7 @@ function App() {
             <Route path="/Career" element={<Career />} />
             <Route path="/Checkout" element={<Checkout />} />
             <Route path="/SampleRequest" element={<SampleRequest />} />
+            <Route path="/Industry-reports/:slug" element={<Industryreports />} />
           </Routes>
         </div>
         <Footer />
