@@ -3,7 +3,7 @@ import axios from 'axios';
 import Breadcrumb from '../components/Breadcrumb';
 import ReportCard from '../components/Report-Card';
 import IndustryCard from '../components/Industry-Card';
-import AssistanceCard from '../components/Assistance-Card';
+import AssistanceCard2 from '../components/AssistanceCard2';
  
 const ReportsStore = () => {
     const [reports, setReports] = useState([]);
@@ -64,7 +64,7 @@ const ReportsStore = () => {
                             </div>
                             <div className="col-lg-3 order-md-1">
                                 <IndustryCard />
-                                <AssistanceCard />
+                                <AssistanceCard2 />
                             </div>
                         </div>
                     )}

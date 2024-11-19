@@ -79,9 +79,9 @@ const Footer = () => {
                 <li><a href="about.html">Report Store</a></li>
                 <li><a href="about.html">Our Clients</a></li>
                 <li><a href="about.html">Privacy Policy</a></li>
-                <li><a href="about.html">Refund Policy</a></li>
+                <li><Link to="/RefundPolicy">Refund Policy</Link></li>
                 <li><a href="contact.html">Contact Us</a></li>
-                <li><a href="contact.html">Terms & Conditions</a></li>
+                <li><Link to="/TermsAndConditions">Terms & Conditions</Link></li>
                 <li><a href="contact.html">FAQ</a></li>
                 <li><Link to="/Career">Career</Link></li>
               </ul>
@@ -113,7 +113,7 @@ const Footer = () => {
                 </div>
               </div>
               <div className="col-12 col-lg-6 d-flex">
-                <h2 className="text-white fs-5" style={{ minWidth: '20%' }}>We Accept</h2>
+                <h4 className="text-white" style={{ minWidth: '20%' }}>We Accept</h4>
                 <div className="w-60">
                   <img src="Images/buy1.png" className="img-fluid" alt="payment methods" />
                 </div>

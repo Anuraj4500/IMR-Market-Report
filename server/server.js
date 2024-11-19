@@ -9,8 +9,10 @@ const categoryRoute = require('./routes/categoryRoutes');
 const faqRoutes = require('./routes/faqRoutes');
 const aboutUsRoutes = require('./routes/aboutus');
 const clientRoutes = require('./routes/clientroutes'); 
+const whychooseusRoutes = require('./routes/whychooseusRoutes'); 
+const termsRoutes = require('./routes/termsandconditionsRoutes');
+const refundRoutes = require('./routes/refundRoutes');
 
- 
 const app = express();
  
 app.use(cors({
@@ -40,6 +42,9 @@ app.use('/api/clients', clientRoutes);
 app.use('/api', reportRoutes);
 app.use('/api', contactusRoutes);
 app.use('/api', categoryRoute);
+app.use('/api/whychooseus', whychooseusRoutes);
+app.use('/api/terms', termsRoutes);
+app.use('/api/refund-policy', refundRoutes);
  
 app.use((err, req, res, next) => {
     console.error(err.stack);

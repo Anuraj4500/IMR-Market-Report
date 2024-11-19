@@ -1,13 +1,6 @@
 const mongoose = require('mongoose');
 
 const contactUsSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        default: async () => {
-            const lastContact = await ContactUs.findOne().sort({ id: -1 });
-            return lastContact ? lastContact.id + 1 : 1;
-        },
-    },
     name: {
         type: String,
         required: true,

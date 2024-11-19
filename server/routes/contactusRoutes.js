@@ -7,8 +7,8 @@ const ContactUs = require('../models/contactus'); // Import the ContactUs model
 const transporter = nodemailer.createTransport({
     service: 'gmail', // Use your email service
     auth: {
-        user: process.env.EMAIL_USER, // Use environment variable for email
-        pass: process.env.EMAIL_PASS  // Use environment variable for password
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS  
     },
 });
 

@@ -8,7 +8,6 @@ const ContactUs = () => {
   ];
 
   const [formData, setFormData] = useState({
-    id: '',
     name: '',
     email: '',
     phone: '',
@@ -47,7 +46,6 @@ const ContactUs = () => {
       const result = await response.json();
       console.log('Success:', result);
       setFormData({
-        id: '',
         name: '',
         email: '',
         phone: '',

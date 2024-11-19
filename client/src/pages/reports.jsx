@@ -49,7 +49,7 @@ const Reports = () => {
                         <ol>
                             <li><a href="https://www.imrmarketreports.com">Home</a></li>
                             <li>Aerospace and Defense</li>
-                            <li>{reportData.mtitle}</li>
+                            <li>{reportData.slug}</li>
                         </ol>
                     </div>
                 </div>
@@ -89,10 +89,10 @@ const Reports = () => {
                                 <div className="tab-content" id="myTabContent">
                                     <div className="tab-pane fade show active" id="home" role="tabpanel"
                                         aria-labelledby="home-tab" style={{ justifyContent: 'end' }}>
-                                        {reportData.summary_desc}
+                                        <div dangerouslySetInnerHTML={{ __html: reportData.summary_desc }}></div>
                                     </div>
                                     <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        {reportData.toc}
+                                        <div dangerouslySetInnerHTML={{ __html: reportData.toc }}></div>
                                     </div>
                                 </div>
                             </div>

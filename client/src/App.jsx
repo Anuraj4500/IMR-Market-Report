@@ -15,6 +15,8 @@ import Career from './pages/Career';
 import Checkout from './pages/Checkout';
 import SampleRequest from './pages/SampleRequest';
 import Industryreports from './pages/Industry-reports';
+import TermsAndConditions from './pages/Terms-and-Conditions';
+import RefundPolicy from './pages/Refund-Policy';
 import './App.css';
 import './App1.css';
 import './report-style.css';
@@ -38,6 +40,8 @@ function App() {
             <Route path="/Career" element={<Career />} />
             <Route path="/Checkout" element={<Checkout />} />
             <Route path="/SampleRequest" element={<SampleRequest />} />
+            <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+            <Route path="/RefundPolicy" element={<RefundPolicy />} />
             <Route path="/Industry-reports/:slug" element={<Industryreports />} />
           </Routes>
         </div>

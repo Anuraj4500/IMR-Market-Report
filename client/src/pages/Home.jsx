@@ -35,7 +35,7 @@ function Home() {
               </div>
               <div className="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left">
                 <h3>IMR Market Reports an Innovative Market Research Company </h3>
-                <p className="font-italic">
+                <p className="text-justify">
                   IMR Market Reports is a visionary market research company who is ready to assist their
                   clients to grow their business by offering strategies through our market research
                   reports for gaining success. We have a well experienced team, who work efficiently
