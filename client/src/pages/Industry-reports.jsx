@@ -8,40 +8,41 @@ import { useParams } from "react-router-dom";
 
 const ReportsStore = () => {
     const { slug } = useParams(); // Extract category slug from URL
-    const [reports, setReports] = useState([]); // Stores reports for the category
-    const [error, setError] = useState(null); // Error handling
+    const [reports, setReports] = useState([]); // Store matched reports
+    const [error, setError] = useState(null); // Handle errors
     const [loading, setLoading] = useState(true); // Loading state
 
     useEffect(() => {
-        const fetchCategoryAndReports = async () => {
+        console.log("Slug from URL:", slug); // Log the slug from the URL
+        const fetchReportsForCategory = async () => {
             try {
                 setLoading(true);
-
-                // Fetch the category data by slug
+    
+                // Fetch the category by slug
                 const categoryResponse = await axios.get(
                     `http://localhost:5000/api/category?slug=${slug}`
                 );
+                console.log("Category Response:", categoryResponse.data); // Log the response
+    
                 const category = categoryResponse.data;
-
+    
                 if (!category || !category.id) {
                     throw new Error("Category not found.");
                 }
-
-                // Fetch all reports and filter by category ID
+    
+                console.log("Selected Category ID:", category.id); // Log the category ID
+    
+                // Fetch reports where cid matches the category id
                 const reportsResponse = await axios.get(
-                    `http://localhost:5000/api/reports`
+                    `http://localhost:5000/api/reports?categoryId=${category.id}`
                 );
-                const allReports = reportsResponse.data;
-
-                // Filter reports where cid matches the category id
-                const matchedReports = allReports.filter(
-                    (report) => report.cid === category.id
-                );
-
-                setReports(matchedReports); // Update state with matched reports
-                setError(null); // Clear errors if successful
+                const matchedReports = reportsResponse.data;
+    
+                // Update the reports state
+                setReports(matchedReports);
+                setError(null); // Clear previous errors
             } catch (err) {
-                console.error("Error fetching category or reports:", err);
+                console.error("Error fetching category or reports:", err); // Log the error
                 setError(
                     err.response?.data?.message ||
                     "Unable to fetch data. Please try again later."
@@ -50,9 +51,9 @@ const ReportsStore = () => {
                 setLoading(false);
             }
         };
-
-        fetchCategoryAndReports();
-    }, [slug]); // Re-fetch data if slug changes
+    
+        fetchReportsForCategory();
+    }, [slug]); // Refetch when slug changes
 
     // Show loading spinner
     if (loading) {
@@ -73,9 +74,11 @@ const ReportsStore = () => {
                             {/* Reports Section */}
                             <div className="col-lg-9 order-md-2">
                                 {reports.length > 0 ? (
-                                    reports.map((report) => (
-                                        <ReportCard key={report.id} {...report} />
-                                    ))
+                                    reports
+                                        .filter(report => report.isActive) // Only include active reports
+                                        .map((report) => (
+                                            <ReportCard key={report.id} {...report} />
+                                        ))
                                 ) : (
                                     <div>No reports available for this category.</div>
                                 )}

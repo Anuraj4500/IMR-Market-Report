@@ -63,7 +63,7 @@ const NavMenu = () => {
               <ul>
                         {category.map(category => (
               <li key={category._id}>
-                <Link to = {`/Industry-reports/${category.slug}/`}>
+                <Link to = {`/${category.slug}/`}>
                   {category.title}
                 </Link>
               </li>

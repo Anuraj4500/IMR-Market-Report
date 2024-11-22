@@ -15,8 +15,21 @@ import Career from './pages/Career';
 import Checkout from './pages/Checkout';
 import SampleRequest from './pages/SampleRequest';
 import Industryreports from './pages/Industry-reports';
+import ManufacturingConstruction from './pages/manufacturing-construction';
+import ChemicalsMaterials from './pages/chemicals-materials';
 import TermsAndConditions from './pages/Terms-and-Conditions';
 import RefundPolicy from './pages/Refund-Policy';
+import Agriculture from './pages/agriculture';
+import ConsumerGoods from './pages/consumer-goods';
+import ElectronicsSemiconductors from './pages/electronics-semiconductors';
+import EnergyNaturalResource from './pages/energy-natural-resource';
+import Healthcare from './pages/healthcare';
+import ITTelecom from './pages/it-telecom';
+import FoodBeverages from './pages/food-beverages';
+import ServiceIndustry from './pages/service-industry';
+import AutomotiveTransport from './pages/automotive-transport';
+import AerospaceDefense from './pages/aerospace-defense';
+
 import './App.css';
 import './App1.css';
 import './report-style.css';
@@ -43,6 +56,18 @@ function App() {
             <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
             <Route path="/RefundPolicy" element={<RefundPolicy />} />
             <Route path="/Industry-reports/:slug" element={<Industryreports />} />
+            <Route path="/Manufacturing-Construction" element={<ManufacturingConstruction />} />
+            <Route path="/Chemicals-Materials" element={<ChemicalsMaterials />} />
+            <Route path="/Agriculture" element={<Agriculture />} />
+            <Route path="/Consumer-Goods" element={<ConsumerGoods />} />
+            <Route path="/Electronics-Semiconductors" element={<ElectronicsSemiconductors />} />
+            <Route path="/Energy-Natural-Resource" element={<EnergyNaturalResource />} />
+            <Route path="/Healthcare" element={<Healthcare />} />
+            <Route path="/IT-Telecom" element={<ITTelecom />} />
+            <Route path="/Food-Beverages" element={<FoodBeverages />} />
+            <Route path="/Service-Industry" element={<ServiceIndustry />} />
+            <Route path="/Automotive-Transport" element={<AutomotiveTransport />} />
+            <Route path="/Aerospace-Defense" element={<AerospaceDefense />} />
           </Routes>
         </div>
         <Footer />
