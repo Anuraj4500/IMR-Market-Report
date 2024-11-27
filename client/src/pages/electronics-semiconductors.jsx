@@ -1,35 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Breadcrumb from '../components/Breadcrumb';
+import IndustriesBreadcrumb from '../components/Industries-Breadcrumb';
 import ReportCard from '../components/Report-Card';
 import IndustryCard from '../components/Industry-Card';
 import AssistanceCard2 from '../components/AssistanceCard2';
-import IndustriesBreadcrumb from '../components/Industries-Breadcrumb';
+import Pagination from '../components/Pagination';
 
 const ElectronicsSemiconductors = () => {
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const title = "Electronics and Semiconductors Market Research Reports";
-    const description = "The electronics and semiconductor industry are witnessing an exciting trajectory with evolution shaped by constant technological advances and innovations in recent decades. Advancement in products and market, product sales and technology demand are growing factors for electronics and semiconductor industry. Our reports cover Sensors, Electronic Devices, 5G Communication, internet of things (IoT), artificial intelligence, and augmented reality (AR), and virtual reality (VR), Extreme Ultraviolet Lithography (EUVL), IC’s, LED’s and Semiconductor Devices.";
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const title = "Electronics & Semiconductors";
+    const description = "The electronics and semiconductors industry is a diverse sector that includes a wide range of products that are essential for daily life.";
 
     useEffect(() => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:5000/api/reports?cid=6');
-                setReports(response.data);
-                setError(null);
+                const response = await axios.get(`http://localhost:5000/api/reports?cid=6&page=${page}&limit=10`);
+                const extractedReports = response.data.reports || [];
+                setReports(extractedReports);
+                setTotalPages(response.data.totalPages || 0);
             } catch (err) {
-                setError('Unable to fetch reports. Please try again later.');
+                console.error("Error fetching reports:", err);
+                setError(err.response?.data?.message || 'Unable to fetch reports. Please try again later.');
             } finally {
                 setLoading(false);
             }
         };
 
         fetchReports();
-    }, []);
+    }, [page]);
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -41,19 +48,17 @@ const ElectronicsSemiconductors = () => {
             <section className="inner-page">
                 <div className="container">
                     {error ? (
-                        <div className="alert alert-danger" role="alert">{error}</div>
+                        <div className="alert alert-danger">{error}</div>
                     ) : (
                         <div className="row">
                             <div className="col-lg-9 order-md-2">
-                                {reports.length > 0 ? (
-                                    reports
-                                        .filter(report => report.cid === '6')
-                                        .map(report => (
-                                            <ReportCard
-                                                key={report._id}
-                                                {...report}
-                                            />
-                                        ))
+                                {Array.isArray(reports) && reports.length > 0 ? (
+                                    <>
+                                        {reports.map((report, index) => (
+                                            <ReportCard key={report._id || index} {...report} />
+                                        ))}
+                                        <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+                                    </>
                                 ) : (
                                     <div>No reports available.</div>
                                 )}

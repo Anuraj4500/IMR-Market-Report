@@ -1,34 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import IndustriesBreadcrumb from '../components/Industries-Breadcrumb';
 import ReportCard from '../components/Report-Card';
 import IndustryCard from '../components/Industry-Card';
 import AssistanceCard2 from '../components/AssistanceCard2';
-import IndustriesBreadcrumb from '../components/Industries-Breadcrumb';
+import Pagination from '../components/Pagination';
 
 const ChemicalsMaterials = () => {
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const title = "Chemicals & Materials Market Research Reports";
-    const description = "The chemicals and materials industry have seen steady growth since the last recession in 2007. The chemical and materials industry includes operations related to the production, purification, distribution and sale of industrial chemicals and products are having a positive impact on the growth of the industry. The chemical and materials industry is very good and has its scope in many fields. Our reports cover all sub-level categories like Advanced Materials, Chemicals, Fibers & Composites, Adhesives & Sealants, Foam & Insulation, Ceramics & Glass, Metals & Minerals, Plastics, Polymers, Etc. Our reports focus on the market trends and emerging technologies that influence demand in chemicals and materials industry.";
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const title = "Chemicals & Materials";
+    const description =
+        "The chemicals and materials industry is a diverse sector that includes a wide range of products that are essential for daily life.";
 
     useEffect(() => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:5000/api/reports?cid=4');
-                setReports(response.data);
-                setError(null);
+                const response = await axios.get(`http://localhost:5000/api/reports?cid=4&page=${currentPage}`);
+                
+                console.log("API Response:", response.data); // Debug: Raw API response
+
+                // Adjust this based on the actual API response structure
+                const extractedReports = response.data.reports || response.data.data || response.data.payload?.reports || [];
+                console.log("Extracted Reports:", extractedReports); // Debug: Extracted reports
+
+                setReports(extractedReports); // Save extracted data
+                setTotalPages(response.data.totalPages);
             } catch (err) {
-                setError('Unable to fetch reports. Please try again later.');
+                console.error("Error fetching reports:", err);
+                setError(
+                    err.response?.data?.message || 'Unable to fetch reports. Please try again later.'
+                );
             } finally {
                 setLoading(false);
             }
         };
 
         fetchReports();
-    }, []);
+    }, [currentPage]);
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -37,26 +54,31 @@ const ChemicalsMaterials = () => {
     return (
         <div>
             <IndustriesBreadcrumb title={title} description={description} />
+
             <section className="inner-page">
                 <div className="container">
                     {error ? (
-                        <div className="alert alert-danger" role="alert">{error}</div>
+                        <div className="alert alert-danger">{error}</div>
                     ) : (
                         <div className="row">
-                           <div className="col-lg-9 order-md-2">
-                                {reports.length > 0 ? (
-                                    reports
-                                        .filter(report => report.cid === '4')
-                                        .map(report => (
-                                            <ReportCard
-                                                key={report._id}
-                                                {...report}
-                                            />
-                                        ))
+                            <div className="col-lg-9 order-md-2">
+                                {Array.isArray(reports) && reports.length > 0 ? (
+                                    reports.map((report, index) => (
+                                        <ReportCard
+                                            key={report._id || index}
+                                            {...report}
+                                        />
+                                    ))
                                 ) : (
                                     <div>No reports available.</div>
                                 )}
+                                <Pagination 
+                                    page={currentPage} 
+                                    totalPages={totalPages} 
+                                    onPageChange={handlePageChange} 
+                                />
                             </div>
+
                             <div className="col-lg-3 order-md-1">
                                 <IndustryCard />
                                 <AssistanceCard2 />

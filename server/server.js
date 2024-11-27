@@ -12,6 +12,10 @@ const clientRoutes = require('./routes/clientroutes');
 const whychooseusRoutes = require('./routes/whychooseusRoutes'); 
 const termsRoutes = require('./routes/termsandconditionsRoutes');
 const refundRoutes = require('./routes/refundRoutes');
+const adminReportsRoutes = require('./admin/routes/adminreportsRoutes');
+
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
  
@@ -19,6 +23,7 @@ app.use(cors({
     origin: 'http://localhost:3000' // Update if your frontend runs on a different port
 }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
  
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`);
@@ -45,7 +50,9 @@ app.use('/api', categoryRoute);
 app.use('/api/whychooseus', whychooseusRoutes);
 app.use('/api/terms', termsRoutes);
 app.use('/api/refund-policy', refundRoutes);
- 
+app.use('/api/adminreports', adminReportsRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({

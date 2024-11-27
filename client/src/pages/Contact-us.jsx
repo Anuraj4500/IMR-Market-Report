@@ -3,20 +3,20 @@ import Breadcrumb from '../components/Breadcrumb';
 import AssistanceCard from '../components/Assistance-Card';
 
 const ContactUs = () => {
-  const breadcrumbItems = [
-    { label: 'Contact Us' }
-  ];
+  const breadcrumbItems = [{ label: 'Contact Us' }];
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     country: '',
-    company: '',
+    // company: '',
     designation: '',
     message: '',
     usercaptcha: '',
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -27,36 +27,71 @@ const ContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     try {
-      const response = await fetch('http://localhost:5000/api/contactus', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/contactus';
+      const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      console.log('Response Status:', response.status);
-
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Network response was not ok: ${errorText}`);
+        const error = await response.json();
+        throw new Error(error.message || 'Submission failed.');
       }
 
-      const result = await response.json();
-      console.log('Success:', result);
+      alert('Form submitted successfully!');
       setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        country: '',
-        company: '',
-        designation: '',
-        message: '',
-        usercaptcha: '',
+        ...formData,
+        html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
+            <h2 style="color: #0056b3; text-align: center;">New Contact Form Submission</h2>
+            <p style="font-size: 16px;">You have received a new contact form submission. Below are the details:</p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <tr>
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Name</td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">${formData.name}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Email</td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">${formData.email}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Phone</td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">${formData.phone}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Country</td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">${formData.country}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Company</td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">${formData.company}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Designation</td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">${formData.designation}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Message</td>
+                    <td style="padding: 5px; border: 1px solid #ddd;">${formData.message || 'N/A'}</td>
+                </tr>
+            </table>
+            <p style="margin-top: 20px; font-size: 14px; color: #555;">
+                <i>This is an automated message. Please do not reply to this email.</i>
+            </p>
+        </div>
+    `,
       });
+
+      window.location.href = '/thank-you';
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.message);
+      alert(`Submission failed: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -70,12 +105,11 @@ const ContactUs = () => {
               Contact <span>Us</span>
             </h2>
             <p>
-              In order to establish communication with our organization, kindly complete the form provided below. This will enable our dedicated representative to promptly reach out to you and address your specific needs and inquiries.
+              Kindly complete the form provided below. This will enable our representative to reach out to you.
             </p>
           </div>
-
           <div className="col-lg-8">
-            <form onSubmit={handleSubmit} className="php-email-form" data-aos="fade-up" data-aos-delay="100">
+            <form onSubmit={handleSubmit} className="php-email-form">
               <div className="row">
                 <div className="col-md-6 form-group">
                   <input
@@ -121,23 +155,9 @@ const ContactUs = () => {
                     required
                   >
                     <option value="">Choose Country</option>
-                    <option value="AFG">Afghanistan</option>
-                    <option value="ALA">Åland Islands</option>
-                    <option value="ALB">Albania</option>
-                    <option value="DZA">Algeria</option>
-                    <option value="ASM">American Samoa</option>
-                    <option value="AND">Andorra</option>
-                    <option value="AGO">Angola</option>
-                    <option value="AIA">Anguilla</option>
-                    <option value="ATA">Antarctica</option>
-                    <option value="ATG">Antigua and Barbuda</option>
-                    <option value="ARG">Argentina</option>
-                    <option value="ARM">Armenia</option>
-                    <option value="ABW">Aruba</option>
-                    <option value="AUS">Australia</option>
-                    <option value="AUT">Austria</option>
-                    <option value="AZE">Azerbaijan</option>
-                    <option value="ZWE">Zimbabwe</option>
+                    <option value="USA">United States</option>
+                    <option value="IND">India</option>
+                    <option value="CAN">Canada</option>
                   </select>
                 </div>
               </div>
@@ -175,47 +195,34 @@ const ContactUs = () => {
                   onChange={handleChange}
                 ></textarea>
               </div>
-              <input type="hidden" name="token" value="your-captcha-token-placeholder" />
-              <ul className="request-privacy">
-                <li>We do not share your details. Read more about our Privacy Policies </li>
-              </ul>
-
-              <div>
-                <b style={{ background: '#e9e9e9', fontSize: '16pt', padding: '5px', fontWeight: 'bold', float: 'left' }}>
-                  1234
-                </b>
+              <div className="form-group">
+                <label>Enter Captcha: 1234</label>
                 <input
-                  style={{ width: '50%', padding: '5px' }}
                   type="text"
-                  placeholder="Enter Captcha"
+                  className="form-control"
                   name="usercaptcha"
                   value={formData.usercaptcha}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <br />
               <div className="text-center">
-                <button type="submit" className="btn request-btn">
-                  <i className="bx bx-send"></i>&nbsp;Submit Contact Request
+                <button type="submit" className="btn request-btn" disabled={isSubmitting}>
+                  {isSubmitting ? 'Submitting...' : 'Submit Contact Request'}
                 </button>
               </div>
             </form>
           </div>
-
           <div className="col-lg-4">
             <div className="card">
-              <div className="card-header style-card-header">
-                OUR OFFICES
-              </div>
+              <div className="card-header">OUR OFFICES</div>
               <div className="card-body">
                 <h5>IMR Market Reports</h5>
                 <p>
-                  <strong>APAC Office:</strong> Office No. 403, Saudamini Commercial Complex, Kothrud, Pune, India 411038
+                  <strong>APAC Office:</strong> Kothrud, Pune, India
                 </p>
               </div>
             </div>
-            <br />
             <AssistanceCard />
           </div>
         </div>

@@ -10,6 +10,8 @@ const Reports = () => {
     const [reportData, setReportData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [activeTab, setActiveTab] = useState('home');
+    const [relatedReports, setRelatedReports] = useState([]);
  
     useEffect(() => {
         const fetchReport = async () => {
@@ -17,11 +19,21 @@ const Reports = () => {
                 const response = await axios.get(`http://localhost:5000/api/reports/slug/${url}`);
                 setReportData(response.data);
                 setError(null);
+                fetchRelatedReports(response.data.cid);
             } catch (err) {
                 console.error("Error fetching report:", err);
                 setError(err.response?.data?.message || 'Unable to fetch report. Please try again later.');
             } finally {
                 setLoading(false);
+            }
+        };
+ 
+        const fetchRelatedReports = async (cid) => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/reports?cid=${cid}`);
+                setRelatedReports(response.data.reports);
+            } catch (err) {
+                console.error("Error fetching related reports:", err);
             }
         };
  
@@ -74,24 +86,40 @@ const Reports = () => {
                             <div className="main-content">
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item">
-                                        <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                                            aria-controls="home" aria-selected="true">Summary</a>
+                                        <a className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} 
+                                           id="home-tab" 
+                                           onClick={() => setActiveTab('home')} 
+                                           role="tab" aria-controls="home" 
+                                           aria-selected={activeTab === 'home'}>Summary</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                                            aria-controls="profile" aria-selected="false">Table of Contents</a>
+                                        <a className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`} 
+                                           id="profile-tab" 
+                                           onClick={() => setActiveTab('profile')} 
+                                           role="tab" aria-controls="profile" 
+                                           aria-selected={activeTab === 'profile'}>Table of Contents</a>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" id="contact-tab" to="/SampleRequest" role="tab"
-                                            aria-controls="contact" aria-selected="false">Free Sample</Link>
+                                        <Link className="nav-link" 
+                                              id="contact-tab" 
+                                              to="/SampleRequest" 
+                                              role="tab" 
+                                              aria-controls="contact" 
+                                              aria-selected="false">Free Sample</Link>
                                     </li>
                                 </ul>
                                 <div className="tab-content" id="myTabContent">
-                                    <div className="tab-pane fade show active" id="home" role="tabpanel"
-                                        aria-labelledby="home-tab" style={{ justifyContent: 'end' }}>
+                                    <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`} 
+                                         id="home" 
+                                         role="tabpanel" 
+                                         aria-labelledby="home-tab" 
+                                         style={{ justifyContent: 'end' }}>
                                         <div dangerouslySetInnerHTML={{ __html: reportData.summary_desc }}></div>
                                     </div>
-                                    <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                    <div className={`tab-pane fade ${activeTab === 'profile' ? 'show active' : ''}`} 
+                                         id="profile" 
+                                         role="tabpanel" 
+                                         aria-labelledby="profile-tab">
                                         <div dangerouslySetInnerHTML={{ __html: reportData.toc }}></div>
                                     </div>
                                 </div>
@@ -159,9 +187,13 @@ const Reports = () => {
                                 </div>
                                 <div className="card-body">
                                     <ul style={{ listStyleType: 'none', padding: 0, marginLeft: '5%', marginRight: '5%' }}>
-                                        <li><i className="bx bx-chevron-right"></i> &nbsp; <a href="#" target="_blank">Report 1</a></li><hr />
-                                        <li><i className="bx bx-chevron-right"></i> &nbsp; <a href="#" target="_blank">Report 2</a></li><hr />
-                                        <li><i className="bx bx-chevron-right"></i> &nbsp; <a href="#" target="_blank">Report 3</a></li><hr />
+                                        {relatedReports.slice(0, 3).map(report => (
+                                            <li key={report.id}>
+                                                <i className="bx bx-chevron-right"></i> &nbsp; 
+                                                <Link to={`/reports/${report.slug}`} target="_blank">{report.keyword}</Link>
+                                                <hr />
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                             </div>

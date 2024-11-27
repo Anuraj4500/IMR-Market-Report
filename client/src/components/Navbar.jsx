@@ -23,7 +23,8 @@ const NavMenu = () => {
   }, []);
 
   const openSearch = () => {
-    console.log('Search button clicked');
+    const overlay = document.getElementById('myOverlay');
+    overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block'; // Toggle overlay display
   };
 
   const location = useLocation();
@@ -33,7 +34,7 @@ const NavMenu = () => {
   }, [location]);
 
   return (
-    <>
+    <div>
       <div id="topbar" className="d-none d-lg-flex align-items-center fixed-top">
         <div className="container d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
@@ -81,7 +82,7 @@ const NavMenu = () => {
                 </ul>
               </li>
               <li><Link to="/Contact-us">Contact</Link></li>
-              <li><button className="openBtn" onClick={openSearch}><i className="bx bx-search"></i></button></li>
+              <li><button className="openBtn" onClick={openSearch}><i className="fas fa-search"></i></button></li>
 
             </ul>
           </nav>
@@ -93,15 +94,14 @@ const NavMenu = () => {
 
       <div id="myOverlay" className="overlay">
         <span className="closebtn" onClick={() => document.getElementById('myOverlay').style.display = 'none'} title="Close Overlay">×</span>
-
         <div className="overlay-content">
-          <form action="https://www.imrmarketreports.com/search/" method="get">
+          <form action="/SearchPage" method="get">
             <input type="text" className="overlay-form" placeholder="Search For Market Reports / Keywords" name="q" />
-            <button type="submit"><i className="bx bx-search"></i></button><br />
+            <button type="submit"><i className="fas fa-search"></i></button><br />
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -4,35 +4,39 @@ import IndustriesBreadcrumb from '../components/Industries-Breadcrumb';
 import ReportCard from '../components/Report-Card';
 import IndustryCard from '../components/Industry-Card';
 import AssistanceCard2 from '../components/AssistanceCard2';
+import Pagination from '../components/Pagination';
 
 const Healthcare = () => {
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const title = "Healthcare Market Research Reports";
-    const description = "The worldwide Healthcare industry is largest sector in terms of aggregation and integration of sectors within the economic system that provides services to treat patients. It is maintenance or improvement of health by prevention, diagnosis, and treatment of disease, illness, injury, and other physical and mental impairments in people. Healthcare industry is conveyed by health professionals. It comprises hospitals, medical devices, clinical trials, outsourcing, telemedicine, medical tourism, health insurance and medical equipment.";
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const title = "Healthcare";
+    const description = "The healthcare industry is a diverse sector that includes a wide range of products that are essential for daily life.";
 
     useEffect(() => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:5000/api/reports?cid=9');
-                setReports(response.data);
-                setError(null);
+                const response = await axios.get(`http://localhost:5000/api/reports?cid=9&page=${page}&limit=10`);
+                const extractedReports = response.data.reports || [];
+                setReports(extractedReports);
+                setTotalPages(response.data.totalPages || 0);
             } catch (err) {
                 console.error("Error fetching reports:", err);
-                setError(
-                    err.response?.data?.message ||
-                    'Unable to fetch reports. Please try again later.'
-                );
+                setError(err.response?.data?.message || 'Unable to fetch reports. Please try again later.');
             } finally {
                 setLoading(false);
             }
         };
 
         fetchReports();
-    }, []);
+    }, [page]);
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -44,21 +48,17 @@ const Healthcare = () => {
             <section className="inner-page">
                 <div className="container">
                     {error ? (
-                        <div className="alert alert-danger" role="alert">
-                            {error}
-                        </div>
+                        <div className="alert alert-danger">{error}</div>
                     ) : (
                         <div className="row">
                             <div className="col-lg-9 order-md-2">
-                                {reports.length > 0 ? (
-                                    reports
-                                        .filter(report => report.cid === '9')
-                                        .map(report => (
-                                            <ReportCard
-                                                key={report._id}
-                                                {...report}
-                                            />
-                                        ))
+                                {Array.isArray(reports) && reports.length > 0 ? (
+                                    <>
+                                        {reports.map((report, index) => (
+                                            <ReportCard key={report._id || index} {...report} />
+                                        ))}
+                                        <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+                                    </>
                                 ) : (
                                     <div>No reports available.</div>
                                 )}
@@ -75,4 +75,4 @@ const Healthcare = () => {
     );
 };
 
-export default Healthcare; 
+export default Healthcare;

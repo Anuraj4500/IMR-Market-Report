@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import logo from "../assets/Images/IMRLogo.png";
+import { Link } from "react-router-dom";
+import logo from "../assets/Images/IMRLogo.png"
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+function Navbar() {
+  const [openDropdown, setOpenDropdown] = useState(null);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const toggleDropdown = (dropdownId) => {
+    setOpenDropdown(openDropdown === dropdownId ? null : dropdownId);
   };
 
   return (
-    <div>
+    <div className="page-wrapper compact-wrapper" id="pageWrapper">
+      {/* Header */}
       <header className="page-header row position-fixed">
-       
+        <div className="logo-wrapper d-flex align-items-center col-auto">
+         
+          <a className="close-btn toggle-sidebar" href="#">
+            <i className="fas fa-th-large"></i>
+          </a>
+        </div>
         <div className="page-main-header col">
           <div className="header-left">
             <form className="form-inline search-full col" action="#" method="get">
@@ -36,62 +43,113 @@ const Navbar = () => {
               </div>
             </form>
           </div>
+          <div className="nav-right">
+            <ul className="header-right">
+              <div className="user-wrap">
+                <div className="user-img">
+                  <img src="../assets/images/profile.png" alt="user" />
+                </div>
+                <div className="user-content">
+                  <p className="mb-0">
+                    Admin <i className="fa-solid fa-chevron-down"></i>
+                  </p>
+                </div>
+              </div>
+            </ul>
+          </div>
         </div>
       </header>
+
+      {/* Sidebar */}
       <aside className="page-sidebar">
-      <div className="logo-wrapper d-flex align-items-center col-auto">
-      <a href="index.html">
-            <img
-              className="light-logo"
-              src={logo}
-              alt="logo"
-            />
-          </a>
-          
-          {/* <a className="close-btn toggle-sidebar" href="#">
-            <i className="fas fa-th-large"></i>
-          </a> */}
-         </div>
         <div className="left-arrow" id="left-arrow">
           <i data-feather="arrow-left"></i>
         </div>
-        <div className="main-sidebar" id="main-sidebar">
+        <div className="main-sidebar mt-3" id="main-sidebar">
+        <a href="index.html">
+            <img className="light-logo img-fluid" src={logo} alt="logo" />
+            {/* <img className="dark-logo img-fluid" src="../Images/AI-light.png" alt="logo" /> */}
+          </a>
           <ul className="sidebar-menu" id="simple-bar">
             <li className="sidebar-list">
+              <i className="fa-solid fa-thumbtack"></i>
               <a className="sidebar-link" href="#">
-                <i className="fas fa-tachometer-alt"></i>
                 <h6>Dashboards</h6>
-                <span className="badge">3</span>
               </a>
             </li>
-            <li className={`sidebar-list dropdown ${isOpen ? "show" : ""}`}>
+            <li className="sidebar-list">
               <a
-                className="sidebar-link dropdown-toggle"
+                className="sidebar-link"
                 href="#"
-                id="navbarDropdown"
+                id="navbarDropdownHome"
                 role="button"
-                onClick={toggleDropdown}
+                onClick={() => toggleDropdown('home')}
                 aria-haspopup="true"
-                aria-expanded={isOpen}
+                aria-expanded={openDropdown === 'home'}
               >
-                <i className="fas fa-blog"></i>
-                <h6>Blog</h6>
+                <i className="fas fa-home"></i>
+                <h6>Home</h6>
               </a>
-              <ul className={`sidebar-submenu dropdown-menu ${isOpen ? "show" : ""}`}
-                aria-labelledby="navbarDropdown">
-                <li><a href="blog.html">Blog Details</a></li>
-                <li><a href="blog-single.html">Blog Single</a></li>
-                <li><a href="add_post.html">Add Post</a></li>
+              <ul className={`sidebar-submenu ${openDropdown === 'home' ? 'active' : 'd-none'}`}
+                aria-labelledby="navbarDropdownHome">
+                <li><Link to="/manage-home">Manage Home</Link></li>
+                <li><Link to="/seo">Home SEO</Link></li>
+              </ul>
+            </li>
+            <li className= "sidebar-list">
+              <a
+                className="sidebar-link"
+                href="#"
+                id="navbarDropdownAbout"
+                role="button"
+                onClick={() => toggleDropdown('about')}
+                aria-haspopup="true"
+                aria-expanded={openDropdown === 'about'}
+              >
+                <i className="fas fa-info-circle"></i>
+                <h6>About</h6>
+              </a>
+              <ul className={`sidebar-submenu ${openDropdown === 'about' ? 'active' : 'd-none'}`}
+                aria-labelledby="navbarDropdownAbout">
+                <li><Link to="/manage-about">Manage About</Link></li>
+                <li><Link to="/about-seo">About SEO</Link></li>
+              </ul>
+            </li>
+            <li className= "sidebar-list">
+              <a
+                className="sidebar-link"
+                href="#"
+                id="navbarDropdownReport"
+                role="button"
+                onClick={() => toggleDropdown('reports')}
+                aria-haspopup="true"
+                aria-expanded={openDropdown === 'reports'}
+              >
+                <i className="fas fa-file-alt"></i>
+                <h6>Reports</h6>
+              </a>
+              <ul className={`sidebar-submenu ${openDropdown === 'reports' ? 'active' : 'd-none'}`}
+                aria-labelledby="navbarDropdownReport">
+                <li><Link to="/manage-reports">Manage Reports</Link></li>
+                <li><Link to="/reports-seo">Reports SEO</Link></li>
+                <li><Link to="/upload">Upload Excel</Link></li>
+                <li><Link to="/duplicate-checker">Duplicate Checker</Link></li>
               </ul>
             </li>
           </ul>
+
+
         </div>
         <div className="right-arrow" id="right-arrow">
           <i data-feather="arrow-right"></i>
         </div>
       </aside>
+
+
+
+  
     </div>
   );
-};
+}
 
 export default Navbar;

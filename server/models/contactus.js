@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const contactUsSchema = new mongoose.Schema({
+    id: {
+        type: Number,
+        unique: true,
+    },
     name: {
         type: String,
         required: true,
@@ -8,7 +12,7 @@ const contactUsSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        match: /.+\@.+\..+/ // Simple email validation
+        match: /.+\@.+\..+/,
     },
     phone: {
         type: String,
@@ -28,7 +32,6 @@ const contactUsSchema = new mongoose.Schema({
     },
     message: {
         type: String,
-        required: false,
     },
     usercaptcha: {
         type: String,
@@ -37,9 +40,16 @@ const contactUsSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-    }
+    },
 });
 
-const ContactUs = mongoose.model('ContactUs', contactUsSchema, 'contactus');
+contactUsSchema.pre('save', async function (next) {
+    if (!this.id) {
+        const lastContact = await this.constructor.findOne().sort({ id: -1 }).exec();
+        this.id = lastContact ? lastContact.id + 1 : 1;
+    }
+    next();
+});
 
+const ContactUs = mongoose.model('ContactUs', contactUsSchema);
 module.exports = ContactUs;

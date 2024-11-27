@@ -29,6 +29,7 @@ import FoodBeverages from './pages/food-beverages';
 import ServiceIndustry from './pages/service-industry';
 import AutomotiveTransport from './pages/automotive-transport';
 import AerospaceDefense from './pages/aerospace-defense';
+import SearchPage from './pages/SearchPage';
 
 import './App.css';
 import './App1.css';
@@ -68,6 +69,7 @@ function App() {
             <Route path="/Service-Industry" element={<ServiceIndustry />} />
             <Route path="/Automotive-Transport" element={<AutomotiveTransport />} />
             <Route path="/Aerospace-Defense" element={<AerospaceDefense />} />
+            <Route path="/search" element={<SearchPage />} />
           </Routes>
         </div>
         <Footer />
