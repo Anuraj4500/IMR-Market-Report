@@ -34,8 +34,10 @@ const FAQ = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <section id="about" className="about">
-      <Breadcrumb items={breadcrumbItems} />
+    <>
+    <Breadcrumb items={breadcrumbItems} />
+    <section id="about" className="about pt-2">
+      
         <div className="container mt-4" data-aos="fade-up">
             <div className="section-title pb-0">
                 <h2>Frequently Asked <span>Questions</span></h2>
@@ -63,6 +65,7 @@ const FAQ = () => {
             </div>
         </div>
     </section>
+    </>
   );
 };
 

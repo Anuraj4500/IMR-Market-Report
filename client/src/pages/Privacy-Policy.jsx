@@ -6,8 +6,10 @@ const PrivacyPolicy = () => {
     { label: 'Privacy Policy' }
   ];
   return (
-    <section id="about" className="about">
-         <Breadcrumb items={breadcrumbItems} />
+    <>
+    <Breadcrumb items={breadcrumbItems} />
+    <section id="about" className="about pt-2">
+         
       <div className="container mt-4" data-aos="fade-up">
         <div className="section-title">
           <h2>PRIVACY POLICY</h2>
@@ -55,6 +57,7 @@ const PrivacyPolicy = () => {
         </div>
       </div>
     </section> // End About Us Section
+    </>
   );
 }
 

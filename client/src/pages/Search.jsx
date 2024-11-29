@@ -27,7 +27,7 @@ const Search = () => {
             const cleanQuery = searchQuery.replace(/\+/g, ' ').trim();
             console.log(`Starting search for query: "${cleanQuery}"`);
  
-            setLoading(true);
+            // setLoading(true);
             setError(null);
  
             try {

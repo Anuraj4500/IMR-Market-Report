@@ -70,13 +70,20 @@ const NavMenu = () => {
           <nav className="nav-menu d-none d-lg-block">
             <ul>
               <li><Link to="/">Home</Link></li>
+              <li className="drop-down"><Link to="/About-us">About Us</Link>
+                <ul>
+                  <li><Link to="/About-us">Our Company</Link></li>
+                  <li><Link to="/Our-Client">Our Clients</Link></li>
+                  <li><Link to="/Career">Career</Link></li>
+                </ul>
+              </li>
               <li><Link to="/reports-store">Reports Store</Link></li>
  
-              <li className="drop-down"><Link to="/Industry-reports">Industries</Link>
+              <li className="drop-down"><Link to="/a">Industries</Link>
               <ul>
                         {category.map(category => (
               <li key={category._id}>
-                <Link to = {`/Industry-reports/${category.slug}/`}>
+                <Link to = {`/${category.slug}/`}>
                   {category.title}
                 </Link>
               </li>
@@ -85,14 +92,7 @@ const NavMenu = () => {
                
               </li>
               {/* <li><Link to="/publishers">Publishers</Link></li> */}
-              <li className="drop-down"><Link to="/About-us">About Us</Link>
-                <ul>
-                  <li><Link to="/About-us">Our Company</Link></li>
-                  <li><Link to="/Our-Client">Our Clients</Link></li>
-                  <li><Link to="/Faq">FAQ's</Link></li>
-                  <li><Link to="/Privacy-Policy">Privacy Policy</Link></li>
-                </ul>
-              </li>
+              
               <li><Link to="/Our-Services">Our Services</Link></li>
               <li><Link to="/Contact-us">Contact</Link></li>
               <li><button className="openBtn" onClick={openSearch}><i className="fas fa-search"></i></button></li>

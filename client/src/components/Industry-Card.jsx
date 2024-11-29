@@ -27,7 +27,7 @@ function IndustryCard() {
                     <div className="card-header style-card-header">
                         Industries
                     </div>
-                    <div className="card-body">
+                    <div className="card-body p-0 px-3">
                         <ul>
                         {category.map(category => (
               <li key={category._id}>
@@ -39,7 +39,6 @@ function IndustryCard() {
                         </ul>
                     </div>
                 </div>
-      <br /><br />
     </div>
   );
 }
