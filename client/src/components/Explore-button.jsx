@@ -1,10 +1,10 @@
 import React from 'react';
-
-const ExploreButton = ({ name, href }) => {
+import { Link } from 'react-router-dom';
+const ExploreButton = ({ name, to }) => {
   return (
-    <a href={href} className="btn">
+    <Link to={to} className="btn">
       &nbsp;&nbsp;<i className="bx bx-chevron-right"></i> {name}
-    </a>
+    </Link>
   );
 }
 

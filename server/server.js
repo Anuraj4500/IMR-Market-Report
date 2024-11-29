@@ -13,6 +13,10 @@ const whychooseusRoutes = require('./routes/whychooseusRoutes');
 const termsRoutes = require('./routes/termsandconditionsRoutes');
 const refundRoutes = require('./routes/refundRoutes');
 const adminReportsRoutes = require('./admin/routes/adminreportsRoutes');
+const ourservicesRoutes = require('./routes/ourservicesRoutes');
+const publisherRoutes = require('./routes/publishersRoutes');
+const sampleRequestRoutes = require('./routes/sampleRequestRoutes');
+const checkoutRoutes = require('./routes/checkoutRoutes');
 
 const fs = require('fs');
 const path = require('path');
@@ -51,7 +55,12 @@ app.use('/api/whychooseus', whychooseusRoutes);
 app.use('/api/terms', termsRoutes);
 app.use('/api/refund-policy', refundRoutes);
 app.use('/api/adminreports', adminReportsRoutes);
+app.use('/api/ourservices', ourservicesRoutes);
+app.use('/api/publishers', publisherRoutes);
+app.use('/api/samplerequest', sampleRequestRoutes);
+app.use('/api/Checkout', checkoutRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

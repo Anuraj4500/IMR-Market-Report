@@ -2,6 +2,11 @@
 const mongoose = require('mongoose');
  
 const reportSchema = new mongoose.Schema({
+    id:{
+        type: Number,
+        required: true,
+        index: true
+    },
     cid: { type: String },
     pid: { type: String },
     keyword: { type: String },

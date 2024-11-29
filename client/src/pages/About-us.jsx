@@ -3,6 +3,7 @@ import BreadCrumb from "../components/Breadcrumb";
 import aboutimages from '../assets/storage/categories_images/231730a7fcb0ad429f593644ca2098e1.svg';
 import aboutimages1 from '../assets/storage/categories_images/18cd4294dc564f20c6d9fac1b0678205.svg';
 import WhyChooseUs from "../components/Why-Choose-Us";
+import CountUp from "react-countup";
 
  
 const AboutUs = () => {
@@ -16,6 +17,9 @@ const AboutUs = () => {
     const fetchAboutData = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/aboutus');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         setAboutData(data);
       } catch (err) {
@@ -34,7 +38,7 @@ const AboutUs = () => {
   if (error) return <div>Error: {error}</div>;
 
   // Check if aboutData is available before rendering
-  if (!aboutData) return <div>No data available</div>;
+  if (!aboutData || !Array.isArray(aboutData)) return <div>No data available</div>;
 
   // Breadcrumb Items
   const breadcrumbItems = [
@@ -77,39 +81,43 @@ const AboutUs = () => {
           </section>
 
           <section className="counts" style={{ background: "#FA6742" }}>
-            <div className="container">
-              <div className="row no-gutters">
-                <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
-                  <div className="count-box">
-                    <i className="icofont-users-alt-2"></i>
-                    <span>{item.counter1}</span>
-                    <p><strong>Clients</strong> served worldwide</p>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
-                  <div className="count-box">
-                    <i className="icofont-document-folder"></i>
-                    <span>{item.counter2}</span>
-                    <p><strong>Reports</strong> collections and counting</p>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
-                  <div className="count-box">
-                    <i className="icofont-team"></i>
-                    <span>{item.counter3}</span>
-                    <p><strong>Research Analysts</strong> supporting our clients 24X7</p>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
-                  <div className="count-box">
-                    <i className="icofont-globe-alt"></i>
-                    <span>{item.counter4}</span>
-                    <p><strong>Countries</strong> covered till now</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>    
+  <div className="container">
+    <div className="row no-gutters">
+      <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+        <div className="count-box">
+          <i className="icofont-users-alt-2"></i>
+          {item.counter1 != null ? (
+              <CountUp start={0} end={item.counter1} duration={2.5} />
+          ) : (
+              <span>0</span> // Fallback if counter1 is not a number
+          )}
+          <p><strong>Clients</strong> served worldwide</p>
+        </div>
+      </div>
+      <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+        <div className="count-box">
+          <i className="icofont-document-folder"></i>
+          <CountUp start={0} end={item.counter2} duration={2.5} />
+          <p><strong>Reports</strong> collections and counting</p>
+        </div>
+      </div>
+      <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+        <div className="count-box">
+          <i className="icofont-team"></i>
+          <CountUp start={0} end={item.counter3} duration={2.5} />
+          <p><strong>Research Analysts</strong> supporting our clients 24X7</p>
+        </div>
+      </div>
+      <div className="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+        <div className="count-box">
+          <i className="icofont-globe-alt"></i>
+          <CountUp start={0} end={item.counter4} duration={2.5} />
+          <p><strong>Countries</strong> covered till now</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 
           <WhyChooseUs />    
         </React.Fragment>
         

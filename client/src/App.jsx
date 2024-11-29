@@ -29,7 +29,11 @@ import FoodBeverages from './pages/food-beverages';
 import ServiceIndustry from './pages/service-industry';
 import AutomotiveTransport from './pages/automotive-transport';
 import AerospaceDefense from './pages/aerospace-defense';
-import SearchPage from './pages/SearchPage';
+import Search from './pages/Search';
+import OurServices from './pages/Our-Services';
+import AskDiscount from './pages/Ask-Discount';
+import Thankyou from './pages/ThankYou';
+import CheckoutPage from './pages/Checkout';
 
 import './App.css';
 import './App1.css';
@@ -52,8 +56,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/Career-details" element={<Careerdetails />} />
             <Route path="/Career" element={<Career />} />
-            <Route path="/Checkout" element={<Checkout />} />
-            <Route path="/SampleRequest" element={<SampleRequest />} />
+            <Route path="/Checkout/:slug" element={<Checkout />} />
+            <Route path="/SampleRequest/:slug" element={<SampleRequest />} />
             <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
             <Route path="/RefundPolicy" element={<RefundPolicy />} />
             <Route path="/Industry-reports/:slug" element={<Industryreports />} />
@@ -69,7 +73,11 @@ function App() {
             <Route path="/Service-Industry" element={<ServiceIndustry />} />
             <Route path="/Automotive-Transport" element={<AutomotiveTransport />} />
             <Route path="/Aerospace-Defense" element={<AerospaceDefense />} />
-            <Route path="/search" element={<SearchPage />} />
+            <Route path="/Search" element={<Search />} />
+            <Route path="/Our-Services" element={<OurServices />} />
+            <Route path="/Ask-Discount/:slug" element={<AskDiscount />} />
+            <Route path="/thank-you" element={<Thankyou />} />
+            <Route path="/Checkout/:id" element={<CheckoutPage />} />
           </Routes>
         </div>
         <Footer />

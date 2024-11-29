@@ -1,14 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Slider from "react-slick";
 import aboutus from '../assets/Images/test/Aboutus.svg';
 import latest_reports from '../assets/Images/test/latestreports.svg';
 import ExploreButton from '../components/Explore-button';
 import ClientCarousel from '../components/Client-Carousel';
 import Testimonials from '../components/Testimonials';
+import axios from 'axios'; // Added axios
+import { Link } from 'react-router-dom';
+// ... existing code ...
 
 
 function Home() {
- 
+  const [latestReports, setLatestReports] = useState([]);
   
+  
+
+  useEffect(() => {
+    const fetchLatestReports = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/reports'); 
+        console.log("Full response:", response); // Check full structure
+        // Assuming the response data is structured like { data: { reports: [] } }
+        const reports = Array.isArray(response.data) ? response.data : response.data.reports || [];
+        setLatestReports(reports.slice(0, 4)); // Slice only if reports is an array
+        console.log("Latest Reports State:", reports.slice(0, 4)); // Log the state after setting
+      } catch (error) {
+        console.error("Error fetching latest reports:", error);
+      }
+    };
+  
+    fetchLatestReports();
+  }, []);
+  
+  // Slick slider settings
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
+
   return (
     <div>
       <section id="intro" className="clearfix">
@@ -17,7 +51,7 @@ function Home() {
             <div className="col-md-5 intro-info order-md-first order-last">
               <h1>Design Your Business Strategies  With Our Market Research Reports</h1>
               <br />
-              <ExploreButton name="Explore Market Reports" href="#"></ExploreButton>
+              <ExploreButton name="Explore Market Reports" to="/reports-store" />
             </div>
           </div>
         </div>
@@ -52,30 +86,29 @@ function Home() {
         </section>
         {/* <!-- End About Us Section -->
         <!--Latest report code removed from here--> */}
-        <section id="departments" className="departments pb-0">
+        <section id="departments" className="departments pb-0 position-relative">
           <div className="container" data-aos="fade-up">
             <div className="section-title">
               <h2>Latest <span>Reports</span></h2>
               <p>Find our latest reports published. We have more than 5,00,000+ market research reports covering major industrial products.</p>
             </div>
-            <div className="row" data-aos="fade-up" data-aos-delay="100">
-              <div className="col-md-6 mb-5 mb-lg-0">
-                <br /><br /><br />
-                <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
-                  <div className="carousel-inner">
-                    <div className="carousel-item active">
-                      <h3><a href="#">Worsted Fabric Market</a></h3>
-                      <strong>August 2024</strong>
-                      <p className="text-justify" style={{ textAlign: 'justify' }}>Report of Rigid PET Film is covering the summarized study of several factors encouraging the growth of the market such as market size, market type, major regions and end user applications. By using the report customer can recognize the several drivers that impact and govern the market. The report is describing the several types of Rigid PET Film Industry. Factors that are playing the major role for growth of specific type of product category and factors that are motivating the status of the market.</p>
+            <div className="row justify-content-center align-items-center">
+              <div className="col-md-6">
+                <Slider {...settings} dots={false} arrows={false}>
+                  {latestReports.map(report => (
+                    <div className="report-slide" key={report._id}>
+                      <h3><Link to={`/reports/${report.slug}`}>{report.title}</Link></h3>
+                      <strong>{new Date(report.cdate).toLocaleDateString()}</strong>
+                      <p className="text-justify" style={{ textAlign: 'justify' }}>{report.summary}</p>
                     </div>
-
-                  </div>
-                </div>
-                <ExploreButton name="Explore Reports" href="#"></ExploreButton>
+                  ))}
+                </Slider>
+                <ExploreButton name="Explore Reports" to="/reports-store" style={{ position: 'absolute', bottom: '56px' }}></ExploreButton>
               </div>
-              <div className="col-lg-6">
-                <img src={latest_reports} alt="latest_reports" style={{ width: '90%' }} />
+              <div className="col-md-6">
+                <img src={latest_reports} alt="latest_reports" style={{ width: '75%' }} />
               </div>
+              
             </div>
           </div>
         </section>
@@ -91,7 +124,7 @@ function Home() {
             <div className="row">
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '180px' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '157px' }}>
                     <div className="icon"><i class="fas fa-fighter-jet"></i></div>
                     <h4 className="title"><a href="https://imrmarketreports.com/aerospace-defense">Aerospace &amp; Defense</a></h4>
 
@@ -101,7 +134,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0" style={{ width: '100%' }}>
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-tractor"></i></div>
                     <h4 className="title"><a href=" https://imrmarketreports.com/agricluture">Agriculture</a></h4>
                   </div>
@@ -110,7 +143,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-truck"></i></div>
                     <h4 className="title"><a href="https://imrmarketreports.com/automotive-transport">Automotive &amp; Transport</a></h4>
                   </div>
@@ -119,7 +152,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-flask"></i></div>
                     <h4 className="title"><a href=" https://www.imrmarketreports.com/chemicals-materials">Chemicals &amp; Materials</a></h4>
                   </div>
@@ -129,7 +162,7 @@ function Home() {
             </div>
             <br />
             <div className="row">
-              <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0" style={{ height: '100%' }}>
+              <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0" style={{ height: '90%' }}>
                 <a href="#" style={{ cursor: 'pointer' }}>
                   <div className="icon-box" data-aos="fade-up" data-aos-delay="300">
                     <div className="icon"><i className="fas fa-shopping-cart"></i></div>
@@ -140,7 +173,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-0 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="300" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="300" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-microchip"></i></div>
                     <h4 className="title"><a href="#">Electronics &amp; Semiconductors</a></h4>
                   </div>
@@ -149,7 +182,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-solar-panel"></i></div>
                     <h4 className="title"><a href="#">Energy &amp; Natural Resources</a></h4>
                   </div>
@@ -158,7 +191,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-apple-alt"></i></div>
                     <h4 className="title"><a href="#">Food &amp; Beverages</a></h4>
                   </div>
@@ -170,7 +203,7 @@ function Home() {
             <div className="row">
               <div className="col-lg-3 align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-heartbeat"></i></div>
                     <h4 className="title"><a href="#">Healthcare</a></h4>
                   </div>
@@ -179,7 +212,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-calculator"></i></div>
                     <h4 className="title"><a href="#">IT &amp; Telecom</a></h4>
                   </div>
@@ -188,7 +221,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-industry"></i></div>
                     <h4 className="title"><a href="#">Manufacturing &amp; Construction</a></h4>
                   </div>
@@ -197,7 +230,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '100%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
                     <div className="icon"><i className="fas fa-hotel"></i></div>
                     <h4 className="title"><a href="#">Service Industry</a></h4>
                   </div>

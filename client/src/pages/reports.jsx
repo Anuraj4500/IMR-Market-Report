@@ -12,7 +12,37 @@ const Reports = () => {
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('home');
     const [relatedReports, setRelatedReports] = useState([]);
+    const [categories, setCategories] = useState([]); // State to hold categories
+    const [publishers, setPublishers] = useState([]); // State to hold publishers
+      useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/category');
+                setCategories(response.data);
+            } catch (err) {
+                console.error("Error fetching categories:", err);
+            }
+        };
  
+        fetchCategories();
+    }, []);
+    useEffect(() => {
+        const fetchPublishers = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/publishers');
+                setPublishers(response.data);
+            } catch (err) {
+                console.error("Error fetching publishers:", err);
+                if (err.response) {
+                    console.error("Response data:", err.response.data);
+                    console.error("Response status:", err.response.status);
+                }
+            }
+        };
+   
+        // Call fetchPublishers only once when the component mounts
+        fetchPublishers();
+    }, []);
     useEffect(() => {
         const fetchReport = async () => {
             try {
@@ -52,7 +82,8 @@ const Reports = () => {
     if (error) {
         return <div className="alert alert-danger" role="alert">{error}</div>;
     }
- 
+    const category = categories.find(cat => String(cat.id) === String(reportData.cid));
+    const publisher = publishers.find(pub => String(pub.id) === String(reportData.pid));
     return (
         <div>
             <section className="breadcrumbs">
@@ -60,8 +91,8 @@ const Reports = () => {
                     <div className="d-flex justify-content-between align-items-center">
                         <ol>
                             <li><a href="https://www.imrmarketreports.com">Home</a></li>
-                            <li>Aerospace and Defense</li>
-                            <li>{reportData.slug}</li>
+                            <li>{category ? category.title : 'Unknown Category'}</li> {/* Display category name */}
+                            <li>{reportData.keyword}</li>
                         </ol>
                     </div>
                 </div>
@@ -77,8 +108,8 @@ const Reports = () => {
                                     <tbody>
                                         <tr>
                                             <td><strong>Report Code</strong> : IMR-{reportData.id}</td>
-                                            <td><strong>Publisher</strong>: Introspective Market Research</td>
-                                            <td><strong>Published On</strong>: {new Date(reportData.date).toLocaleDateString()}</td>
+                                            <td><strong>Publisher</strong>: {publisher ? publisher.name : 'Unknown Publisher'}</td>
+                                            <td><strong>Published On</strong>: {new Date(reportData.cdate).toLocaleDateString()}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -86,39 +117,39 @@ const Reports = () => {
                             <div className="main-content">
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item">
-                                        <a className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} 
-                                           id="home-tab" 
-                                           onClick={() => setActiveTab('home')} 
-                                           role="tab" aria-controls="home" 
+                                        <a className={`nav-link ${activeTab === 'home' ? 'active' : ''}`}
+                                           id="home-tab"
+                                           onClick={() => setActiveTab('home')}
+                                           role="tab" aria-controls="home"
                                            aria-selected={activeTab === 'home'}>Summary</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`} 
-                                           id="profile-tab" 
-                                           onClick={() => setActiveTab('profile')} 
-                                           role="tab" aria-controls="profile" 
+                                        <a className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`}
+                                           id="profile-tab"
+                                           onClick={() => setActiveTab('profile')}
+                                           role="tab" aria-controls="profile"
                                            aria-selected={activeTab === 'profile'}>Table of Contents</a>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" 
-                                              id="contact-tab" 
-                                              to="/SampleRequest" 
-                                              role="tab" 
-                                              aria-controls="contact" 
+                                        <Link className="nav-link"
+                                              id="contact-tab"
+                                              to={`/SampleRequest/${url}`}
+                                              role="tab"
+                                              aria-controls="contact"
                                               aria-selected="false">Free Sample</Link>
                                     </li>
                                 </ul>
                                 <div className="tab-content" id="myTabContent">
-                                    <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`} 
-                                         id="home" 
-                                         role="tabpanel" 
-                                         aria-labelledby="home-tab" 
+                                    <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`}
+                                         id="home"
+                                         role="tabpanel"
+                                         aria-labelledby="home-tab"
                                          style={{ justifyContent: 'end' }}>
                                         <div dangerouslySetInnerHTML={{ __html: reportData.summary_desc }}></div>
                                     </div>
-                                    <div className={`tab-pane fade ${activeTab === 'profile' ? 'show active' : ''}`} 
-                                         id="profile" 
-                                         role="tabpanel" 
+                                    <div className={`tab-pane fade ${activeTab === 'profile' ? 'show active' : ''}`}
+                                         id="profile"
+                                         role="tabpanel"
                                          aria-labelledby="profile-tab">
                                         <div dangerouslySetInnerHTML={{ __html: reportData.toc }}></div>
                                     </div>
@@ -127,13 +158,13 @@ const Reports = () => {
                             <div className="report-contact row">
                                 <div className="card request-card col-lg-6">
                                     <h4>Get Latest Sample</h4>
-                                    <a target="_blank" href="#" className="btn"><i
-                                        className="bx bx-download"></i>&nbsp;Free Sample</a>
+                                    <Link to={`/SampleRequest/${url}`} target="_blank" className="btn"><i
+                                        className="bx bx-download"></i>&nbsp;Free Sample</Link>
                                 </div>
                                 <div className="card buy-now-card col-lg-6">
                                     <h4>Purchase Full Report</h4>
-                                    <a target="_blank" href="#" className="btn"><i
-                                        className="bx bx-cart"></i>&nbsp;Buy Now</a>
+                                    <Link to={`/Checkout`} target="_blank" className="btn"><i
+                                        className="bx bx-cart"></i>&nbsp;Buy Now</Link>
                                 </div>
                             </div>
                         </div>
@@ -150,14 +181,14 @@ const Reports = () => {
                                                     id="_single" name="user" value="1" checked /><span
                                                     className="checkmark"></span>&nbsp;<span style={{ float: 'left' }}>
                                                     &nbsp;&nbsp;&nbsp;Single User </span> <span style={{ float: 'right' }}>
-                                                    &nbsp; &#36;${reportData.sprice}</span></li>
+                                                    &nbsp; &#36;{reportData.sprice}</span></li>
                                             </label>
                                             <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
                                                 <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
                                                     id="_multi" name="user" value="2" /><span
                                                     className="checkmark"></span>&nbsp;&nbsp;<span style={{ float: 'left' }}>
                                                     &nbsp;&nbsp;&nbsp;Multi User </span> <span style={{ float: 'right' }}>
-                                                    &nbsp; &#36;${reportData.mprice}</span></li>
+                                                    &nbsp; &#36;{reportData.mprice}</span></li>
                                             </label>
                                             <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
                                                 <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
@@ -165,19 +196,18 @@ const Reports = () => {
                                                     className="checkmark"></span>&nbsp; &nbsp;<span style={{ float: 'left' }}>
                                                     &nbsp;&nbsp;&nbsp;Enterprise User </span> <span
                                                     style={{ float: 'right' }}>
-                                                    &nbsp; &#36;${reportData.eprice}</span></li>
+                                                    &nbsp; &#36;{reportData.eprice}</span></li>
                                             </label>
                                         </ul>
                                         <input type="number" value={reportData.id} name="id" readOnly style={{ visibility: 'hidden' }} />
-                                        <Link to="/Checkout" className="custom_btn_buy"><i className="bx bx-cart"></i>&nbsp;BUY
-                                            NOW </Link>
+                                        <Link to={`/Checkout/${reportData.id}`} className="btn custom_btn_buy"><i className="bx bx-cart"></i>&nbsp;Buy Now</Link>
                                         <br /><br />
-                                        <Link to="/SampleRequest" className="btn custom_btn_request" ><i
+                                        <Link to={`/SampleRequest/${url}`} className="btn custom_btn_request" ><i
                                             className="bx bxs-download bx-fade-down-hover"></i>&nbsp;REQUEST SAMPLE</Link>
                                         <br /><br />
-                                        <a className="btn custom_btn_buy"
-                                            href="#"><i
-                                                className="bx bxs-purchase-tag"></i>&nbsp;ASK FOR DISCOUNT</a>
+                                       <Link to={`/Ask-Discount/${reportData.slug}`} className="btn custom_btn_buy">
+                                            <i className="bx bxs-purchase-tag"></i>&nbsp;ASK FOR DISCOUNT
+                                        </Link>
                                     </form>
                                 </div>
                             </div>
@@ -189,7 +219,7 @@ const Reports = () => {
                                     <ul style={{ listStyleType: 'none', padding: 0, marginLeft: '5%', marginRight: '5%' }}>
                                         {relatedReports.slice(0, 3).map(report => (
                                             <li key={report.id}>
-                                                <i className="bx bx-chevron-right"></i> &nbsp; 
+                                                <i className="bx bx-chevron-right"></i> &nbsp;
                                                 <Link to={`/reports/${report.slug}`} target="_blank">{report.keyword}</Link>
                                                 <hr />
                                             </li>
@@ -208,3 +238,4 @@ const Reports = () => {
 };
  
 export default Reports;
+ 

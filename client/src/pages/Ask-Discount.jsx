@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import ServiceFeature from '../components/ServiceFeature';
-import Deliverables from '../components/Deliverables';
 import Breadcrumb from '../components/Breadcrumb';
 import { Link } from 'react-router-dom';
 import ClientCarousel from '../components/Client-Carousel';
-import AssistanceCard from '../components/Assistance-Card';
 
-function SampleRequest() {
+
+function AskDiscount() {
     const { slug } = useParams();
     const [reportData, setReportData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -21,7 +19,7 @@ function SampleRequest() {
         company: '',
         designation: '',
         message: '',
-        requestType: 'sample',
+        requestType: 'discount',
         status: 'pending' // Added status field
     });
     const [selectedLicense, setSelectedLicense] = useState('single'); // Default to single user license
@@ -61,53 +59,62 @@ function SampleRequest() {
     };
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    if (!reportData?.id) {
-        alert('Report data not available. Please try again.');
-        return;
-    }
-
-    try {
-        const sampleRequestData = {
-            ...formData,
-            reportId: reportData._id,
-            reportTitle: reportData.title,
-            slug: reportData.slug,
-            category: reportData.category,
-            requestDate: new Date().toISOString(),
-        };
-
-        const response = await axios.post(
-            'http://localhost:5000/api/sample-requests',
-            sampleRequestData,
-            { headers: { 'Content-Type': 'application/json' } }
-        );
-
-        if (response.status === 201) {
-            // Clear form and redirect to thank-you page
-            setFormData({
-                name: '',
-                email: '',
-                phone: '',
-                country: '',
-                company: '',
-                designation: '',
-                message: '',
-            });
-            alert('Sample request submitted successfully!');
-            window.location.href = '/thank-you'; // Redirect to thank-you page
+        if (!reportData?.id) {
+            alert('Report data not available. Please try again.');
+            return;
         }
-    } catch (err) {
-        console.error("Error submitting sample request:", err);
-        alert(err.response?.data?.message || 'Error submitting request. Please try again.');
-    }
-};
 
+        try {
+            // Create the complete discount request data object
+            const discountRequestData = {
+                ...formData,
+                reportId: reportData.id,
+                reportTitle: reportData.title,
+                slug: reportData.slug,
+                category: reportData.category,
+                requestDate: new Date().toISOString(),
+                requestType: 'discount',
+                status: 'pending'
+            };
+
+            console.log('Sending Discount request data:', discountRequestData);
+
+            const response = await axios.post(
+                'http://localhost:5000/api/ask-discount', 
+                discountRequestData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            console.log('Server response:', response.data);
+
+            if (response.status === 201) {
+                setFormData({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    country: '',
+                    company: '',
+                    designation: '',
+                    message: '',
+                });
+                alert('Sample request submitted successfully!');
+                window.location.href = '/thank-you'; // Redirect to thank-you page
+            }
+        } catch (err) {
+            console.error("Error submitting sample request:", err);
+            alert(err.response?.data?.message || 'Error submitting request. Please try again.');
+        }
+    };
 
     const breadcrumbItems = [
         { label: reportData?.category || 'Category', link: `/category/${reportData?.category}` },
-        { label: 'Sample Request' }
+        { label: ' Discount' }
     ];
 
     if (loading) return <div className="container mt-5 text-center">Loading...</div>;
@@ -115,17 +122,13 @@ function SampleRequest() {
     if (!reportData) return <div className="container mt-5 text-center">No report data found</div>;
 
     return (
-        <div className="container-fluid p-0">
+        <>
+        <Breadcrumb items={breadcrumbItems} />
+        <div className="container p-0">
             <main id="main">
-                <Breadcrumb items={breadcrumbItems} />
-
-                <section className="inner-page">
-                    <div className="row">
-                        <div className="col-12 col-lg-3">
-                            <ServiceFeature />
-                        </div>
-
-                        <div className="col-lg-6">
+                <section className="inner-page pt-4">
+                    <div className="row align-items-center justify-content-center">
+                        <div className="col-lg-8">
                             <div className="report-header">
                                 <h2>{reportData.title}</h2>
                                 <hr />
@@ -139,7 +142,7 @@ function SampleRequest() {
                                     </tbody>
                                 </table>
                             </div>
-                            <form onSubmit={handleSubmit} className="sample-request-form">
+                            <form onSubmit={handleSubmit} className="discount-request-form">
                                 <div className="row">
                                     <div className="col-md-6 form-group mb-3">
                                         <input 
@@ -160,7 +163,7 @@ function SampleRequest() {
                                             name="email" 
                                             id="email" 
                                             required 
-                                            placeholder="Business Email"
+                                            placeholder="Your Email"
                                             value={formData.email}
                                             onChange={handleInputChange}
                                         />
@@ -241,13 +244,13 @@ function SampleRequest() {
                                         className="btn btn-primary request-btn"
                                         disabled={loading}
                                     >
-                                        <i className="bx bx-send"></i>&nbsp;Send Sample Request
+                                        <i className="bx bx-send"></i>&nbsp;Send Discount Request
                                     </button>
                                 </div>
                             </form>
                         </div>
 
-                        <div className="col-lg-3">
+                        <div className="col-lg-4">
                             <div className="text-center mb-3">
                                 <a 
                                     href={`/reports/${reportData.slug}`}
@@ -310,8 +313,8 @@ function SampleRequest() {
                                         </ul>
                                         <input type="number" value={reportData.id} name="id" readOnly style={{ visibility: 'hidden' }} /><br />
                                         <Link 
-                                            to={`/Checkout/${reportData.id}?license=${selectedLicense}`} 
-                                            className="btn custom_btn_buy"
+                                            to={`/Checkout/${reportData.slug}?license=${selectedLicense}`} 
+                                            className=" btn custom_btn_buy"
                                         >
                                             <i class="fas fa-shopping-cart"></i>&nbsp;BUY NOW
                                         </Link>
@@ -323,14 +326,15 @@ function SampleRequest() {
                             </div>
                             
                         </div>
-                            <Deliverables />
+                            
                         </div>
-                    </div>
                         <ClientCarousel />
+                    </div>
                 </section>
             </main>
         </div>
+        </>
     );
 }
 
-export default SampleRequest;
+export default AskDiscount;
