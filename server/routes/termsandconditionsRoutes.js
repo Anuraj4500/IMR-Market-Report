@@ -4,5 +4,6 @@ const { getTerms, createTerm } = require('../controllers/termsandconditionscontr
 
 // Route to get all terms and conditions
 router.get('/', getTerms);
+router.post('/', createTerm);
 
 module.exports = router; // Export the router 

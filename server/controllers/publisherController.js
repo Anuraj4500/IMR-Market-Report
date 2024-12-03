@@ -1,9 +1,9 @@
-const Publishers = require('../models/publishers');
+const { getAllPublishers } = require('../models/publishers');
 
-const getAllPublishers = async (req, res) => {
+const fetchAllPublishers = async (req, res) => {
     console.log('Received request for publishers');
     try {
-        const publishers = await Publishers.find();
+        const publishers = await getAllPublishers();
         if (!publishers || publishers.length === 0) {
             return res.status(404).json({ message: 'No publishers found' });
         }
@@ -16,5 +16,5 @@ const getAllPublishers = async (req, res) => {
 };
 
 module.exports = {
-    getAllPublishers,
+    fetchAllPublishers,
 };

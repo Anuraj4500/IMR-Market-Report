@@ -1,46 +1,35 @@
-const Client = require('../models/client');
-const mongoose = require('mongoose');
+const AWS = require('aws-sdk');
 
-// Get all clients
-exports.getAllClients = async (req, res) => {
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const TABLE_NAME = 'client';
+
+const getClients = async (req, res) => {
+    console.log('Received request for clients');
     try {
-        console.log('Database connection state:', mongoose.connection.readyState);
-        console.log('Attempting to fetch clients...');
-        
-        // List all collections in the database
-        const collections = await mongoose.connection.db.listCollections().toArray();
-        console.log('Available collections:', collections.map(c => c.name));
-        
-        const clients = await Client.find({});
-        console.log('Raw database response:', clients);
-        
-        if (!clients || clients.length === 0) {
-            console.log('No clients found in database');
-            return res.status(404).json({ message: "No clients found" });
-        }
-        
-        console.log(`Found ${clients.length} clients`);
-        res.json(clients);
+        const params = {
+            TableName: TABLE_NAME,
+        };
+        const data = await dynamoDB.scan(params).promise();
+        res.status(200).json(data.Items);
     } catch (error) {
-        console.error('Detailed error:', error);
+        console.error('Error fetching clients:', error);
         res.status(500).json({ message: error.message });
     }
 };
 
-// Create new client
-exports.createClient = async (req, res) => {
+const createClient = async (req, res) => {
+    const { title, content, image } = req.body;
+    const params = {
+        TableName: TABLE_NAME,
+        Item: { title, content, image }
+    };
     try {
-        const client = new Client({
-            id: req.body.id,
-            title: req.body.title,
-            content: req.body.content,
-            image: req.file.filename
-        });
-        
-        const newClient = await client.save();
-        res.status(201).json(newClient);
+        await dynamoDB.put(params).promise();
+        res.status(201).json({ message: 'Client created successfully' });
     } catch (error) {
         console.error('Error creating client:', error);
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
+
+module.exports = { getClients, createClient };

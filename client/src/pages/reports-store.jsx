@@ -23,7 +23,14 @@ const ReportsStore = () => {
                 setLoading(true);
                 const response = await axios.get(`http://localhost:5000/api/reports?page=${page}&limit=10`);
                 console.log("API Response:", response.data);
-                setReports(response.data.reports || []);
+
+                if (Array.isArray(response.data)) {
+                    setReports(response.data);
+                } else {
+                    console.warn("Reports data is not in expected format:", response.data);
+                    setReports([]);
+                }
+
                 setTotalPages(response.data.totalPages || 0);
                 setError(null);
             } catch (err) {
@@ -61,10 +68,7 @@ const ReportsStore = () => {
                                 <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
                                 {Array.isArray(reports) && reports.length > 0 ? (
                                     reports.map(report => (
-                                        <ReportCard
-                                            key={report.id}
-                                            {...report}
-                                        />
+                                        <ReportCard key={report.id} {...report} />
                                     ))
                                 ) : (
                                     <div>No reports available.</div>

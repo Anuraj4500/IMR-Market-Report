@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 
 const refundSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-}, { collection: 'refund' });
+    title: String,
+    content: String,
+});
 
-const Refund = mongoose.model('Refund', refundSchema);
-
-module.exports = Refund; 
+module.exports = mongoose.model('Refund', refundSchema); 

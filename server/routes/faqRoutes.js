@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getFaqs, createFaq } = require('../controllers/faqController');
+const { getFaqs, createFaqs } = require('../controllers/faqController');
 
-// Route to get all FAQs
+// Define your routes
 router.get('/', getFaqs);
-
-// Route to create a new FAQ (optional, for adding new FAQs)
-router.post('/', createFaq);
+router.post('/', createFaqs);
 
 module.exports = router;

@@ -17,6 +17,7 @@ const ourservicesRoutes = require('./routes/ourservicesRoutes');
 const publisherRoutes = require('./routes/publishersRoutes');
 const sampleRequestRoutes = require('./routes/sampleRequestRoutes');
 const checkoutRoutes = require('./routes/checkoutRoutes');
+const privacyPolicyRoutes = require('./routes/privacypolicyRoute');
 
 const app = express();
 
@@ -47,7 +48,7 @@ app.use('/api/faqs', faqRoutes);
 app.use('/api/aboutus', aboutUsRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api', reportRoutes);
-app.use('/api', contactusRoutes);
+app.use('/api/contactus', contactusRoutes);
 app.use('/api', categoryRoute);
 app.use('/api/whychooseus', whychooseusRoutes);
 app.use('/api/terms', termsRoutes);
@@ -57,6 +58,7 @@ app.use('/api/ourservices', ourservicesRoutes);
 app.use('/api/publishers', publisherRoutes);
 app.use('/api/samplerequest', sampleRequestRoutes);
 app.use('/api/Checkout', checkoutRoutes);
+app.use('/api/privacypolicy', privacyPolicyRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

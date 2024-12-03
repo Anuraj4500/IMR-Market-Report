@@ -1,7 +1,7 @@
 const express = require('express');
+const router = express.Router();
 const { getRefundPolicies } = require('../controllers/refundController');
 
-const router = express.Router();
 
 // Define the route for fetching refund policies
 router.get('/', getRefundPolicies);

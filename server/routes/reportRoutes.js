@@ -1,12 +1,11 @@
-// routes/reportRoutes.js
 const express = require('express');
 const router = express.Router();
-const reportModel = require('../models/report');
+const Report = require('../models/report');
 
 // GET all reports
 router.get('/reports', async (req, res) => {
     try {
-        const reports = await reportModel.getAllReports();
+        const reports = await Report.getAllReports();
         res.json(reports);
     } catch (error) {
         console.error('Error fetching reports:', error);
@@ -16,9 +15,8 @@ router.get('/reports', async (req, res) => {
 
 // GET report by ID
 router.get('/reports/:id', async (req, res) => {
-    const { id } = req.params;
     try {
-        const report = await reportModel.getReportById(id);
+        const report = await Report.getReportById(req.params.id);
         if (!report) {
             return res.status(404).json({ message: 'Report not found' });
         }
@@ -29,39 +27,37 @@ router.get('/reports/:id', async (req, res) => {
     }
 });
 
-// POST: Create a new report
-router.post('/reports', async (req, res) => {
+// GET report by slug
+router.get('/reports/:slug', async (req, res) => {
     try {
-        const newReport = req.body;
-        await reportModel.createReport(newReport);
-        res.status(201).json({ message: 'Report created successfully' });
+        const report = await Report.findOne({ slug: req.params.slug });
+        if (!report) {
+            return res.status(404).json({ message: 'Report not found' });
+        }
+        res.json(report);
     } catch (error) {
-        console.error('Error creating report:', error);
-        res.status(500).json({ message: 'Error creating report' });
+        console.error('Error fetching report:', error.message);
+        res.status(500).json({ message: 'Error fetching report' });
     }
 });
 
-// PUT: Update a report by ID
-router.put('/reports/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        await reportModel.updateReport(id, req.body);
-        res.json({ message: 'Report updated successfully' });
-    } catch (error) {
-        console.error('Error updating report:', error);
-        res.status(500).json({ message: 'Error updating report' });
-    }
-});
 
-// DELETE: Delete a report by ID
-router.delete('/reports/:id', async (req, res) => {
-    const { id } = req.params;
+// Search reports
+router.get('/reports/search', async (req, res) => {
+    const searchQuery = req.query.query;
+    if (!searchQuery) {
+        return res.status(400).json({ message: 'Search query is required' });
+    }
+
     try {
-        await reportModel.deleteReport(id);
-        res.json({ message: 'Report deleted successfully' });
+        const reports = await Report.searchReports(searchQuery);
+        if (!reports || reports.length === 0) {
+            return res.status(404).json({ message: 'No reports matched your search query.' });
+        }
+        res.json(reports);
     } catch (error) {
-        console.error('Error deleting report:', error);
-        res.status(500).json({ message: 'Error deleting report' });
+        console.error('Error performing search:', error);
+        res.status(500).json({ message: 'Error performing search' });
     }
 });
 

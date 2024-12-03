@@ -1,11 +1,10 @@
 const AWS = require('aws-sdk');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const TABLE_NAME = 'refund';
+const TABLE_NAME = 'privacypolicy';
 
-// Fetch all refund policies
-const getRefundPolicies = async (req, res) => {
-    console.log('Received request for refund policies');
+const getPrivacy = async (req, res) => {
+    console.log('Received request for privacy policy');
     try {
         const params = {
             TableName: TABLE_NAME,
@@ -13,9 +12,9 @@ const getRefundPolicies = async (req, res) => {
         const data = await dynamoDB.scan(params).promise();
         res.status(200).json(data.Items);
     } catch (error) {
-        console.error('Error fetching refund policies:', error);
+        console.error('Error fetching privacy policy:', error);
         res.status(500).json({ message: error.message });
     }
-};  
+};
 
-module.exports = { getRefundPolicies }; 
+module.exports = { getPrivacy };

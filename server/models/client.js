@@ -5,8 +5,7 @@ const clientSchema = new mongoose.Schema({
     title: String,
     content: String,
     image: String
-}, {
-    collection: 'client'
+
 });
 
 module.exports = mongoose.model('Client', clientSchema);

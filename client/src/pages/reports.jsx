@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ClientCarousel from '../components/Client-Carousel';
 import AssistanceCard from '../components/Assistance-Card';
- 
+
 const Reports = () => {
     const { url } = useParams();
     const [reportData, setReportData] = useState(null);
@@ -12,11 +12,11 @@ const Reports = () => {
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('home');
     const [relatedReports, setRelatedReports] = useState([]);
-    const [categories, setCategories] = useState([]); // State to hold categories
-    const [publishers, setPublishers] = useState([]); // State to hold publishers
-    const [selectedLicense, setSelectedLicense] = useState('single'); // Default to single user license
+    const [categories, setCategories] = useState([]);
+    const [publishers, setPublishers] = useState([]);
+    const [selectedLicense, setSelectedLicense] = useState('single');
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchCategories = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/category');
@@ -25,9 +25,10 @@ const Reports = () => {
                 console.error("Error fetching categories:", err);
             }
         };
- 
+
         fetchCategories();
     }, []);
+
     useEffect(() => {
         const fetchPublishers = async () => {
             try {
@@ -41,25 +42,33 @@ const Reports = () => {
                 }
             }
         };
-   
-        // Call fetchPublishers only once when the component mounts
+
         fetchPublishers();
     }, []);
+
     useEffect(() => {
         const fetchReport = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/reports/slug/${url}`);
+                console.log("Fetching report with slug:", url);
+                const response = await axios.get(`http://localhost:5000/api/reports/${url}`);
                 setReportData(response.data);
                 setError(null);
                 fetchRelatedReports(response.data.cid);
             } catch (err) {
                 console.error("Error fetching report:", err);
-                setError(err.response?.data?.message || 'Unable to fetch report. Please try again later.');
+                console.error("Attempted slug:", url);
+                if (err.response) {
+                    console.error("Response data:", err.response.data);
+                    console.error("Response status:", err.response.status);
+                    setError(err.response.data.message || 'Unable to fetch report. Please try again later.');
+                } else {
+                    setError('Network error. Please check your connection.');
+                }
             } finally {
                 setLoading(false);
             }
         };
- 
+
         const fetchRelatedReports = async (cid) => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/reports?cid=${cid}`);
@@ -68,7 +77,7 @@ const Reports = () => {
                 console.error("Error fetching related reports:", err);
             }
         };
- 
+
         if (url) {
             fetchReport();
         } else {
@@ -76,16 +85,18 @@ const Reports = () => {
             setError('Report url is missing.');
         }
     }, [url]);
- 
+
     if (loading) {
         return <div>Loading...</div>;
     }
- 
+
     if (error) {
         return <div className="alert alert-danger" role="alert">{error}</div>;
     }
+    
     const category = categories.find(cat => String(cat.id) === String(reportData.cid));
     const publisher = publishers.find(pub => String(pub.id) === String(reportData.pid));
+    
     return (
         <div>
             <section className="breadcrumbs">
@@ -93,7 +104,7 @@ const Reports = () => {
                     <div className="d-flex justify-content-between align-items-center">
                         <ol>
                             <li><a href="https://www.imrmarketreports.com">Home</a></li>
-                            <li>{category ? category.title : 'Unknown Category'}</li> {/* Display category name */}
+                            <li>{category ? category.title : 'Unknown Category'}</li>
                             <li>{reportData.keyword}</li>
                         </ol>
                     </div>
@@ -177,51 +188,51 @@ const Reports = () => {
                                 </div>
                                 <div className="card-body">
                                     <form method="GET" action="#" style={{ margin: 0 }}>
-                                    <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
-                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
-                                                        <input
-                                                            type="radio"
-                                                            id="_single"
-                                                            name="user"
-                                                            value="single"
-                                                            defaultChecked
-                                                            onChange={(e) => setSelectedLicense(e.target.value)}
-                                                        />
-                                                        <span className="checkmark"></span>&nbsp;
-                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Single User </span>
-                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.sprice}</span>
-                                                    </li>
-                                                </label>
-                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
-                                                        <input
-                                                            type="radio"
-                                                            id="_multi"
-                                                            name="user"
-                                                            value="multi"
-                                                            onChange={(e) => setSelectedLicense(e.target.value)}
-                                                        />
-                                                        <span className="checkmark"></span>&nbsp;&nbsp;
-                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Multi User </span>
-                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.mprice}</span>
-                                                    </li>
-                                                </label>
-                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
-                                                        <input
-                                                            type="radio"
-                                                            id="_enterp"
-                                                            name="user"
-                                                            value="enterprise"
-                                                            onChange={(e) => setSelectedLicense(e.target.value)}
-                                                        />
-                                                        <span className="checkmark"></span>&nbsp;&nbsp;
-                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Enterprise User </span>
-                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.eprice}</span>
-                                                    </li>
-                                                </label>
-                                            </ul>
+                                        <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
+                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                    <input
+                                                        type="radio"
+                                                        id="_single"
+                                                        name="user"
+                                                        value="single"
+                                                        defaultChecked
+                                                        onChange={(e) => setSelectedLicense(e.target.value)}
+                                                    />
+                                                    <span className="checkmark"></span>&nbsp;
+                                                    <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Single User </span>
+                                                    <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.sprice}</span>
+                                                </li>
+                                            </label>
+                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                    <input
+                                                        type="radio"
+                                                        id="_multi"
+                                                        name="user"
+                                                        value="multi"
+                                                        onChange={(e) => setSelectedLicense(e.target.value)}
+                                                    />
+                                                    <span className="checkmark"></span>&nbsp;&nbsp;
+                                                    <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Multi User </span>
+                                                    <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.mprice}</span>
+                                                </li>
+                                            </label>
+                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                    <input
+                                                        type="radio"
+                                                        id="_enterp"
+                                                        name="user"
+                                                        value="enterprise"
+                                                        onChange={(e) => setSelectedLicense(e.target.value)}
+                                                    />
+                                                    <span className="checkmark"></span>&nbsp;&nbsp;
+                                                    <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Enterprise User </span>
+                                                    <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.eprice}</span>
+                                                </li>
+                                            </label>
+                                        </ul>
                                         <input type="number" value={reportData.id} name="id" readOnly style={{ visibility: 'hidden' }} />
                                         
                                         <Link to={`/Checkout/${reportData.slug}?license=${selectedLicense}`} className="btn custom_btn_buy">
@@ -261,6 +272,6 @@ const Reports = () => {
         </div>
     );
 };
- 
+
 export default Reports;
  

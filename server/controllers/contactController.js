@@ -1,5 +1,6 @@
-const ContactUs = require('../models/contactUs');
+const AWS = require('aws-sdk');
 const nodemailer = require('nodemailer');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
@@ -23,20 +24,37 @@ console.log('Email User:', process.env.EMAIL_USER);
 console.log('Email Pass:', process.env.EMAIL_PASS);
 
 const submitContactForm = async (req, res) => {
-    const { name, email, phone, country, company, designation, message, usercaptcha } = req.body;
-
-    if (!name || !email || !phone || !country || !company || !designation || !usercaptcha) {
-        return res.status(400).json({ message: 'All fields are required except message.' });
-    }
-
-    if (usercaptcha !== '1234') {
-        return res.status(400).json({ message: 'Invalid captcha.' });
-    }
-
     try {
-        const contactEntry = new ContactUs({ name, email, phone, country, company, designation, message, usercaptcha });
-        await contactEntry.save();
+        const { name, email, phone, country, company, designation, message, usercaptcha } = req.body;
 
+        // Validation
+        if (!name || !email || !phone || !country || !company || !designation || !usercaptcha) {
+            return res.status(400).json({ message: 'All fields are required except message.' });
+        }
+
+        // Generate a unique id for each entry (as a string)
+        const id = Date.now().toString(); // Example: "1684349012345"
+
+        // DynamoDB contact entry
+        const contactEntry = {
+            TableName: 'contactus',
+            Item: {
+                id, // Save `id` as a string
+                name,
+                email,
+                phone,
+                country,
+                company,
+                designation,
+                message: message || '',
+                usercaptcha,
+            },
+        };
+
+        // Save to DynamoDB
+        await dynamoDB.put(contactEntry).promise();
+
+        // Send email after saving to DynamoDB
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: 'namarata@introspectivemarketresearch.com',
@@ -48,31 +66,31 @@ const submitContactForm = async (req, res) => {
                     <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
                         <tr>
                             <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Name</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">${req.body.name}</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">${name}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Email</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">${req.body.email}</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">${email}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Phone</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">${req.body.phone}</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">${phone}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Country</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">${req.body.country}</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">${country}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Company</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">${req.body.company}</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">${company}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Designation</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">${req.body.designation}</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">${designation}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; padding: 5px; border: 1px solid #ddd;">Message</td>
-                            <td style="padding: 5px; border: 1px solid #ddd;">${req.body.message || 'N/A'}</td>
+                            <td style="padding: 5px; border: 1px solid #ddd;">${message || 'N/A'}</td>
                         </tr>
                     </table>
                     <p style="margin-top: 20px; font-size: 14px; color: #555;">
@@ -81,8 +99,9 @@ const submitContactForm = async (req, res) => {
                 </div>
             `,
         });
-        
-        res.status(200).json({ message: 'Contact form submitted successfully!' });
+
+        // Send success response
+        res.status(200).json({ message: 'Form submitted successfully!' });
     } catch (error) {
         console.error('Error saving submission:', error);
         if (error.message.includes('Invalid login')) {
@@ -94,4 +113,3 @@ const submitContactForm = async (req, res) => {
 };
 
 module.exports = { submitContactForm };
-
