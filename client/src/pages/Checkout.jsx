@@ -6,7 +6,7 @@ import Deliverables from '../components/Deliverables';
 import Breadcrumb from '../components/Breadcrumb';
  
 function Checkout() {
-    const { id } = useParams();
+    const { slug } = useParams();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const license = searchParams.get('license') || 'single';
@@ -37,7 +37,7 @@ function Checkout() {
         const fetchReportData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:5000/api/reports/${id}`);
+                const response = await axios.get(`http://localhost:5000/api/reports/slug/${slug}`);
                 if (response.data) {
                     let price;
                     let userType;
@@ -74,7 +74,7 @@ function Checkout() {
         };
  
         fetchReportData();
-    }, [id, license]);
+    }, [slug, license]);
  
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -114,7 +114,7 @@ function Checkout() {
             );
    
             if (response.status === 201) {
-                // Clear form and redirect to thank-you page
+            
                 setFormData({
                     name: '',
                     email: '',

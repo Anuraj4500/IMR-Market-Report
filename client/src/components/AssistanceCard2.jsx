@@ -8,7 +8,9 @@ function IndustryCard2() {
                                         Need Assistance?
                                     </div>
                                     <div className="card-body">
+                                        
                                         <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
+                                            
                                             <li>
                                                 <a href="tel:+91-81800-96367" id="related-link" target="_blank" rel="noopener noreferrer">
                                                     <i className="bx bx-phone"></i>&nbsp;+91-81800-96367</a>

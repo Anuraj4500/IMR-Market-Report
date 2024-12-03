@@ -14,6 +14,8 @@ const Reports = () => {
     const [relatedReports, setRelatedReports] = useState([]);
     const [categories, setCategories] = useState([]); // State to hold categories
     const [publishers, setPublishers] = useState([]); // State to hold publishers
+    const [selectedLicense, setSelectedLicense] = useState('single'); // Default to single user license
+
       useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -109,7 +111,7 @@ const Reports = () => {
                                         <tr>
                                             <td><strong>Report Code</strong> : IMR-{reportData.id}</td>
                                             <td><strong>Publisher</strong>: {publisher ? publisher.name : 'Unknown Publisher'}</td>
-                                            <td><strong>Published On</strong>: {new Date(reportData.cdate).toLocaleDateString()}</td>
+                                            <td><strong>Published On</strong>: {new Date(reportData.cdate).toLocaleString('default', { month: 'long', year: 'numeric' })}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -169,38 +171,61 @@ const Reports = () => {
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            <div className="card license">
+                            <div className="card license sticky-card">
                                 <div className="card-header style-card-header">
                                     License Details
                                 </div>
                                 <div className="card-body">
                                     <form method="GET" action="#" style={{ margin: 0 }}>
-                                        <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
-                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
-                                                    id="_single" name="user" value="1" checked /><span
-                                                    className="checkmark"></span>&nbsp;<span style={{ float: 'left' }}>
-                                                    &nbsp;&nbsp;&nbsp;Single User </span> <span style={{ float: 'right' }}>
-                                                    &nbsp; &#36;{reportData.sprice}</span></li>
-                                            </label>
-                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
-                                                    id="_multi" name="user" value="2" /><span
-                                                    className="checkmark"></span>&nbsp;&nbsp;<span style={{ float: 'left' }}>
-                                                    &nbsp;&nbsp;&nbsp;Multi User </span> <span style={{ float: 'right' }}>
-                                                    &nbsp; &#36;{reportData.mprice}</span></li>
-                                            </label>
-                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                <li className="list-group-item" style={{ cursor: 'pointer' }}><input type="radio"
-                                                    id="_enterp" name="user" value="3" /><span
-                                                    className="checkmark"></span>&nbsp; &nbsp;<span style={{ float: 'left' }}>
-                                                    &nbsp;&nbsp;&nbsp;Enterprise User </span> <span
-                                                    style={{ float: 'right' }}>
-                                                    &nbsp; &#36;{reportData.eprice}</span></li>
-                                            </label>
-                                        </ul>
+                                    <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
+                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                        <input
+                                                            type="radio"
+                                                            id="_single"
+                                                            name="user"
+                                                            value="single"
+                                                            defaultChecked
+                                                            onChange={(e) => setSelectedLicense(e.target.value)}
+                                                        />
+                                                        <span className="checkmark"></span>&nbsp;
+                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Single User </span>
+                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.sprice}</span>
+                                                    </li>
+                                                </label>
+                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                        <input
+                                                            type="radio"
+                                                            id="_multi"
+                                                            name="user"
+                                                            value="multi"
+                                                            onChange={(e) => setSelectedLicense(e.target.value)}
+                                                        />
+                                                        <span className="checkmark"></span>&nbsp;&nbsp;
+                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Multi User </span>
+                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.mprice}</span>
+                                                    </li>
+                                                </label>
+                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                        <input
+                                                            type="radio"
+                                                            id="_enterp"
+                                                            name="user"
+                                                            value="enterprise"
+                                                            onChange={(e) => setSelectedLicense(e.target.value)}
+                                                        />
+                                                        <span className="checkmark"></span>&nbsp;&nbsp;
+                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Enterprise User </span>
+                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.eprice}</span>
+                                                    </li>
+                                                </label>
+                                            </ul>
                                         <input type="number" value={reportData.id} name="id" readOnly style={{ visibility: 'hidden' }} />
-                                        <Link to={`/Checkout/${reportData.id}`} className="btn custom_btn_buy"><i className="bx bx-cart"></i>&nbsp;Buy Now</Link>
+                                        
+                                        <Link to={`/Checkout/${reportData.slug}?license=${selectedLicense}`} className="btn custom_btn_buy">
+                                                <i class="fas fa-shopping-cart"></i>&nbsp;BUY NOW </Link>
                                         <br /><br />
                                         <Link to={`/SampleRequest/${url}`} className="btn custom_btn_request" ><i
                                             className="bx bxs-download bx-fade-down-hover"></i>&nbsp;REQUEST SAMPLE</Link>

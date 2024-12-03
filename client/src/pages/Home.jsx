@@ -5,6 +5,7 @@ import latest_reports from '../assets/Images/test/latestreports.svg';
 import ExploreButton from '../components/Explore-button';
 import ClientCarousel from '../components/Client-Carousel';
 import Testimonials from '../components/Testimonials';
+import OurServices from '../components/Our-services';
 import axios from 'axios'; // Added axios
 import { Link } from 'react-router-dom';
 // ... existing code ...
@@ -37,7 +38,7 @@ function Home() {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -86,35 +87,37 @@ function Home() {
         </section>
         {/* <!-- End About Us Section -->
         <!--Latest report code removed from here--> */}
-        <section id="departments" className="departments pb-0 position-relative">
+        <section id="departments" className="departments pb-4 pt-3 position-relative">
           <div className="container" data-aos="fade-up">
             <div className="section-title">
               <h2>Latest <span>Reports</span></h2>
               <p>Find our latest reports published. We have more than 5,00,000+ market research reports covering major industrial products.</p>
             </div>
             <div className="row justify-content-center align-items-center">
-              <div className="col-md-6">
+
+              <div className="col-md-12">
                 <Slider {...settings} dots={false} arrows={false}>
                   {latestReports.map(report => (
-                    <div className="report-slide" key={report._id}>
-                      <h3><Link to={`/reports/${report.slug}`}>{report.title}</Link></h3>
-                      <strong>{new Date(report.cdate).toLocaleDateString()}</strong>
-                      <p className="text-justify" style={{ textAlign: 'justify' }}>{report.summary}</p>
+                    <div className="px-2" key={report._id}>
+                    <div className="report-slide"  style={{ padding: '30px'}}>
+                      <h3><Link to={`/reports/${report.slug}`}>{report.keyword} Market</Link></h3>
+                      <strong>{new Date(report.cdate).toLocaleString('default', { month: 'long', year: 'numeric' })}</strong>
+                      <p className="text-justify" style={{ textAlign: 'justify' }}>
+                        {report.summary.split(' ').slice(0, 20).join(' ') + (report.summary.split(' ').length > 30 ? '...' : '')}
+                      </p>
+                    </div>
                     </div>
                   ))}
+  
                 </Slider>
-                <ExploreButton name="Explore Reports" to="/reports-store" style={{ position: 'absolute', bottom: '56px' }}></ExploreButton>
-              </div>
-              <div className="col-md-6">
-                <img src={latest_reports} alt="latest_reports" style={{ width: '75%' }} />
               </div>
               
             </div>
           </div>
         </section>
-
+        <OurServices />
         {/* <!-- ======= Featured Services Section ======= --> */}
-        <section id="featured-services" className="featured-services pb-5">
+        <section id="featured-services" className="featured-services pb-4 pt-2">
           <div className="container" data-aos="fade-up">
             <div className="section-title">
               <h2>Industry <span>Verticals</span></h2>

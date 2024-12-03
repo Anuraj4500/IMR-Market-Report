@@ -1,6 +1,6 @@
 const Checkout = require('../models/Checkout');
 const nodemailer = require('nodemailer');
- 
+
 // Get all checkouts
 exports.getAllCheckouts = async (req, res) => {
     try {
@@ -13,12 +13,12 @@ exports.getAllCheckouts = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
- 
+
 // Create a new checkout
 exports.createCheckout = async (req, res) => {
     try {
         console.log('Received checkout data:', req.body);
- 
+
         const checkout = new Checkout({
             customerInfo: {
                 name: req.body.name,
@@ -39,12 +39,12 @@ exports.createCheckout = async (req, res) => {
             orderDate: req.body.orderDate || new Date(),
             paymentStatus: req.body.paymentStatus || 'pending'
         });
- 
+
         console.log('Created checkout object:', checkout);
- 
+
         const savedCheckout = await checkout.save();
         console.log('Saved checkout:', savedCheckout);
- 
+
         // Setup Nodemailer transporter
         const transporter = nodemailer.createTransport({
             service: 'gmail', // Use your email service
@@ -53,7 +53,7 @@ exports.createCheckout = async (req, res) => {
                 pass: process.env.EMAIL_PASS
             }
         });
- 
+
         // Email options
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -111,12 +111,12 @@ exports.createCheckout = async (req, res) => {
             </div>
             `,
         };
-       
- 
+        
+
         // Send email
         await transporter.sendMail(mailOptions);
         console.log('Email sent successfully');
- 
+
         res.status(201).json({
             success: true,
             data: savedCheckout
@@ -129,13 +129,13 @@ exports.createCheckout = async (req, res) => {
         });
     }
 };
- 
+
 // Update payment status
 exports.updatePaymentStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { paymentStatus, paypalOrderId } = req.body;
- 
+
         const updatedCheckout = await Checkout.findByIdAndUpdate(
             id,
             {
@@ -145,16 +145,14 @@ exports.updatePaymentStatus = async (req, res) => {
             },
             { new: true }
         );
- 
+
         if (!updatedCheckout) {
             return res.status(404).json({ success: false, error: 'Checkout not found' });
         }
- 
+
         res.json({ success: true, data: updatedCheckout });
     } catch (error) {
         console.error('Error updating payment:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 };
- 
- 

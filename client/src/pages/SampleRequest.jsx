@@ -61,48 +61,48 @@ function SampleRequest() {
     };
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    if (!reportData?.id) {
-        alert('Report data not available. Please try again.');
-        return;
-    }
-
-    try {
-        const sampleRequestData = {
-            ...formData,
-            reportId: reportData._id,
-            reportTitle: reportData.title,
-            slug: reportData.slug,
-            category: reportData.category,
-            requestDate: new Date().toISOString(),
-        };
-
-        const response = await axios.post(
-            'http://localhost:5000/api/sample-requests',
-            sampleRequestData,
-            { headers: { 'Content-Type': 'application/json' } }
-        );
-
-        if (response.status === 201) {
-            // Clear form and redirect to thank-you page
-            setFormData({
-                name: '',
-                email: '',
-                phone: '',
-                country: '',
-                company: '',
-                designation: '',
-                message: '',
-            });
-            alert('Sample request submitted successfully!');
-            window.location.href = '/thank-you'; // Redirect to thank-you page
+        if (!reportData?.id) {
+            alert('Report data not available. Please try again.');
+            return;
         }
-    } catch (err) {
-        console.error("Error submitting sample request:", err);
-        alert(err.response?.data?.message || 'Error submitting request. Please try again.');
-    }
-};
+
+        try {
+            const sampleRequestData = {
+                ...formData,
+                reportId: reportData._id,
+                reportTitle: reportData.title,
+                slug: reportData.slug,
+                category: reportData.category,
+                requestDate: new Date().toISOString(),
+            };
+
+            const response = await axios.post(
+                'http://localhost:5000/api/sample-requests',
+                sampleRequestData,
+                { headers: { 'Content-Type': 'application/json' } }
+            );
+
+            if (response.status === 201) {
+                // Clear form and redirect to thank-you page
+                setFormData({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    country: '',
+                    company: '',
+                    designation: '',
+                    message: '',
+                });
+                alert('Sample request submitted successfully!');
+                window.location.href = '/thank-you'; // Redirect to thank-you page
+            }
+        } catch (err) {
+            console.error("Error submitting sample request:", err);
+            alert(err.response?.data?.message || 'Error submitting request. Please try again.');
+        }
+    };
 
 
     const breadcrumbItems = [
@@ -134,7 +134,7 @@ function SampleRequest() {
                                         <tr>
                                             <td><strong>Report Code</strong>: IMR-{reportData.id}</td>
                                             <td><strong>Pages</strong>: {reportData.pages}</td>
-                                            <td><strong>Published On</strong>: {new Date(reportData.date).toLocaleDateString()}</td>
+                                            <td><strong>Published On</strong>: {new Date(reportData.cdate).toLocaleString('default', { month: 'long', year: 'numeric' })}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -142,24 +142,24 @@ function SampleRequest() {
                             <form onSubmit={handleSubmit} className="sample-request-form">
                                 <div className="row">
                                     <div className="col-md-6 form-group mb-3">
-                                        <input 
-                                            type="text" 
-                                            name="name" 
-                                            className="form-control" 
-                                            id="name" 
-                                            required 
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            className="form-control"
+                                            id="name"
+                                            required
                                             placeholder="Your Name"
                                             value={formData.name}
-                                            onChange={handleInputChange} 
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                     <div className="col-md-6 form-group mb-3">
-                                        <input 
-                                            type="email" 
-                                            className="form-control" 
-                                            name="email" 
-                                            id="email" 
-                                            required 
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            name="email"
+                                            id="email"
+                                            required
                                             placeholder="Business Email"
                                             value={formData.email}
                                             onChange={handleInputChange}
@@ -168,20 +168,20 @@ function SampleRequest() {
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6 form-group mb-3">
-                                        <input 
-                                            type="tel" 
-                                            className="form-control" 
-                                            name="phone" 
-                                            id="phone" 
-                                            required 
+                                        <input
+                                            type="tel"
+                                            className="form-control"
+                                            name="phone"
+                                            id="phone"
+                                            required
                                             placeholder="Your Phone"
                                             value={formData.phone}
                                             onChange={handleInputChange}
                                         />
                                     </div>
                                     <div className="col-md-6 form-group mb-3">
-                                        <select 
-                                            name="country" 
+                                        <select
+                                            name="country"
                                             className="form-control"
                                             required
                                             value={formData.country}
@@ -198,24 +198,24 @@ function SampleRequest() {
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6 form-group mb-3">
-                                        <input 
-                                            type="text" 
-                                            name="company" 
-                                            className="form-control" 
-                                            id="company" 
-                                            required 
+                                        <input
+                                            type="text"
+                                            name="company"
+                                            className="form-control"
+                                            id="company"
+                                            required
                                             placeholder="Company"
                                             value={formData.company}
                                             onChange={handleInputChange}
                                         />
                                     </div>
                                     <div className="col-md-6 form-group mb-3">
-                                        <input 
-                                            type="text" 
-                                            name="designation" 
-                                            className="form-control" 
-                                            required 
-                                            id="designation" 
+                                        <input
+                                            type="text"
+                                            name="designation"
+                                            className="form-control"
+                                            required
+                                            id="designation"
                                             placeholder="Designation"
                                             value={formData.designation}
                                             onChange={handleInputChange}
@@ -223,10 +223,10 @@ function SampleRequest() {
                                     </div>
                                 </div>
                                 <div className="form-group mb-3">
-                                    <textarea 
-                                        className="form-control" 
-                                        name="message" 
-                                        rows="5" 
+                                    <textarea
+                                        className="form-control"
+                                        name="message"
+                                        rows="5"
                                         placeholder="Message (Optional)"
                                         value={formData.message}
                                         onChange={handleInputChange}
@@ -236,8 +236,8 @@ function SampleRequest() {
                                     <small>We do not share your details. Read more about our Privacy Policies</small>
                                 </div>
                                 <div className="text-center">
-                                    <button 
-                                        type="submit" 
+                                    <button
+                                        type="submit"
                                         className="btn btn-primary request-btn"
                                         disabled={loading}
                                     >
@@ -249,7 +249,7 @@ function SampleRequest() {
 
                         <div className="col-lg-3">
                             <div className="text-center mb-3">
-                                <a 
+                                <a
                                     href={`/reports/${reportData.slug}`}
                                     className="btn btn-secondary summary-btn"
                                 >
@@ -257,76 +257,93 @@ function SampleRequest() {
                                 </a>
                             </div>
                             <div className="col-lg-12">
-                            <div className="card license">
-                                <div className="card-header style-card-header">
-                                    License Details
+                                <div className="card license">
+                                    <div className="card-header style-card-header">
+                                        License Details
+                                    </div>
+                                    <div className="card-body">
+                                        <form method="GET" action="#" style={{ margin: 0 }}>
+                                            <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
+                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                        <input
+                                                            type="radio"
+                                                            id="_single"
+                                                            name="user"
+                                                            value="single"
+                                                            defaultChecked
+                                                            onChange={(e) => setSelectedLicense(e.target.value)}
+                                                        />
+                                                        <span className="checkmark"></span>&nbsp;
+                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Single User </span>
+                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.sprice}</span>
+                                                    </li>
+                                                </label>
+                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                        <input
+                                                            type="radio"
+                                                            id="_multi"
+                                                            name="user"
+                                                            value="multi"
+                                                            onChange={(e) => setSelectedLicense(e.target.value)}
+                                                        />
+                                                        <span className="checkmark"></span>&nbsp;&nbsp;
+                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Multi User </span>
+                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.mprice}</span>
+                                                    </li>
+                                                </label>
+                                                <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
+                                                    <li className="list-group-item" style={{ cursor: 'pointer' }}>
+                                                        <input
+                                                            type="radio"
+                                                            id="_enterp"
+                                                            name="user"
+                                                            value="enterprise"
+                                                            onChange={(e) => setSelectedLicense(e.target.value)}
+                                                        />
+                                                        <span className="checkmark"></span>&nbsp;&nbsp;
+                                                        <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Enterprise User </span>
+                                                        <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.eprice}</span>
+                                                    </li>
+                                                </label>
+                                            </ul>
+                                            <input type="number" value={reportData.id} name="id" readOnly style={{ visibility: 'hidden' }} /><br />
+                                            <Link
+                                                to={`/Checkout/${reportData.slug}?license=${selectedLicense}`}
+                                                className="btn custom_btn_buy"
+                                            >
+                                                <i class="fas fa-shopping-cart"></i>&nbsp;BUY NOW
+                                            </Link>
+                                            <br /><br />
+
+
+                                        </form>
+                                    </div>
                                 </div>
-                                <div className="card-body">
-                                    <form method="GET" action="#" style={{ margin: 0 }}>
-                                        <ul style={{ listStyleType: 'none', margin: 0, padding: 0 }}>
-                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                <li className="list-group-item" style={{ cursor: 'pointer' }}>
-                                                    <input 
-                                                        type="radio"
-                                                        id="_single" 
-                                                        name="user" 
-                                                        value="single" 
-                                                        defaultChecked 
-                                                        onChange={(e) => setSelectedLicense(e.target.value)}
-                                                    />
-                                                    <span className="checkmark"></span>&nbsp;
-                                                    <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Single User </span>
-                                                    <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.sprice}</span>
-                                                </li>
-                                            </label>
-                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                <li className="list-group-item" style={{ cursor: 'pointer' }}>
-                                                    <input 
-                                                        type="radio"
-                                                        id="_multi" 
-                                                        name="user" 
-                                                        value="multi"
-                                                        onChange={(e) => setSelectedLicense(e.target.value)}
-                                                    />
-                                                    <span className="checkmark"></span>&nbsp;&nbsp;
-                                                    <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Multi User </span>
-                                                    <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.mprice}</span>
-                                                </li>
-                                            </label>
-                                            <label style={{ width: '100%', margin: 0, padding: 0 }} className="radio">
-                                                <li className="list-group-item" style={{ cursor: 'pointer' }}>
-                                                    <input 
-                                                        type="radio"
-                                                        id="_enterp" 
-                                                        name="user" 
-                                                        value="enterprise"
-                                                        onChange={(e) => setSelectedLicense(e.target.value)}
-                                                    />
-                                                    <span className="checkmark"></span>&nbsp;&nbsp;
-                                                    <span style={{ float: 'left' }}>&nbsp;&nbsp;&nbsp;Enterprise User </span>
-                                                    <span style={{ float: 'right' }}>&nbsp; &#36;{reportData.eprice}</span>
-                                                </li>
-                                            </label>
-                                        </ul>
-                                        <input type="number" value={reportData.id} name="id" readOnly style={{ visibility: 'hidden' }} /><br />
-                                        <Link 
-                                            to={`/Checkout/${reportData.id}?license=${selectedLicense}`} 
-                                            className="btn custom_btn_buy"
-                                        >
-                                            <i class="fas fa-shopping-cart"></i>&nbsp;BUY NOW
-                                        </Link>
-                                        <br /><br />
-                                        
-                                        
-                                    </form>
-                                </div>
+
                             </div>
-                            
-                        </div>
                             <Deliverables />
                         </div>
                     </div>
-                        <ClientCarousel />
+                    <div class="card disclaimer mt-2">
+                        <div class="card-body">
+                            <h6><strong>Disclaimer</strong></h6>
+                            <hr />
+                            <ol style={{ color: "#707070" }}>
+                                <li>The sample is just to give you an overview of how the full version of the report would look like or structured.</li>
+                                <li> The sample report pages will not provide you any qualitative or quantitative data
+                                    it will be always in empty or cross tick format due to the nature of the business
+                                    and as we deal with an intellectual property we are not allowed to share any
+                                    data pre-purchase of the report.</li>
+                                <li>Sample report pages always have just a mild definition of the
+                                    market overview, a section representation according to the Table of Contents.</li>
+                                <li>Whereas the full and final version of the report would provide you all
+                                    the comprehensive, qualitative or quantitative data of actual content.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <ClientCarousel />
                 </section>
             </main>
         </div>

@@ -12,10 +12,7 @@ function Deliverables() {
                     <i class="fas fa-file-pdf"></i>
                         <strong> PDF</strong>
                     </li>
-                    <li className="list-group-item" style={{ padding:'5px 10px', paddingLeft: '1rem' }}>
-                    <i class="fas fa-file"></i>
-                        <strong> PPT</strong>
-                    </li>
+                   
                     <li className="list-group-item" style={{ padding:'5px 10px', paddingLeft: '1rem' }}>
                     <i class="fas fa-file-excel"></i>
                         <strong> ME (Excel Spreadsheet)</strong>

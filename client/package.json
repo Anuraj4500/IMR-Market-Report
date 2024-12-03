@@ -42,5 +42,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "postcss-cli": "^11.0.0",
+    "postcss-combine-duplicated-selectors": "^10.0.3"
   }
 }

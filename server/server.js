@@ -1,8 +1,8 @@
 // server.js
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const AWS = require('aws-sdk');
 const reportRoutes = require('./routes/reportRoutes');
 const contactusRoutes = require('./routes/contactusRoutes');
 const categoryRoute = require('./routes/categoryRoutes');
@@ -18,32 +18,30 @@ const publisherRoutes = require('./routes/publishersRoutes');
 const sampleRequestRoutes = require('./routes/sampleRequestRoutes');
 const checkoutRoutes = require('./routes/checkoutRoutes');
 
-const fs = require('fs');
-const path = require('path');
-
 const app = express();
- 
+
+// Configure AWS SDK
+AWS.config.update({
+    region: process.env.AWS_REGION,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+
+// Create DynamoDB service object
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+console.log('DynamoDB connection established successfully.');
+
 app.use(cors({
-    origin: 'http://localhost:3000' // Update if your frontend runs on a different port
+    origin: 'http://localhost:3000'
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
- 
+
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`);
     next();
 });
- 
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB Connected Successfully'))
-.catch(err => {
-    console.error('MongoDB Connection Error:', err);
-    process.exit(1);
-});
- 
+
 // Routes
 app.use('/api/faqs', faqRoutes);
 app.use('/api/aboutus', aboutUsRoutes);
@@ -59,17 +57,7 @@ app.use('/api/ourservices', ourservicesRoutes);
 app.use('/api/publishers', publisherRoutes);
 app.use('/api/samplerequest', sampleRequestRoutes);
 app.use('/api/Checkout', checkoutRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        message: 'Something went wrong!',
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
-});
- 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

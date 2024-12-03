@@ -8,14 +8,22 @@ function OurServices() {
     const [ourservices, setOurServices] = useState([]);
     const [activeTab, setActiveTab] = useState(0);
 
-    // Function to fetch data from MongoDB
+    // Function to fetch data from the API
     const fetchOurServices = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/ourservices'); // Replace with your API endpoint
+            const response = await fetch('http://localhost:5000/api/ourservices');
             const data = await response.json();
-            setOurServices(data); // Assuming `data` is an array of services
+
+            // Check if the data is an array
+            if (Array.isArray(data)) {
+                setOurServices(data); // Set the state if data is an array
+            } else {
+                console.error('Expected an array but got:', data);
+                setOurServices([]); // Set to empty array if not an array
+            }
         } catch (error) {
             console.error('Error fetching services:', error);
+            setOurServices([]); // Set to empty array on error
         }
     };
 

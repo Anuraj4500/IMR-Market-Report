@@ -99,7 +99,7 @@ const ContactUs = () => {
     <section className="inner-page">
       <Breadcrumb items={breadcrumbItems} />
       <div className="container mt-4">
-        <div className="row">
+        <div className="row justify-content-center">
           <div className="section-title">
             <h2>
               Contact <span>Us</span>
@@ -215,11 +215,11 @@ const ContactUs = () => {
           </div>
           <div className="col-lg-4">
             <div className="card">
-              <div className="card-header">OUR OFFICES</div>
+              <div className="card-header style-card-header">OUR OFFICES</div>
               <div className="card-body">
-                <h5>IMR Market Reports</h5>
+                <h6><b>IMR Market Reports</b></h6>
                 <p>
-                  <strong>APAC Office:</strong> Kothrud, Pune, India
+                  <strong>APAC Office:</strong> Office No. 403, Saudamini Commercial Complex, Kothrud, Pune, India 411038
                 </p>
               </div>
             </div>

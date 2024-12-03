@@ -77,7 +77,7 @@ function App() {
             <Route path="/Our-Services" element={<OurServices />} />
             <Route path="/Ask-Discount/:slug" element={<AskDiscount />} />
             <Route path="/thank-you" element={<Thankyou />} />
-            <Route path="/Checkout/:id" element={<CheckoutPage />} />
+            <Route path="/Checkout/:slug" element={<CheckoutPage />} />
           </Routes>
         </div>
         <Footer />

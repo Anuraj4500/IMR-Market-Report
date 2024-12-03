@@ -2,7 +2,7 @@ import React from 'react';
 
 function ServiceFeature() {
   return (
-    <div className="container">
+    <div className="container-fluid p-0">
     
         <div className="card license">
           <div className="card-header style-card-header">

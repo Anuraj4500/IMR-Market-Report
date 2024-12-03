@@ -30,7 +30,7 @@ function IndustryCard() {
                     <div className="card-body p-0 px-3">
                         <ul>
                         {category.map(category => (
-              <li key={category._id}>
+              <li key={category.id}>
                 <Link to = {`/${category.slug}/`}>
                   {category.title}
                 </Link>

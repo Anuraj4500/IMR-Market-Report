@@ -19,9 +19,9 @@ const AssistanceCard = () => {
                     {/* Name, Designation, and Social Icons Column */}
                     <div className="col-md-5 col-sm-12 text-center text-md-left p-0">
                         <h5 className="speak-card-title mb-2">Need Assistance</h5>
-  
+                        <p className='speak-card-text text-primary'>Jesus Echeverria</p>
                         <div className="social-icons justify-content-center">
-                            <a href="#" target="_blank" className="mx-2"><i className="fab fa-linkedin"></i> +91-81800-96367</a><br />
+                            <a href="#" target="_blank" className="mx-2"><i class="fa-solid fa-phone"></i> +91-81800-96367</a><br />
                             <a href="#" target="_blank" className="mx-2"><i className="fas fa-envelope"></i> Email Us</a><br />
                             <a href="#" target="_blank" className="mx-2"><i className="fab fa-twitch"></i> Skype Us</a>
                         </div>

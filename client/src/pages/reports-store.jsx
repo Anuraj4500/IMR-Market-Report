@@ -22,7 +22,7 @@ const ReportsStore = () => {
             try {
                 setLoading(true);
                 const response = await axios.get(`http://localhost:5000/api/reports?page=${page}&limit=10`);
-                console.log(response.data);
+                console.log("API Response:", response.data);
                 setReports(response.data.reports || []);
                 setTotalPages(response.data.totalPages || 0);
                 setError(null);
@@ -62,7 +62,7 @@ const ReportsStore = () => {
                                 {Array.isArray(reports) && reports.length > 0 ? (
                                     reports.map(report => (
                                         <ReportCard
-                                            key={report._id}
+                                            key={report.id}
                                             {...report}
                                         />
                                     ))

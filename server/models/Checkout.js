@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
- 
+
 const checkoutSchema = new mongoose.Schema({
     id: String,
     customerInfo: {
@@ -21,6 +21,5 @@ const checkoutSchema = new mongoose.Schema({
     orderDate: Date,
     paymentStatus: String
 });
- 
-module.exports = mongoose.model('Checkout', checkoutSchema);
- 
+
+module.exports = mongoose.model('Checkout', checkoutSchema); 
