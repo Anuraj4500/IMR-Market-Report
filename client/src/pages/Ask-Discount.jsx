@@ -82,7 +82,7 @@ function AskDiscount() {
             console.log('Sending Discount request data:', discountRequestData);
 
             const response = await axios.post(
-                'imr-market-report-server.vercel.app/api/ask-discount',
+                'https://imr-market-report-server.vercel.app/api/ask-discount',
                 discountRequestData,
                 {
                     headers: {

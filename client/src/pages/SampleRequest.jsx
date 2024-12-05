@@ -82,7 +82,7 @@ function SampleRequest() {
 
             console.log("sampleRequestData",sampleRequestData);
             const response = await axios.post(
-                'imr-market-report-server.vercel.app/api/samplerequest',
+                'https://imr-market-report-server.vercel.app/api/samplerequest',
                 sampleRequestData,
                 { headers: { 'Content-Type': 'application/json' } }
             );

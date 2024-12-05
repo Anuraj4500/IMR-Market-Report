@@ -11,7 +11,7 @@ const NavMenu = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const API_URL = process.env.REACT_APP_API_URL || 'imr-market-report-server.vercel.app';
+        const API_URL = process.env.REACT_APP_API_URL || 'https://imr-market-report-server.vercel.app';
         const response = await axios.get(`${API_URL}/api/category`);
         console.log('Fetched categories:', response.data); // Log the fetched data
         setCategory(response.data);

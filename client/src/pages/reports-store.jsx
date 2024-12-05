@@ -21,7 +21,7 @@ const ReportsStore = () => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`imr-market-report-server.vercel.app/api/reports?page=${page}&limit=10`);
+                const response = await axios.get(`https://imr-market-report-server.vercel.app/api/reports?page=${page}&limit=10`);
                 console.log("API Response:", response.data);
 
                 if (Array.isArray(response.data)) {

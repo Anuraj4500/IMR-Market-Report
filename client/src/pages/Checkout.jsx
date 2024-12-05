@@ -111,7 +111,7 @@ function Checkout() {
             };
 
             const response = await axios.post(
-                'imr-market-report-server.vercel.app/api/checkout',
+                'https://imr-market-report-server.vercel.app/api/checkout',
                 sampleRequestData,
                 { headers: { 'Content-Type': 'application/json' } }
             );

@@ -19,7 +19,7 @@ function Home() {
   useEffect(() => {
     const fetchLatestReports = async () => {
       try {
-        const response = await axios.get('imr-market-report-server.vercel.app/api/reports'); 
+        const response = await axios.get('https://imr-market-report-server.vercel.app/api/reports'); 
         console.log("Full response:", response); // Check full structure
         // Assuming the response data is structured like { data: { reports: [] } }
         const reports = Array.isArray(response.data) ? response.data : response.data.reports || [];

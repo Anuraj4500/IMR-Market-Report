@@ -19,7 +19,7 @@ const Reports = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('imr-market-report-server.vercel.app/api/category');
+                const response = await axios.get('https://imr-market-report-server.vercel.app/api/category');
                 setCategories(response.data);
             } catch (err) {
                 console.error("Error fetching categories:", err);
@@ -32,7 +32,7 @@ const Reports = () => {
     useEffect(() => {
         const fetchPublishers = async () => {
             try {
-                const response = await axios.get('imr-market-report-server.vercel.app/api/publishers');
+                const response = await axios.get('https://imr-market-report-server.vercel.app/api/publishers');
                 setPublishers(response.data);
             } catch (err) {
                 console.error("Error fetching publishers:", err);
@@ -50,7 +50,7 @@ const Reports = () => {
         const fetchReport = async () => {
             try {
                 console.log("Fetching report with slug:", url);
-                const response = await axios.get(`imr-market-report-server.vercel.app/api/reports/slug/${url}`);
+                const response = await axios.get(`https://imr-market-report-server.vercel.app/api/reports/slug/${url}`);
                 setReportData(response.data);
                 setLoading(false);
             } catch (err) {
@@ -82,7 +82,7 @@ const Reports = () => {
                 <div className="container">
                     <div className="d-flex justify-content-between align-items-center">
                         <ol>
-                            <li><a href="https://www.imrmarketreports.com">Home</a></li>
+                            <li><a href="/">Home</a></li>
                             <li>{category ? category.title : 'Unknown Category'}</li>
                             <li>{reportData.keyword}</li>
                         </ol>

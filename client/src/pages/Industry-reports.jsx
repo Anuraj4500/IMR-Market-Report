@@ -20,7 +20,7 @@ const ReportsStore = () => {
     
                 // Fetch the category by slug
                 const categoryResponse = await axios.get(
-                    `imr-market-report-server.vercel.app/api/category?slug=${slug}`
+                    `https://imr-market-report-server.vercel.app/api/category?slug=${slug}`
                 );
                 console.log("Category Response:", categoryResponse.data); // Log the response
     
@@ -34,7 +34,7 @@ const ReportsStore = () => {
     
                 // Fetch reports where cid matches the category id
                 const reportsResponse = await axios.get(
-                    `imr-market-report-server.vercel.app/api/reports?categoryId=${category.id}`
+                    `https://imr-market-report-server.vercel.app/api/reports?categoryId=${category.id}`
                 );
                 const matchedReports = reportsResponse.data;
     

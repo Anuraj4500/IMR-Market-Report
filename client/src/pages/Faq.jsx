@@ -12,7 +12,7 @@ const FAQ = () => {
     const fetchFaqs = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('imr-market-report-server.vercel.app/api/faqs');
+        const response = await axios.get('https://imr-market-report-server.vercel.app/api/faqs');
         setFaqs(response.data);
         setError(null);
       } catch (err) {

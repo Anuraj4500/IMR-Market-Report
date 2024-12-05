@@ -30,7 +30,7 @@ const ContactUs = () => {
     setIsSubmitting(true);
 
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'imr-market-report-server.vercel.app/api/contactus';
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://imr-market-report-server.vercel.app/api/contactus';
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
