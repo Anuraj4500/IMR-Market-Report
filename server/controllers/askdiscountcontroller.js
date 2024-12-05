@@ -1,5 +1,6 @@
-const AskDiscount = require('../models/askdiscount');
+const AWS = require('aws-sdk');
 const nodemailer = require('nodemailer');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
@@ -9,19 +10,46 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 });
+transporter.verify((error) => {
+    if (error) {
+        console.error('Email configuration error:', error);
+    } else {
+        console.log('Email configuration is valid.');
+    }
+  });
+  console.log('Email User:', process.env.EMAIL_USER);
+  console.log('Email Pass:', process.env.EMAIL_PASS);
 // Create a new discount request
-exports.createAskDiscount = async (req, res) => {
+
+const submitAskDiscount = async (req, res) => {
     try {
          // Add IP address to the request body
-        req.body.ipAddress = req.ip;
-        const newRequest = new AskDiscount(req.body);
-        const savedRequest = await newRequest.save();
+        const { reportTitle,name, email, phone, country, company, designation, message } = req.body;
+        if ( reportTitle,!name || !email || !phone || !country || !company || !designation ) {
+            return res.status(400).json({ message: 'All fields are required except message.' });
+        }
+        const id = Date.now().toString();
 
-        // Send email notification
-        const mailOptions = {
+        const askDiscountEntry = {
+            TableName: 'discount',
+            Item: {
+                id,
+                reportTitle,
+                name,
+                email,
+                phone,
+                country,
+                company,
+                designation,
+                message,
+            }
+        };
+        await dynamoDB.put(askDiscountEntry).promise();
+            // Send email notification
+        const emailNotification = {
             from: process.env.EMAIL_USER,
             to: 'namarata@introspectivemarketresearch.com', // Assuming the email is provided in the request body
-            subject: 'Discount Request Confirmation',
+            subject: `Discount Request Confirmation - ${req.body.reportTitle}`,
             html: `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
                 <h2 style="color: #0056b3; text-align: center;">New Ask for Discount Request Submitted</h2>
@@ -66,17 +94,21 @@ exports.createAskDiscount = async (req, res) => {
             </div>
         `,
         };
-        await transporter.sendMail(mailOptions); // Send the email
+        await transporter.sendMail(emailNotification); // Send the email
 
-        res.status(201).json({ message: 'Discount request created successfully', data: savedRequest });
+        res.status(201).json({ message: 'Discount request created successfully!' });
     } catch (error) {
-        console.error('Error creating discount request:', error);
-        res.status(500).json({ message: 'Error creating discount request', error: error.message });
+    console.error('Error saving submission:', error);
+    if (error.message.includes('Invalid login')) {
+        console.error('Invalid email credentials. Check your configuration.');
+        return res.status(401).json({ message: 'Invalid email credentials. Please check your email configuration.' });
     }
+    res.status(500).json({ message: 'Error saving submission.', error: error.message });
+}
 };
 
 // Get all discount requests
-exports.getAllAskDiscounts = async (req, res) => {
+const getAllAskDiscounts = async (req, res) => {
     try {
         const requests = await AskDiscount.find();
         res.status(200).json(requests);
@@ -87,10 +119,12 @@ exports.getAllAskDiscounts = async (req, res) => {
 };
 
 // Get a specific discount request by ID
-exports.getAskDiscountById = async (req, res) => {
+const getAskDiscountById = async (req, res) => {
     try {
         const request = await AskDiscount.findById(req.params.id);
-        if (!request) return res.status(404).json({ message: 'Discount request not found' });
+        if (!request) {
+            return res.status(404).json({ message: 'Discount request not found' });
+        }
         res.status(200).json(request);
     } catch (error) {
         console.error('Error fetching discount request:', error);
@@ -99,25 +133,19 @@ exports.getAskDiscountById = async (req, res) => {
 };
 
 // Update a discount request
-exports.updateAskDiscount = async (req, res) => {
-    try {
-        const updatedRequest = await AskDiscount.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedRequest) return res.status(404).json({ message: 'Discount request not found' });
-        res.status(200).json({ message: 'Discount request updated successfully', data: updatedRequest });
-    } catch (error) {
-        console.error('Error updating discount request:', error);
-        res.status(500).json({ message: 'Error updating discount request', error: error.message });
-    }
-};
+
 
 // Delete a discount request
-exports.deleteAskDiscount = async (req, res) => {
+        const deleteAskDiscountById  = async (req, res) => {
     try {
-        const deletedRequest = await AskDiscount.findByIdAndDelete(req.params.id);
-        if (!deletedRequest) return res.status(404).json({ message: 'Discount request not found' });
-        res.status(200).json({ message: 'Discount request deleted successfully', data: deletedRequest });
+        const deletedRequest = await addAskDiscount.findByIdAndDelete(req.params.id );
+        if (!deletedRequest) {
+           return res.status(404).json({ message: 'Discount request not found' });
+        }
+        res.status(200).json({ message: 'Discount request deleted successfully' });
     } catch (error) {
         console.error('Error deleting discount request:', error);
         res.status(500).json({ message: 'Error deleting discount request', error: error.message });
     }
 };
+module.exports={submitAskDiscount,getAllAskDiscounts,getAskDiscountById,deleteAskDiscountById}

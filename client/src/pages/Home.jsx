@@ -124,10 +124,10 @@ function Home() {
               <p>We are a global market research company, specialized in using big data and advanced analytics with strategic consulting covering more than 12 industrial verticals like Food and Beverages, Consumer Goods, Service Industry, Chemicals and Materials and etc.</p>
             </div>
 
-            <div className="row">
+            <div className="row align-items-center justify-content-center text-center">
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '157px' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i class="fas fa-fighter-jet"></i></div>
                     <h4 className="title"><a href="https://imrmarketreports.com/aerospace-defense">Aerospace &amp; Defense</a></h4>
 
@@ -137,7 +137,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0" style={{ width: '100%' }}>
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-tractor"></i></div>
                     <h4 className="title"><a href=" https://imrmarketreports.com/agricluture">Agriculture</a></h4>
                   </div>
@@ -146,7 +146,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-truck"></i></div>
                     <h4 className="title"><a href="https://imrmarketreports.com/automotive-transport">Automotive &amp; Transport</a></h4>
                   </div>
@@ -155,7 +155,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-flask"></i></div>
                     <h4 className="title"><a href=" https://www.imrmarketreports.com/chemicals-materials">Chemicals &amp; Materials</a></h4>
                   </div>
@@ -164,8 +164,8 @@ function Home() {
 
             </div>
             <br />
-            <div className="row">
-              <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0" style={{ height: '90%' }}>
+            <div className="row align-items-center justify-content-center text-center">
+              <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0" style={{ height: '160px' }}>
                 <a href="#" style={{ cursor: 'pointer' }}>
                   <div className="icon-box" data-aos="fade-up" data-aos-delay="300">
                     <div className="icon"><i className="fas fa-shopping-cart"></i></div>
@@ -176,7 +176,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-0 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="300" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="300" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-microchip"></i></div>
                     <h4 className="title"><a href="#">Electronics &amp; Semiconductors</a></h4>
                   </div>
@@ -185,7 +185,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-solar-panel"></i></div>
                     <h4 className="title"><a href="#">Energy &amp; Natural Resources</a></h4>
                   </div>
@@ -194,7 +194,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-apple-alt"></i></div>
                     <h4 className="title"><a href="#">Food &amp; Beverages</a></h4>
                   </div>
@@ -203,10 +203,10 @@ function Home() {
 
             </div>
             <br />
-            <div className="row">
+            <div className="row align-items-center justify-content-center text-center">
               <div className="col-lg-3 align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-heartbeat"></i></div>
                     <h4 className="title"><a href="#">Healthcare</a></h4>
                   </div>
@@ -215,7 +215,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-calculator"></i></div>
                     <h4 className="title"><a href="#">IT &amp; Telecom</a></h4>
                   </div>
@@ -224,7 +224,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-industry"></i></div>
                     <h4 className="title"><a href="#">Manufacturing &amp; Construction</a></h4>
                   </div>
@@ -233,7 +233,7 @@ function Home() {
 
               <div className="col-lg-3  align-items-stretch mb-5 mb-lg-0">
                 <a href="#" style={{ cursor: 'pointer' }}>
-                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '90%' }}>
+                  <div className="icon-box" data-aos="fade-up" data-aos-delay="400" style={{ height: '160px' }}>
                     <div className="icon"><i className="fas fa-hotel"></i></div>
                     <h4 className="title"><a href="#">Service Industry</a></h4>
                   </div>

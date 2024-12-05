@@ -10,25 +10,27 @@ const Agriculture = () => {
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const title = "Agriculture";
     const description =
-        "The consumer goods industry is a diverse sector that includes a wide range of products that are essential for daily life.";
+        "The agriculture industry is a diverse sector that includes a wide range of products that are essential for daily life.";
 
     useEffect(() => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:5000/api/reports?cid=2&page=${page}&limit=10`);
+                const response = await axios.get(`http://localhost:5000/api/reports/cid`, {
+                    params: { cid: '2', page: currentPage }
+                });
                 
                 console.log("API Response:", response.data); // Debug: Raw API response
 
-                const extractedReports = response.data.reports || response.data.data || response.data.payload?.reports || [];
+                const extractedReports = response.data.reports || [];
                 console.log("Extracted Reports:", extractedReports); // Debug: Extracted reports
 
                 setReports(extractedReports); // Save extracted data
-                setTotalPages(response.data.totalPages || 0); // Set total pages
+                setTotalPages(response.data.totalPages);
             } catch (err) {
                 console.error("Error fetching reports:", err);
                 setError(
@@ -40,10 +42,10 @@ const Agriculture = () => {
         };
 
         fetchReports();
-    }, [page]);
+    }, [currentPage]);
 
     const handlePageChange = (newPage) => {
-        setPage(newPage);
+        setCurrentPage(newPage);
     };
 
     if (loading) {
@@ -61,23 +63,18 @@ const Agriculture = () => {
                     ) : (
                         <div className="row">
                             <div className="col-lg-9 order-md-2">
-                                {Array.isArray(reports) && reports.length > 0 ? (
-                                    <>
-                                        {reports.map((report, index) => (
-                                            <ReportCard
-                                                key={report._id || index}
-                                                {...report}
-                                            />
-                                        ))}
-                                        <Pagination 
-                                            page={page} 
-                                            totalPages={totalPages} 
-                                            onPageChange={handlePageChange} 
-                                        />
-                                    </>
+                            {Array.isArray(reports) && reports.length > 0 ? (
+                                    reports.map(report => (
+                                        <ReportCard key={report.id} {...report} />
+                                    ))
                                 ) : (
                                     <div>No reports available.</div>
                                 )}
+                                <Pagination 
+                                    page={currentPage} 
+                                    totalPages={totalPages} 
+                                    onPageChange={handlePageChange} 
+                                />
                             </div>
 
                             <div className="col-lg-3 order-md-1">

@@ -1,11 +1,24 @@
-const mongoose = require('mongoose');
+const AWS = require('aws-sdk');
+const dynamoDB = new AWS.DynamoDB.DocumentClient(); 
 
-const askdiscountSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Name is required'],
-        trim: true
-    },
+const TABLE_NAME = 'discount';
+
+const addAskDiscount = async (discountRequest) => {
+    const params = {
+        TableName: TABLE_NAME,
+        Item: discountRequest
+    };
+    await dynamoDB.put(params).promise();
+};
+
+try{
+    await addSampleRequest(sampleRequest);
+    return { success: true };
+  } catch (error) {
+    console.error('DynamoDB put error:', error);
+    return { success: false, error };
+  }
+  const askdiscountSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Email is required'],
@@ -56,4 +69,4 @@ askdiscountSchema.pre('save', function(next) {
     next();
 });
 
-module.exports = mongoose.model('AskDiscount', askdiscountSchema);
+module.exports = {addAskDiscount};

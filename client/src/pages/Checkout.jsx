@@ -4,21 +4,21 @@ import axios from 'axios';
 import ServiceFeature from '../components/ServiceFeature';
 import Deliverables from '../components/Deliverables';
 import Breadcrumb from '../components/Breadcrumb';
- 
+
 function Checkout() {
     const { slug } = useParams();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const license = searchParams.get('license') || 'single';
- 
+
     const [reportData, setReportData] = useState({
         id: '',
         title: '',
         price: 0,
         userType: '',
-        captcha: 'ABC123'
+        captcha: 'ABC123',
     });
- 
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -28,11 +28,12 @@ function Checkout() {
         country: 'US',
         phone: '',
         message: '',
-        usercaptcha: ''
+        usercaptcha: '',
     });
- 
+
     const [loading, setLoading] = useState(true);
- 
+
+    // Fetch report data based on slug and license
     useEffect(() => {
         const fetchReportData = async () => {
             setLoading(true);
@@ -41,7 +42,7 @@ function Checkout() {
                 if (response.data) {
                     let price;
                     let userType;
-                    switch(license) {
+                    switch (license) {
                         case 'multi':
                             price = response.data.mprice;
                             userType = 'Multi User';
@@ -54,141 +55,93 @@ function Checkout() {
                             price = response.data.sprice;
                             userType = 'Single User';
                     }
-                   
+
                     setReportData({
                         id: response.data.id,
                         title: response.data.title,
-                        price: price,
-                        userType: userType,
-                        captcha: 'ABC123'
+                        price,
+                        userType,
+                        captcha: 'ABC123',
                     });
                 } else {
                     alert('No report data found.');
                 }
             } catch (err) {
-                console.error("Error fetching report data:", err);
+                console.error('Error fetching report data:', err);
                 alert('Error fetching report data. Please try again.');
             } finally {
                 setLoading(false);
             }
         };
- 
+
         fetchReportData();
     }, [slug, license]);
- 
+
+    // Handle form input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
+        setFormData((prevState) => ({
             ...prevState,
-            [name]: value
+            [name]: value,
         }));
     };
- 
+
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-   
+
         if (loading) {
             alert('Data is still loading. Please wait.');
             return;
         }
-   
+
         if (!reportData?.id) {
             alert('Report data not available. Please try again.');
             return;
         }
-   
+
         try {
             const sampleRequestData = {
                 ...formData,
-                reportId: reportData._id,
+                reportId: reportData.id, // Correctly reference `id` here
                 reportTitle: reportData.title,
-                slug: reportData.slug,
-                category: reportData.category,
-                requestDate: new Date().toISOString(),
+                userType: reportData.userType,
+                price: reportData.price,
+                orderDate: new Date().toISOString(),
             };
-   
+
             const response = await axios.post(
                 'http://localhost:5000/api/checkout',
                 sampleRequestData,
                 { headers: { 'Content-Type': 'application/json' } }
             );
-   
+
             if (response.status === 201) {
-            
+                // Reset the form after successful submission
                 setFormData({
                     name: '',
                     email: '',
-                    phone: '',
-                    country: '',
-                    company: '',
                     designation: '',
+                    city: '',
+                    state: '',
+                    country: 'US',
+                    phone: '',
                     message: '',
+                    usercaptcha: '',
                 });
+
                 alert('Sample request submitted successfully!');
-                window.location.href = '/thank-you'; // Redirect to thank-you page
+                window.location.href = '/thank-you';
             }
         } catch (err) {
-            console.error("Error submitting sample request:", err);
+            console.error('Error submitting sample request:', err);
             alert(err.response?.data?.message || 'Error submitting request. Please try again.');
         }
     };
-   
- 
-    useEffect(() => {
-        console.log("PayPal script loading...");
-       
-        const script = document.createElement('script');
-        // script.src = "https://www.paypal.com/sdk/js?client-id=AU-E2K8OU1d4hRlDPyXeBCTzH06roF3rOqutmlRLsPgTQu6jycBCOECkDYvzvjmrPVD410xedIsEfKEs&currency=USD";
-        script.async = true;
-   
-        script.onload = () => {
-            console.log("PayPal script loaded successfully.");
-            if (window.paypal) {
-                window.paypal.Buttons({
-                    createOrder: (data, actions) => {
-                        return actions.order.create({
-                            purchase_units: [{
-                                amount: {
-                                    value: reportData.price.toString()
-                                }
-                            }]
-                        });
-                    },
-                    onApprove: async (data, actions) => {
-                        const result = await actions.order.capture();
-                       
-                        try {
-                            // Update payment status in MongoDB
-                            await axios.put(`http://localhost:5000/api/checkout/${reportData.id}/payment`, {
-                                paymentStatus: 'completed',
-                                paypalOrderId: result.id
-                            });
-                            console.log('Payment successful and updated in MongoDB:', result);
-                        } catch (err) {
-                            console.error('Error updating payment status in MongoDB:', err);
-                        }
-                    }
-                }).render('#paypal-button-container');
-            } else {
-                console.error("PayPal SDK failed to load.");
-            }
-        };
-   
-        script.onerror = (err) => {
-            console.error("Error loading PayPal script:", err);
-        };
-   
-        document.body.appendChild(script);
-   
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, [reportData.price]);
-   
-    const breadcrumbItems = [
-        { label: 'Checkout' }
+const breadcrumbItems = [
+        { label: 'Checkout', url: `/checkout/${slug}` },
     ];
- 
+
     return (
         <div className="container-fluid p-0">
             <main id="main">

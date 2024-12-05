@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Breadcrumb from '../components/Breadcrumb';
 
 const OurClient = () => {
     const [clients, setClients] = useState([]);
-
+    const [refundData, setRefundData] = useState(null);
+    const breadcrumbItems = [
+      { label: 'Our Clients' }
+    ];
     useEffect(() => {
         const fetchClients = async () => {
             try {
@@ -26,8 +30,10 @@ const OurClient = () => {
     }, []);
 
     return (
-        <div className="container-fluid p-0">
-            <section className="client-logo-area-two pt-0 rpt-70 pb-2 rpb-60 bgp-center services-section">
+        <>
+            <Breadcrumb items={breadcrumbItems} />
+            <div className="container-fluid p-0">
+                <section className="client-logo-area-two pt-0 rpt-70 pb-2 rpb-60 bgp-center services-section">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12 text-center p-4 pt-0">
@@ -50,7 +56,8 @@ const OurClient = () => {
                     </div>
                 </div>
             </section>
-        </div>
+            </div>
+        </>
     );
 };
 

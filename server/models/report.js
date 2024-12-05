@@ -1,15 +1,33 @@
 const AWS = require('aws-sdk');
-
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = 'report';
 
 // Fetch all reports
 const getAllReports = async () => {
-    const params = {
-        TableName: TABLE_NAME,
-    };
+    const params = { TableName: TABLE_NAME };
     const data = await dynamoDB.scan(params).promise();
     return data.Items;
+};
+
+// Fetch reports by cid
+const getReportsByCid = async (cid, page = 1, limit = 10) => {
+    const params = {
+        TableName: TABLE_NAME,
+        FilterExpression: '#cid = :cid',
+        ExpressionAttributeNames: { '#cid': 'cid' },
+        ExpressionAttributeValues: { ':cid': Number(cid) }, // Convert cid to a number
+    };
+
+    const data = await dynamoDB.scan(params).promise();
+
+    // Pagination logic
+    const startIndex = (page - 1) * limit;
+    const paginatedItems = data.Items.slice(startIndex, startIndex + limit);
+
+    return {
+        reports: paginatedItems,
+        totalPages: Math.ceil(data.Items.length / limit),
+    };
 };
 
 // Fetch report by ID
@@ -22,35 +40,20 @@ const getReportById = async (id) => {
     return data.Item;
 };
 
-// Fetch report by slug (requires GSI on 'slug')
+// Fetch report by slug
 const getReportBySlug = async (slug) => {
     const params = {
         TableName: TABLE_NAME,
-        IndexName: 'slug-index', // GSI Name
-        KeyConditionExpression: 'slug = :slug',
-        ExpressionAttributeValues: {
-            ':slug': slug,
-        },
+        FilterExpression: '#slug = :slug',
+        ExpressionAttributeNames: { '#slug': 'slug' },
+        ExpressionAttributeValues: { ':slug': slug },
     };
-    const data = await dynamoDB.query(params).promise();
-    return data.Items[0]; // Assuming slug is unique
-};
 
-// Search reports by keywords or title
-const searchReports = async (query) => {
-    const params = {
-        TableName: TABLE_NAME,
-        FilterExpression: 'contains(#title, :query) OR contains(#keywords, :query)',
-        ExpressionAttributeNames: {
-            '#title': 'title',
-            '#keywords': 'keywords',
-        },
-        ExpressionAttributeValues: {
-            ':query': query,
-        },
-    };
     const data = await dynamoDB.scan(params).promise();
-    return data.Items;
+    if (!data.Items || data.Items.length === 0) {
+        throw new Error('Report not found');
+    }
+    return data.Items[0];
 };
 
 // Create a new report
@@ -89,12 +92,31 @@ const deleteReport = async (id) => {
     await dynamoDB.delete(params).promise();
 };
 
+// Search reports by query
+const searchReports = async (query) => {
+    const params = {
+        TableName: TABLE_NAME,
+        FilterExpression: 'contains(#title, :query) OR contains(#summary, :query)',
+        ExpressionAttributeNames: {
+            '#title': 'title',
+            '#summary': 'summary',
+        },
+        ExpressionAttributeValues: {
+            ':query': query,
+        },
+    };
+
+    const data = await dynamoDB.scan(params).promise();
+    return data.Items;
+};
+
 module.exports = {
     getAllReports,
+    getReportsByCid,
     getReportById,
     getReportBySlug,
-    searchReports,
     createReport,
     updateReport,
     deleteReport,
+    searchReports,
 };

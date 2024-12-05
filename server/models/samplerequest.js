@@ -1,4 +1,22 @@
-const mongoose = require('mongoose');
+const AWS = require('aws-sdk');
+const dynamoDB = new AWS.DynamoDB.DocumentClient(); 
+
+const TABLE_NAME = 'request_samples';
+
+const addSampleRequest = async (sampleRequest) => {
+    const params = {
+        TableName: TABLE_NAME,
+        Item: sampleRequest
+    };
+    await dynamoDB.put(params).promise();
+};
+try{
+  await addSampleRequest(sampleRequest);
+  return { success: true };
+} catch (error) {
+  console.error('DynamoDB put error:', error);
+  return { success: false, error };
+}
 
 const sampleRequestSchema = new mongoose.Schema({
     name: {
@@ -56,4 +74,4 @@ sampleRequestSchema.pre('save', function(next) {
     next();
 });
 
-module.exports = mongoose.model('SampleRequest', sampleRequestSchema);
+module.exports = { addSampleRequest };

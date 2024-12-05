@@ -50,39 +50,18 @@ const Reports = () => {
         const fetchReport = async () => {
             try {
                 console.log("Fetching report with slug:", url);
-                const response = await axios.get(`http://localhost:5000/api/reports/${url}`);
+                const response = await axios.get(`http://localhost:5000/api/reports/slug/${url}`);
                 setReportData(response.data);
-                setError(null);
-                fetchRelatedReports(response.data.cid);
+                setLoading(false);
             } catch (err) {
                 console.error("Error fetching report:", err);
-                console.error("Attempted slug:", url);
-                if (err.response) {
-                    console.error("Response data:", err.response.data);
-                    console.error("Response status:", err.response.status);
-                    setError(err.response.data.message || 'Unable to fetch report. Please try again later.');
-                } else {
-                    setError('Network error. Please check your connection.');
-                }
-            } finally {
+                setError(err.response?.data?.message || 'Unable to fetch report. Please try again later.');
                 setLoading(false);
-            }
-        };
-
-        const fetchRelatedReports = async (cid) => {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/reports?cid=${cid}`);
-                setRelatedReports(response.data.reports);
-            } catch (err) {
-                console.error("Error fetching related reports:", err);
             }
         };
 
         if (url) {
             fetchReport();
-        } else {
-            setLoading(false);
-            setError('Report url is missing.');
         }
     }, [url]);
 

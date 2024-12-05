@@ -3120,6 +3120,7 @@ section {
 .iconic-box.style-seven:hover .icon {
     background: #ffffff;
     color: #FA6742;
+    text-align: center;
 }
 .iconic-box.style-seven:hover h5 a {
     color: #ffffff;

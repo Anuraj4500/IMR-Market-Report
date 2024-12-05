@@ -1,5 +1,6 @@
-const SampleRequest = require('../models/sampleRequest');
+const AWS = require('aws-sdk');
 const nodemailer = require('nodemailer');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
@@ -9,21 +10,50 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     }
 });
+// Verify Nodemailer configuration
+transporter.verify((error) => {
+  if (error) {
+      console.error('Email configuration error:', error);
+  } else {
+      console.log('Email configuration is valid.');
+  }
+});
 
-// Create a new sample request
-exports.createSampleRequest = async (req, res) => {
+console.log('Email User:', process.env.EMAIL_USER);
+console.log('Email Pass:', process.env.EMAIL_PASS);
+
+// Function to submit a new sample request
+const submitSampleRequest = async (req, res) => {
     try {
-        // Add IP address to the request body
-        req.body.ipAddress = req.ip;
+        const { reportTitle,name, email, phone, country, company, designation, message } = req.body;
 
-        const newRequest = new SampleRequest(req.body);
-        await newRequest.save();
+        if ( reportTitle,!name || !email || !phone || !country || !company || !designation) {
+            return res.status(400).json({ message: 'All fields are required except message.' });
+        } 
+        const id = Date.now().toString();     
+
+        // Insert into DynamoDB
+        const sampleRequestEntry = {
+            TableName: 'request_samples',
+            Item: {
+                id,
+                reportTitle,
+                name,
+                email,
+                phone,
+                country,
+                company,
+                designation,
+                message,
+            }
+        };
+          await dynamoDB.put(sampleRequestEntry).promise();
 
         // Send email notification
-        const mailOptions = {
+        const emailNotification = {
             from: process.env.EMAIL_USER,
             to: 'namarata@introspectivemarketresearch.com',
-            subject: 'New Sample Request Submitted',
+            subject: `New Sample Request Submitted - ${req.body.reportTitle}`,
             html: `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px;">
                 <h2 style="color: #0056b3; text-align: center;">New Sample Request Submitted</h2>
@@ -70,17 +100,21 @@ exports.createSampleRequest = async (req, res) => {
         };
 
         // Send the email
-        await transporter.sendMail(mailOptions);
+        await transporter.sendMail(emailNotification);
 
-        res.status(201).json({ message: 'Request stored successfully', request: newRequest });
+        res.status(200).json({ message: 'Form submitted successfully!' });
     } catch (error) {
-        console.error('Error saving request:', error);
-        res.status(500).json({ message: 'Error storing request', error: error.message });
+        console.error('Error saving submission:', error);
+        if (error.message.includes('Invalid login')) {
+            console.error('Invalid email credentials. Check your configuration.');
+            return res.status(401).json({ message: 'Invalid email credentials. Please check your email configuration.' });
+        }
+        res.status(500).json({ message: 'Error saving submission.', error: error.message });
     }
 };
 
-// Fetch all sample requests
-exports.getAllSampleRequests = async (req, res) => {
+// Function to fetch all sample requests
+const getAllSampleRequests = async (req, res) => {
     try {
         const requests = await SampleRequest.find();
         res.status(200).json(requests);
@@ -90,8 +124,8 @@ exports.getAllSampleRequests = async (req, res) => {
     }
 };
 
-// Fetch a specific sample request by ID
-exports.getSampleRequestById = async (req, res) => {
+// Function to fetch a specific sample request by ID
+const getSampleRequestById = async (req, res) => {
     try {
         const request = await SampleRequest.findById(req.params.id);
         if (!request) {
@@ -104,8 +138,8 @@ exports.getSampleRequestById = async (req, res) => {
     }
 };
 
-// Delete a specific sample request by ID
-exports.deleteSampleRequestById = async (req, res) => {
+// Function to delete a specific sample request by ID
+const deleteSampleRequestById = async (req, res) => {
     try {
         const deletedRequest = await SampleRequest.findByIdAndDelete(req.params.id);
         if (!deletedRequest) {
@@ -117,3 +151,6 @@ exports.deleteSampleRequestById = async (req, res) => {
         res.status(500).json({ message: 'Error deleting request', error: error.message });
     }
 };
+
+// Export the functions
+module.exports = { submitSampleRequest, getAllSampleRequests, getSampleRequestById, deleteSampleRequestById };

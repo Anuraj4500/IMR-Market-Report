@@ -76,15 +76,19 @@ function SampleRequest() {
                 slug: reportData.slug,
                 category: reportData.category,
                 requestDate: new Date().toISOString(),
+                requestType: 'sample',
+                status: 'pending'
             };
 
+            console.log("sampleRequestData",sampleRequestData);
             const response = await axios.post(
-                'http://localhost:5000/api/sample-requests',
+                'http://localhost:5000/api/samplerequest',
                 sampleRequestData,
                 { headers: { 'Content-Type': 'application/json' } }
             );
+            console.log("server response",response.data);
 
-            if (response.status === 201) {
+            if (response.status === 200) {
                 // Clear form and redirect to thank-you page
                 setFormData({
                     name: '',

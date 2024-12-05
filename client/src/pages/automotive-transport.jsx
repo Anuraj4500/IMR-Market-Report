@@ -20,13 +20,22 @@ const AutomotiveTransport = () => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:5000/api/reports?cid=3&page=${currentPage}`);
+                const response = await axios.get(`http://localhost:5000/api/reports/cid`, {
+                    params: { cid: '3', page: currentPage }
+                });
                 
-                const extractedReports = response.data.reports || response.data.data || response.data.payload?.reports || [];
-                setReports(extractedReports);
+                console.log("API Response:", response.data); // Debug: Raw API response
+
+                const extractedReports = response.data.reports || [];
+                console.log("Extracted Reports:", extractedReports); // Debug: Extracted reports
+
+                setReports(extractedReports); // Save extracted data
                 setTotalPages(response.data.totalPages);
             } catch (err) {
-                setError(err.response?.data?.message || 'Unable to fetch reports. Please try again later.');
+                console.error("Error fetching reports:", err);
+                setError(
+                    err.response?.data?.message || 'Unable to fetch reports. Please try again later.'
+                );
             } finally {
                 setLoading(false);
             }
@@ -35,8 +44,8 @@ const AutomotiveTransport = () => {
         fetchReports();
     }, [currentPage]);
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
     };
 
     if (loading) {
@@ -46,6 +55,7 @@ const AutomotiveTransport = () => {
     return (
         <div>
             <IndustriesBreadcrumb title={title} description={description} />
+
             <section className="inner-page">
                 <div className="container">
                     {error ? (
@@ -53,12 +63,9 @@ const AutomotiveTransport = () => {
                     ) : (
                         <div className="row">
                             <div className="col-lg-9 order-md-2">
-                                {Array.isArray(reports) && reports.length > 0 ? (
-                                    reports.map((report, index) => (
-                                        <ReportCard
-                                            key={report._id || index}
-                                            {...report}
-                                        />
+                            {Array.isArray(reports) && reports.length > 0 ? (
+                                    reports.map(report => (
+                                        <ReportCard key={report.id} {...report} />
                                     ))
                                 ) : (
                                     <div>No reports available.</div>
@@ -69,6 +76,7 @@ const AutomotiveTransport = () => {
                                     onPageChange={handlePageChange} 
                                 />
                             </div>
+
                             <div className="col-lg-3 order-md-1">
                                 <IndustryCard />
                                 <AssistanceCard2 />

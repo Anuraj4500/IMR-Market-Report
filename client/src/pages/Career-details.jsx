@@ -19,23 +19,58 @@ const CareerDetails = () => {
     setFormData({ ...formData, file: e.target.files[0] });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/careerform';
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('mobile', formData.mobile);
+    formDataToSend.append('file', formData.file);
+    formDataToSend.append('captcha', formData.captcha);
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit the form');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
+      alert('Your application has been submitted successfully!');
+      window.location.href = '/thank-you';
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your application. Please try again.');
+    }
   };
 
-  const breadcrumbItems = [
-       
-    { label: 'Career Details' }
-];
+  const breadcrumbItems = [{ label: 'Career Details' }];
 
   return (
     <div className='container-fluid p-0'>
       <Breadcrumb items={breadcrumbItems} />
-      <div className="job-application-page" style={{ display: 'flex', gap: '20px', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        
+      
+      <div
+        className="job-application-page"
+        style={{ display: 'flex', gap: '20px', padding: '20px', fontFamily: 'Arial, sans-serif' }}
+      >
         {/* Job Description Section */}
-        <div className="job-description" style={{ flex: '2', backgroundColor: '#f7f9fc', padding: '20px', border: '1px solid #e0e0e0' }}>
+        <div
+          className="job-description"
+          style={{
+            flex: '2',
+            backgroundColor: '#f7f9fc',
+            padding: '20px',
+            border: '1px solid #e0e0e0',
+          }}
+        >
+          <div className="job-description" style={{ flex: '2', backgroundColor: '#f7f9fc', padding: '20px', border: '1px solid #e0e0e0' }}>
           <h3 style={{ color: '#1b365d' }}>Job Description:</h3>
           <table class="custom-table">
     <tr>
@@ -77,11 +112,35 @@ const CareerDetails = () => {
           <p><strong>Phone:</strong> <a href="tel:+918180096367">+91-81800-96367</a></p>
 
         </div>
+        </div>
 
         {/* Resume Form Section */}
-        <div className="form-container" style={{ flex: '1', backgroundColor: '#f7f9fc',  border: '1px solid #e0e0e0' }}>
-          <div className="form-header" style={{ fontSize: '18px', fontWeight: 'bold', color: 'white', marginBottom: '20px',background:'#fa6742' }}>Submit Your Resume</div>
-          <form onSubmit={handleSubmit} encType="multipart/form-data" style={{padding:'0 10px'}}>
+        <div
+          className="form-container"
+          style={{
+            flex: '1',
+            backgroundColor: '#f7f9fc',
+            border: '1px solid #e0e0e0',
+          }}
+        >
+          <div
+            className="form-header"
+            style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              color: 'white',
+              marginBottom: '20px',
+              background: '#fa6742',
+              padding: '10px',
+            }}
+          >
+            Submit Your Resume
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            encType="multipart/form-data"
+            style={{ padding: '0 10px' }}
+          >
             <label htmlFor="name">Name</label>
             <input
               type="text"
@@ -92,7 +151,7 @@ const CareerDetails = () => {
               required
               style={inputStyle}
             />
-            
+
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -103,7 +162,7 @@ const CareerDetails = () => {
               required
               style={inputStyle}
             />
-            
+
             <label htmlFor="mobile">Mobile</label>
             <input
               type="tel"
@@ -114,7 +173,7 @@ const CareerDetails = () => {
               required
               style={inputStyle}
             />
-            
+
             <label htmlFor="resume">Attach Your Resume (.DOC, .DOCX, .PDF)</label>
             <input
               type="file"
@@ -125,22 +184,32 @@ const CareerDetails = () => {
               required
               style={inputStyle}
             />
-            
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-  <div className="captcha" style={{ fontSize: '16px', fontWeight: 'bold' }}>7852</div>
-  <input
-    type="text"
-    name="captcha"
-    value={formData.captcha}
-    onChange={handleChange}
-    placeholder="Captcha"
-    required
-    style={inputStyle}
-  />
-</div>
 
-            
-            <button type="submit" style={buttonStyle}>SUBMIT</button>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginBottom: '10px',
+              }}
+            >
+              <div className="captcha" style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                7852
+              </div>
+              <input
+                type="text"
+                name="captcha"
+                value={formData.captcha}
+                onChange={handleChange}
+                placeholder="Captcha"
+                required
+                style={inputStyle}
+              />
+            </div>
+
+            <button type="submit" style={buttonStyle}>
+              SUBMIT
+            </button>
           </form>
         </div>
       </div>
@@ -148,14 +217,13 @@ const CareerDetails = () => {
   );
 };
 
-// Inline styles for input and button
 const inputStyle = {
   display: 'block',
   width: '100%',
   padding: '8px',
   marginBottom: '15px',
   border: '1px solid #ccc',
-  borderRadius: '4px'
+  borderRadius: '4px',
 };
 
 const buttonStyle = {
@@ -165,7 +233,7 @@ const buttonStyle = {
   color: '#fff',
   border: 'none',
   borderRadius: '4px',
-  cursor: 'pointer'
+  cursor: 'pointer',
 };
 
 export default CareerDetails;

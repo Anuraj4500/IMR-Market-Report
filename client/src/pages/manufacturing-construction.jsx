@@ -10,32 +10,42 @@ const ManufacturingConstruction = () => {
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const title = "Manufacturing & Construction";
-    const description = "The manufacturing and construction industry is a diverse sector that includes a wide range of products that are essential for daily life.";
+    const description =
+        "The manufacturing and construction industry is a diverse sector that includes a wide range of products that are essential for daily life.";
 
     useEffect(() => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:5000/api/reports?cid=11&page=${page}&limit=10`);
+                const response = await axios.get(`http://localhost:5000/api/reports/cid`, {
+                    params: { cid: '11', page: currentPage }
+                });
+                
+                console.log("API Response:", response.data); // Debug: Raw API response
+
                 const extractedReports = response.data.reports || [];
-                setReports(extractedReports);
-                setTotalPages(response.data.totalPages || 0);
+                console.log("Extracted Reports:", extractedReports); // Debug: Extracted reports
+
+                setReports(extractedReports); // Save extracted data
+                setTotalPages(response.data.totalPages);
             } catch (err) {
                 console.error("Error fetching reports:", err);
-                setError(err.response?.data?.message || 'Unable to fetch reports. Please try again later.');
+                setError(
+                    err.response?.data?.message || 'Unable to fetch reports. Please try again later.'
+                );
             } finally {
                 setLoading(false);
             }
         };
 
         fetchReports();
-    }, [page]);
+    }, [currentPage]);
 
     const handlePageChange = (newPage) => {
-        setPage(newPage);
+        setCurrentPage(newPage);
     };
 
     if (loading) {
@@ -45,6 +55,7 @@ const ManufacturingConstruction = () => {
     return (
         <div>
             <IndustriesBreadcrumb title={title} description={description} />
+
             <section className="inner-page">
                 <div className="container">
                     {error ? (
@@ -52,17 +63,20 @@ const ManufacturingConstruction = () => {
                     ) : (
                         <div className="row">
                             <div className="col-lg-9 order-md-2">
-                                {Array.isArray(reports) && reports.length > 0 ? (
-                                    <>
-                                        {reports.map((report, index) => (
-                                            <ReportCard key={report._id || index} {...report} />
-                                        ))}
-                                        <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
-                                    </>
+                            {Array.isArray(reports) && reports.length > 0 ? (
+                                    reports.map(report => (
+                                        <ReportCard key={report.id} {...report} />
+                                    ))
                                 ) : (
                                     <div>No reports available.</div>
                                 )}
+                                <Pagination 
+                                    page={currentPage} 
+                                    totalPages={totalPages} 
+                                    onPageChange={handlePageChange} 
+                                />
                             </div>
+
                             <div className="col-lg-3 order-md-1">
                                 <IndustryCard />
                                 <AssistanceCard2 />

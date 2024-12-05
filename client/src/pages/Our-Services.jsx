@@ -97,7 +97,7 @@ function OurServices() {
                                             <div className="col-lg-8 col-md-12">
                                                 <div className="expertise-content-header">
                                                     <h3 className="mb-3">{service.title}</h3>
-                                                    <p className="mb-4">{service.desc}</p>
+                                                    <p className="mb-4 text-dark" style={{ fontSize: "1rem" }}>{service.desc}</p>
                                                 </div>
                                             </div>
                                             <div className="col-lg-4 col-md-12 mt-4 mt-lg-0">

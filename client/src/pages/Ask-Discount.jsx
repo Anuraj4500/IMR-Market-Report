@@ -103,11 +103,11 @@ function AskDiscount() {
                     designation: '',
                     message: '',
                 });
-                alert('Sample request submitted successfully!');
+                alert('Ask Discount request submitted successfully!');
                 window.location.href = '/thank-you'; // Redirect to thank-you page
             }
         } catch (err) {
-            console.error("Error submitting sample request:", err);
+                    console.error("Error submitting Ask Discount request:", err);
             alert(err.response?.data?.message || 'Error submitting request. Please try again.');
         }
     };

@@ -24,11 +24,11 @@ const Footer = () => {
                   Phone: +91-81800-96367
 
                   Email:
-                  <a href="mailto:info@imrmarketreports.com">info@imrmarketreports.com</a>,
+                  <a href="mailto:info@imrmarketreports.com">info@imrmarketreports.com</a>
                   <br />
                   <div className="newsletter-section mt-4">
                     <form method="post" action="send_mail.com">
-                      <h4 className="mb-0">Subscribe to our Newsletter</h4>
+                      <h4 className="mb-0 text-white">Subscribe to our Newsletter</h4>
                       <input
                         type="email"
                         required
@@ -46,7 +46,7 @@ const Footer = () => {
             </div>
 
             <div className="col-xs-12 col-sm-6 col-md-5 footers-two">
-              <h5 className="text-center" style={{ color: "white" }}>Industries</h5>
+              <h5 className="text-center" style={{ color: "white", paddingRight: "80px" }}>Industries</h5>
               <div className="row align-items-center justify-content-center">
                 <div className="col-xs-12 col-sm-6 col-md-6 footers-two">
                   <ul className="list-unstyled">
@@ -70,7 +70,7 @@ const Footer = () => {
                 </div>
               </div>
               <div className="social-menu">
-                <span className="text-white">Follw us</span>
+                <span className="text-white">Follow us</span>
                 <ul>
                   <li><a href="#"><i className="fab fa-facebook"></i></a></li>
                   <li><a href="#"><i className="fab fa-twitter"></i></a></li>
@@ -80,7 +80,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="col-xs-12 col-sm-6 col-md-3 footers-five">
-              <h5 className="text-center" style={{ color: "white" }}>Useful Links</h5>
+              <h5 className="text-center" style={{ color: "white", paddingRight: "80px" }}>Useful Links</h5>
               <div className="row align-items-center justify-content-center">
 
                 <div className="col-xs-12 col-sm-6 col-md-6 footers-five">
@@ -101,14 +101,13 @@ const Footer = () => {
                     <li className="mt-2"><Link to="/faq">FAQ</Link></li>
                     <li className="mt-2"><Link to="/Career">Career</Link></li>
                   </ul>
-
                 </div>
               </div>
               <br></br>
               <br></br>
-              <br></br>
-              <div className="col-12 col-lg-12 d-flex">
-                <h5 className="text-white pr-2" style={{ minWidth: '20%' }}>We Accept</h5>
+              
+              <div className="col-12 col-lg-12">
+                <h5 className="text-white pr-2">We Accept</h5>
                 <div className="">
                   <img src={PaymentMethods} className="img-fluid pl-4" alt="payment methods" />
                 </div>
@@ -116,21 +115,14 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
       </section>
-
-
-
       <section className="disclaimer border-top p-2">
-
         <div className="container-fluid">
           <div className="row justify-content-between">
             <div className="col-12 col-lg-6">
               <div className="copyright-text ">
                 <p className="" style={{ color: "white" }}>
-
-
-                  <div> Designed and developed by .
+                  <div> Designed and developed by &nbsp;
                     <a
                       href="https://imrtechsolutions.com"
                       target="_blank"
@@ -140,22 +132,14 @@ const Footer = () => {
                       IMR Tech Solutions
                     </a>
                   </div>
-
                 </p>
-
-
               </div>
             </div>
             <div className="col-12 col-lg-6">
               <div className="copyright-text ">
                 <p className="text-right" style={{ color: "white" }}>
-
-                  <div>All Rights Reserved 2024 © IMR Market Reports.
-                  </div>
-
+                  <div>All Rights Reserved 2024 © IMR Market Reports </div>
                 </p>
-
-
               </div>
             </div>
 

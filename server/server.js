@@ -12,13 +12,12 @@ const clientRoutes = require('./routes/clientroutes');
 const whychooseusRoutes = require('./routes/whychooseusRoutes'); 
 const termsRoutes = require('./routes/termsandconditionsRoutes');
 const refundRoutes = require('./routes/refundRoutes');
-const adminReportsRoutes = require('./admin/routes/adminreportsRoutes');
 const ourservicesRoutes = require('./routes/ourservicesRoutes');
 const publisherRoutes = require('./routes/publishersRoutes');
 const sampleRequestRoutes = require('./routes/sampleRequestRoutes');
 const checkoutRoutes = require('./routes/checkoutRoutes');
 const privacyPolicyRoutes = require('./routes/privacypolicyRoute');
-
+const careerRoutes = require('./routes/careerRoutes');
 const app = express();
 
 // Configure AWS SDK
@@ -53,12 +52,12 @@ app.use('/api', categoryRoute);
 app.use('/api/whychooseus', whychooseusRoutes);
 app.use('/api/terms', termsRoutes);
 app.use('/api/refund-policy', refundRoutes);
-app.use('/api/adminreports', adminReportsRoutes);
 app.use('/api/ourservices', ourservicesRoutes);
 app.use('/api/publishers', publisherRoutes);
 app.use('/api/samplerequest', sampleRequestRoutes);
-app.use('/api/Checkout', checkoutRoutes);
+app.use('/api/checkout', checkoutRoutes);
 app.use('/api/privacypolicy', privacyPolicyRoutes);
+app.use('/api', careerRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
