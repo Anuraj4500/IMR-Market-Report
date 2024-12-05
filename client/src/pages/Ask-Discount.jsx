@@ -33,7 +33,7 @@ function AskDiscount() {
             }
 
             try {
-                const response = await axios.get(`http://localhost:5000/api/reports/slug/${slug}`);
+                const response = await axios.get(`imr-market-report-server.vercel.app/api/reports/slug/${slug}`);
                 if (!response.data) {
                     throw new Error('No data received from server');
                 }
@@ -82,7 +82,7 @@ function AskDiscount() {
             console.log('Sending Discount request data:', discountRequestData);
 
             const response = await axios.post(
-                'http://localhost:5000/api/ask-discount',
+                'imr-market-report-server.vercel.app/api/ask-discount',
                 discountRequestData,
                 {
                     headers: {

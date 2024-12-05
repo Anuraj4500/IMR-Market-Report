@@ -8,7 +8,7 @@ function OurServices() {
     // Function to fetch data from MongoDB
     const fetchOurServices = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/ourservices');
+            const response = await fetch('imr-market-report-server.vercel.app/api/ourservices');
             const data = await response.json();
 
             // Check if the data is an array

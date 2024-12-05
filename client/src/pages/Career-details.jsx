@@ -21,7 +21,7 @@ const CareerDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/careerform';
+    const apiUrl = process.env.REACT_APP_API_URL || 'imr-market-report-server.vercel.app/api/careerform';
 
     const formDataToSend = new FormData();
     formDataToSend.append('name', formData.name);

@@ -12,7 +12,7 @@ const OurClient = () => {
         const fetchClients = async () => {
             try {
                 console.log('Starting fetch request...');
-                const response = await axios.get('http://localhost:5000/api/clients');
+                const response = await axios.get('imr-market-report-server.vercel.app/api/clients');
                 console.log('Response:', response.data);
                 if (response.data.length === 0) {
                     console.log('No clients data received');
@@ -48,7 +48,7 @@ const OurClient = () => {
                             <div key={index} className="col-xl-2 col-lg-3 col-md-4 col-6">
                                 <div className="client-logo-item style-three" data-aos="fade-up" data-aos-delay={200 * index} data-aos-duration="1000" data-aos-offset="50">
                                     <a href="#">
-                                        <img src={`http://localhost:5000/uploads/${client.image}`} className="img-fluid" alt={client.title} />
+                                        <img src={`imr-market-report-server.vercel.app/uploads/${client.image}`} className="img-fluid" alt={client.title} />
                                     </a>
                                 </div>
                             </div>

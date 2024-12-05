@@ -11,7 +11,7 @@ const TermsAndConditions = () => {
     useEffect(() => {
         const fetchTermsData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/terms'); // Adjust the URL as needed
+                const response = await axios.get('imr-market-report-server.vercel.app/api/terms'); // Adjust the URL as needed
                 setTermsData(response.data);
             } catch (error) {
                 console.error('Error fetching terms data:', error);

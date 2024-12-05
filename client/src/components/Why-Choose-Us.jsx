@@ -23,7 +23,7 @@ const WhyChooseUs = () => {
   useEffect(() => {
     const fetchWhyChooseUsData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/whychooseus');
+        const response = await fetch('imr-market-report-server.vercel.app/api/whychooseus');
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }

@@ -20,7 +20,7 @@ const ServiceIndustry = () => {
         const fetchReports = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:5000/api/reports/cid`, {
+                const response = await axios.get(`imr-market-report-server.vercel.app/api/reports/cid`, {
                     params: { cid: '12', page: currentPage }
                 });
                 
