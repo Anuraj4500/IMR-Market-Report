@@ -31,9 +31,11 @@ AWS.config.update({
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 console.log('DynamoDB connection established successfully.');
 
-app.use(cors({
-    origin: 'https://imr-market-report-client.vercel.app'
-}));
+   app.use(cors({
+       origin: 'https://imr-market-report-client.vercel.app', // Allow your frontend's origin
+       methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+       credentials: true // Allow credentials if needed
+   }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
