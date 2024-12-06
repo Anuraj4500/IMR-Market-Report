@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -27,15 +26,27 @@ AWS.config.update({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 
-// Create DynamoDB service object
-const dynamoDB = new AWS.DynamoDB.DocumentClient();
-console.log('DynamoDB connection established successfully.');
+// Create DynamoDB service object and test the connection
+try {
+    const dynamoDB = new AWS.DynamoDB.DocumentClient();
+    // Test connection with a dummy operation
+    dynamoDB.listTables({}, (err, data) => {
+        if (err) {
+            console.error('Failed to connect to DynamoDB:', err.message);
+        } else {
+            console.log('DynamoDB connection established successfully.');
+        }
+    });
+} catch (error) {
+    console.error('Error while initializing DynamoDB:', error.message);
+}
 
-   app.use(cors({
-       origin: 'https://imr-market-report-client.vercel.app', // Allow your frontend's origin
-       methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
-       credentials: true // Allow credentials if needed
-   }));
+app.use(cors({
+    origin: 'https://imr-market-report-client.vercel.app', // Allow your frontend's origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+    credentials: true // Allow credentials if needed
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
