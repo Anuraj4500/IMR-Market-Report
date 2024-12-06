@@ -8,4 +8,15 @@ app.use(cors({
     origin: 'https://imr-market-report-client.vercel.app', // Update this to your frontend's URL
 }));
 
-// Other middleware and routes 
+// Add a basic endpoint
+app.get('/', (req, res) => {
+    res.send('Welcome to the IMR Market Report API!');
+});
+
+// Example API route (optional)
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'Test API is working!' });
+});
+
+// Export the app
+module.exports = app;
